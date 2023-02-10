@@ -9,6 +9,7 @@ requires-python = ">=3.8.0"
 dependencies = [
     "pandas>=1.4.3,<1.5.0",
     "psycop-model-training>=0.31.0,<0.32.0",
+    "black",
 ]
 
 [project.optional-dependencies]
