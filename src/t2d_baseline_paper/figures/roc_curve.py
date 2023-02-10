@@ -8,7 +8,7 @@ import pandas as pd
 from psycop_model_training.model_eval.dataclasses import EvalDataset
 from sklearn.metrics import roc_auc_score, roc_curve
 
-from t2d_baseline_paper.data.test_eval_data import synth_eval_dataset
+from t2d_baseline_paper.data.load_dev_data import synth_eval_dataset
 
 
 @dataclass
