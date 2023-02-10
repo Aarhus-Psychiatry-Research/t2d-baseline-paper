@@ -1,10 +1,9 @@
 from pathlib import Path
 
+from config import BestPerformingModels
+from data.data_loaders import load_best_lr_eval_dataset, load_best_xgb_eval_dataset
+
 from t2d_baseline_paper.data.load_dev_data import synth_eval_dataset
-from t2d_baseline_paper.data.load_true_data import (
-    load_best_lr_eval_dataset,
-    load_best_xgb_eval_dataset,
-)
 from t2d_baseline_paper.figures.roc_curve import eval_ds_to_roc_plot_spec, plot_auc_roc
 from t2d_baseline_paper.globals import PROJECT_ROOT
 
@@ -32,7 +31,7 @@ def generate_roc_curve(use_synth_data: bool):
         specs=[xgb_spec, lr_spec],
         dpi=600,
         save_path=OUTPUT_PATH,
-        title="ROC curve, 2 year lookahead",
+        title=f"ROC curve, {BestPerformingModels().lookahead_years} year lookahead",
     )
 
 

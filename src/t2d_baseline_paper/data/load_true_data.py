@@ -18,22 +18,6 @@ def df_to_eval_dataset(df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
-def load_best_xgb_eval_dataset() -> pd.DataFrame:
-    eval_ds = load_eval_dataset(
-        wandb_group="chapelet-megaloblastic", wandb_run="rural-silence-2005"
-    )
-
-    return eval_ds
-
-
-def load_best_lr_eval_dataset() -> pd.DataFrame:
-    eval_ds = load_eval_dataset(
-        wandb_group="chapelet-megaloblastic", wandb_run="revived-pond-2619"
-    )
-
-    return eval_ds
-
-
 def load_eval_dataset(wandb_group: str, wandb_run: str) -> pd.DataFrame:
     path = Path(
         f"E:/shared_resources/t2d/model_eval/{wandb_group}/{wandb_run}/evaluation_dataset.parquet"

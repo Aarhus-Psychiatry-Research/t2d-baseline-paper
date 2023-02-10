@@ -8,16 +8,24 @@ from psycop_model_training.model_eval.dataclasses import EvalDataset
 
 def synth_eval_dataset(noise_to_y_probs: Optional[float] = None) -> EvalDataset:
     """Load synthetic data."""
-    csv_path = Path("src") / "psycop-model-training" / "tests" / "test_data" / "synth_eval_data.csv"
+    csv_path = (
+        Path("src")
+        / "psycop-model-training"
+        / "tests"
+        / "test_data"
+        / "synth_eval_data.csv"
+    )
     df = pd.read_csv(csv_path)
     df = add_age_gender(df)
 
     # Convert all timestamp cols to datetime
     for col in [col for col in df.columns if "timestamp" in col]:
         df[col] = pd.to_datetime(df[col])
-        
+
     if noise_to_y_probs:
-        df["pred_prob"] = df["pred_prob"] + np.random.normal(0, noise_to_y_probs, len(df))
+        df["pred_prob"] = df["pred_prob"] + np.random.normal(
+            0, noise_to_y_probs, len(df)
+        )
 
     return EvalDataset(
         ids=df["dw_ek_borger"],
