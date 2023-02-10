@@ -15,5 +15,6 @@ source(here("src", "data", "load_eval_dataset.r"))
 
 ```{r}
 eval_dataset <- load_eval_dataset()
+synth_eval_dataset <- load_synth_eval_dataset()
 ```
 
