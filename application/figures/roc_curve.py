@@ -1,14 +1,10 @@
-from pathlib import Path
-
-from config import BestPerformingModels
-from data.data_loaders import load_best_lr_eval_dataset, load_best_xgb_eval_dataset
-
 from t2d_baseline_paper.data.load_dev_data import synth_eval_dataset
+from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 from t2d_baseline_paper.figures.roc_curve import eval_ds_to_roc_plot_spec, plot_auc_roc
-from t2d_baseline_paper.globals import PROJECT_ROOT
+from t2d_baseline_paper.globals import PROJECT_ROOT, BestPerformingRuns
 
 
-def generate_roc_curve(use_synth_data: bool):
+def generate_roc_curve(use_synth_data: bool, best_runs: BestPerformingRuns):
     if use_synth_data:
         xgb_spec = eval_ds_to_roc_plot_spec(
             synth_eval_dataset(), legend_title="XGBoost"
@@ -18,10 +14,17 @@ def generate_roc_curve(use_synth_data: bool):
         )
     else:
         xgb_spec = eval_ds_to_roc_plot_spec(
-            load_best_xgb_eval_dataset(), legend_title="XGBoost"
+            load_eval_dataset(
+                wandb_group=best_runs.wandb_group, wandb_run=best_runs.xgboost
+            ),
+            legend_title="XGBoost",
         )
         lr_spec = eval_ds_to_roc_plot_spec(
-            load_best_lr_eval_dataset(), legend_title="Logistic regression"
+            load_eval_dataset(
+                wandb_group=best_runs.wandb_group,
+                wandb_run=best_runs.logistic_regression,
+            ),
+            legend_title="Logistic regression",
         )
 
     OUTPUT_PATH = PROJECT_ROOT / "outputs_for_publishing" / "figures" / "roc_curve.png"
@@ -31,7 +34,7 @@ def generate_roc_curve(use_synth_data: bool):
         specs=[xgb_spec, lr_spec],
         dpi=600,
         save_path=OUTPUT_PATH,
-        title=f"ROC curve, {BestPerformingModels().lookahead_years} year lookahead",
+        title=f"ROC curve, {best_runs.lookahead_years} year lookahead",
     )
 
 
