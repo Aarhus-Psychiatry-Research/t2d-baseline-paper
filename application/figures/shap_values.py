@@ -1,19 +1,24 @@
 import matplotlib.pyplot as plt
+import pandas as pd
 import shap
 from psycop_model_training.data_loader.utils import load_and_filter_split_from_cfg
 from psycop_model_training.utils.col_name_inference import infer_predictor_col_name
+from zenml.pipelines import pipeline
+from zenml.steps import BaseParameters, Output, step
 
 from t2d_baseline_paper.data.load_true_data import load_fullconfig, load_pipe
 from t2d_baseline_paper.globals import PROJECT_ROOT, BestPerformingRuns
 
 
-def generate_shap_value_plot(best_runs: BestPerformingRuns):
-    # Load cfg from pickle
-    cfg = load_fullconfig(
-        wandb_group=best_runs.wandb_group, wandb_run=best_runs.xgboost
-    )
+class ShapValueConf(BaseParameters):
+    best_runs: BestPerformingRuns
+    dpi: int = 300
 
-    df = load_and_filter_split_from_cfg(cfg=cfg, split="train")
+
+@pipeline(enable_cache=True)
+def beeswarm_step(best_runs: BestPerformingRuns, train_loader, dpi: int = 300):
+    # Load cfg from pickle
+    df = get_train_split(best_runs)
 
     pred_col_names = infer_predictor_col_name(df)
     X = df[pred_col_names]
@@ -24,7 +29,7 @@ def generate_shap_value_plot(best_runs: BestPerformingRuns):
     explainer = shap.Explainer(model)
     shap_values = explainer(X)
 
-    plt.figure(figsize=fig_size, dpi=dpi)
+    plt.figure(figsize=(5, 5), dpi=dpi)
     shap.plots.beeswarm(shap_values, show=False)
 
     OUTPUT_PATH = (
@@ -34,3 +39,13 @@ def generate_shap_value_plot(best_runs: BestPerformingRuns):
 
     plt.savefig(OUTPUT_PATH)
     plt.close
+
+
+@step
+def get_train_split(best_runs) -> Output(df=pd.DataFrame):
+    cfg = load_fullconfig(
+        wandb_group=best_runs.wandb_group, wandb_run=best_runs.xgboost
+    )
+
+    df = load_and_filter_split_from_cfg(cfg=cfg, split="train")
+    return df
