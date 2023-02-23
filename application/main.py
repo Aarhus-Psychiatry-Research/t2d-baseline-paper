@@ -22,7 +22,7 @@ def output_pipeline(
     pipe = pipeline_loader()
     shap_values = shap_generator(train_df=train_split, pipeline=pipe)
     beeswarm_fn(shap_values=shap_values)
-    plot_shap_scatter(shap_values=shap_values, X=train_split)
+    plot_shap_scatter(shap_values=shap_values)
 
 
 if __name__ == "__main__":
