@@ -52,10 +52,10 @@ def plot_shap_scatter(shap_values: bytes) -> None:
 
     sns.set(style="whitegrid")
 
+    shap_std = shap_values._numpy_func(fname="std", axis=0)
+
     for i in range(-1, -20, -1):
-        shap_for_i: shap._explanation.Explanation = shap_values[
-            :, shap_values.abs.mean(0).argsort[i]
-        ]
+        shap_for_i: shap._explanation.Explanation = shap_values[:, shap_std.argsort[i]]
 
         feature_name = shap_for_i.feature_names
 
@@ -147,9 +147,11 @@ def generate_shap_values(train_df: pd.DataFrame, pipeline: Pipeline) -> bytes:
     pred_col_names = infer_predictor_col_name(train_df)
     X = train_df[pred_col_names]
 
+    X_subsampled = X.sample(frac=0.11, random_state=42)
+
     model = pipeline["model"]
     explainer = shap.Explainer(model)
-    shap_values = explainer(X)
+    shap_values = explainer(X_subsampled)
     return pickle.dumps(shap_values)
 
 
