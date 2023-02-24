@@ -20,7 +20,7 @@ def df_to_eval_dataset(df: pd.DataFrame) -> pd.DataFrame:
     )
 
 
-def load_eval_dataset(wandb_group: str, wandb_run: str) -> pd.DataFrame:
+def load_eval_dataset(wandb_group: str, wandb_run: str) -> EvalDataset:
     path = get_run_item_file_path(
         wandb_group=wandb_group,
         wandb_run=wandb_run,

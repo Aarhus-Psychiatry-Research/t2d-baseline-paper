@@ -168,5 +168,7 @@ def get_train_split(params: TrainSplitConf) -> pd.DataFrame:
         wandb_group=params.best_runs.wandb_group, wandb_run=params.best_runs.xgboost
     )
 
+    pass
+
     df = load_and_filter_split_from_cfg(cfg=cfg, split="train")
     return df

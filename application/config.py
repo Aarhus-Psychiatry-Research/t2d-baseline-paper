@@ -6,8 +6,8 @@ WANDB_GROUP = ""
 from t2d_baseline_paper.globals import BestPerformingRuns
 
 best_runs = BestPerformingRuns(
-    wandb_group="sci-adenopharyngeal",
+    wandb_group="sharky-unsheathing",
     logistic_regression="revived-pond-2619",
-    xgboost="jovial-heart-4924",
-    lookahead_years=2,
+    xgboost="kind-spaceship-6027",
+    lookahead_years=3,
 )
