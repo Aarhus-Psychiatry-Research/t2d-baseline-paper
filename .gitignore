@@ -6,3 +6,4 @@ src/t2d_baseline_paper.egg-info
 .vscode
 *.png
 *.pyc
+src/psycop-model-training
