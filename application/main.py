@@ -18,7 +18,6 @@ def output_pipeline(
     pipeline_loader,
     shap_generator,
     plot_shap_scatter,
-    # beeswarm_fn,
 ):
     train_split = training_data_loader()
     pipe = pipeline_loader()
