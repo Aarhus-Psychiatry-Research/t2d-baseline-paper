@@ -1,6 +1,4 @@
 import pickle
-from typing import List
-from xml.sax.handler import feature_namespace_prefixes
 
 import matplotlib.pyplot as plt
 import pandas as pd
@@ -9,7 +7,7 @@ import shap
 from psycop_model_training.data_loader.utils import load_and_filter_split_from_cfg
 from psycop_model_training.utils.col_name_inference import infer_predictor_col_name
 from sklearn.pipeline import Pipeline
-from zenml.steps import BaseParameters, Output, step
+from zenml.steps import BaseParameters, step
 
 from t2d_baseline_paper.data.load_true_data import load_fullconfig, load_pipe
 from t2d_baseline_paper.globals import PROJECT_ROOT, BestPerformingRuns

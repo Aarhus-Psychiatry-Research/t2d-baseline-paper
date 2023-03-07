@@ -1,12 +1,9 @@
-from typing import Optional
-
 from config import best_runs
 from figures.shap_values import (
     TrainSplitConf,
     generate_shap_values,
     get_train_split,
     pipeline_loader,
-    plot_beeswarm,
     plot_shap_scatter,
 )
 from zenml.pipelines import pipeline

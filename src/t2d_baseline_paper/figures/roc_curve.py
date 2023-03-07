@@ -8,22 +8,24 @@ import pandas as pd
 from psycop_model_training.model_eval.dataclasses import EvalDataset
 from sklearn.metrics import roc_auc_score, roc_curve
 
-from t2d_baseline_paper.data.load_dev_data import synth_eval_dataset
-
 
 @dataclass
-class ROCPlotSpec():
+class ROCPlotSpec:
     y: pd.Series
     y_hat_probs: pd.Series
     legend_title: str
-    
-def eval_ds_to_roc_plot_spec(eval_dataset: EvalDataset, legend_title: str) -> ROCPlotSpec:
+
+
+def eval_ds_to_roc_plot_spec(
+    eval_dataset: EvalDataset, legend_title: str
+) -> ROCPlotSpec:
     """Convert EvalDataset to ROCPlotSpec."""
     return ROCPlotSpec(
         y=eval_dataset.y,
         y_hat_probs=eval_dataset.y_hat_probs,
         legend_title=legend_title,
     )
+
 
 def plot_auc_roc(
     specs: Union[ROCPlotSpec, list[ROCPlotSpec]],
@@ -43,17 +45,16 @@ def plot_auc_roc(
         Union[None, Path]: None if save_path is None, else path to saved figure.
     """
     plt.figure(figsize=fig_size, dpi=dpi)
-    
+
     for specs in specs:
         fpr, tpr, _ = roc_curve(specs.y, specs.y_hat_probs)
         auc = roc_auc_score(specs.y, specs.y_hat_probs)
         AUC_STR = f"(AUC = {str(round(auc, 3))})"
-        
+
         plt.plot(fpr, tpr, label=f"{specs.legend_title} {AUC_STR}")
 
-    
     plt.legend(loc=4)
-    
+
     plt.title(title)
     plt.xlabel("1 - Specificity")
     plt.ylabel("Sensitivity")
@@ -63,5 +64,3 @@ def plot_auc_roc(
     plt.close()
 
     return save_path
-
-

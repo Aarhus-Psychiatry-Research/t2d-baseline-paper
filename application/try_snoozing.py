@@ -1,7 +1,6 @@
 import datetime as dt
 
 import pandas as pd
-import wandb
 from config import best_runs
 from sklearn.metrics import roc_auc_score
 

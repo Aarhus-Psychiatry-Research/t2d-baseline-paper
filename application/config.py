@@ -1,9 +1,7 @@
-from dataclasses import dataclass
+from t2d_baseline_paper.globals import BestPerformingRuns
 
 WANDB_GROUP = ""
 
-
-from t2d_baseline_paper.globals import BestPerformingRuns
 
 best_runs = BestPerformingRuns(
     wandb_group="sharky-unsheathing",
