@@ -1,0 +1,15 @@
+{
+    "_copy_without_render": [
+        "*.github"
+    ],
+    "_template": "https://github.com/MartinBernstorff/swift-python-cookiecutter",
+    "author": "Martin Bernstorff",
+    "copyright_year": "2023",
+    "email": "martinbernstorfff@gmail.com",
+    "friendly_name": "T2D Baseline Paper",
+    "github_user": "MartinBernstorff",
+    "license": "MIT",
+    "package_name": "t2d_baseline_paper",
+    "project_name": "t2d-baseline-paper",
+    "version": "0.0.0"
+}
