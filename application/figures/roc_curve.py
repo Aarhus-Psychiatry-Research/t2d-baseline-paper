@@ -5,6 +5,7 @@ from t2d_baseline_paper.globals import PROJECT_ROOT, BestPerformingRuns
 
 
 def generate_roc_curve(use_synth_data: bool, best_runs: BestPerformingRuns):
+    """Generate a roc curve"""
     if use_synth_data:
         xgb_spec = eval_ds_to_roc_plot_spec(
             synth_eval_dataset(), legend_title="XGBoost"
@@ -27,13 +28,13 @@ def generate_roc_curve(use_synth_data: bool, best_runs: BestPerformingRuns):
             legend_title="Logistic regression",
         )
 
-    OUTPUT_PATH = PROJECT_ROOT / "outputs_for_publishing" / "figures" / "roc_curve.png"
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    output_path = PROJECT_ROOT / "outputs_for_publishing" / "figures" / "roc_curve.png"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
     return plot_auc_roc(
         specs=[xgb_spec, lr_spec],
         dpi=600,
-        save_path=OUTPUT_PATH,
+        save_path=output_path,
         title=f"ROC curve, {best_runs.lookahead_years} year lookahead",
     )
 
