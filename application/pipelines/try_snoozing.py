@@ -1,7 +1,7 @@
 import datetime as dt
 
 import pandas as pd
-from config import best_runs
+from ..config import best_runs
 from sklearn.metrics import roc_auc_score
 
 from t2d_baseline_paper.data.load_true_data import load_eval_dataset

@@ -1,4 +1,4 @@
-from t2d_baseline_paper.globals import PROJECT_ROOT
+from t2d_baseline_paper.best_runs import PROJECT_ROOT
 
 
 import matplotlib.pyplot as plt

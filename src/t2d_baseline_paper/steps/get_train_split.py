@@ -3,7 +3,7 @@ from psycop_model_training.data_loader.utils import load_and_filter_split_from_c
 from zenml.steps import BaseParameters, step
 
 from t2d_baseline_paper.data.load_true_data import load_fullconfig
-from t2d_baseline_paper.globals import BestPerformingRuns
+from t2d_baseline_paper.best_runs import BestPerformingRuns
 
 
 class TrainSplitConf(BaseParameters):
