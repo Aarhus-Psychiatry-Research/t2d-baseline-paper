@@ -8,12 +8,11 @@ import pandas as pd
 from t2d_baseline_paper.best_runs import BestPerformingRuns
 
 from t2d_baseline_paper.data.load_true_data import load_eval_dataset, load_fullconfig
-
+from t2d_baseline_paper.best_runs import best_runs
 
 @step
 def evaluate_model(
     pipe: Pipeline,
-    best_runs: BestPerformingRuns,
     train_split: pd.DataFrame,
 ) -> float:
     best_run = best_runs.xgboost

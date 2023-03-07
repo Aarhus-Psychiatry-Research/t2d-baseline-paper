@@ -1,17 +1,13 @@
 from t2d_baseline_paper.best_runs import best_runs
-from t2d_baseline_paper.data.load_true_data import load_fullconfig
 from t2d_baseline_paper.steps.model_evaluator import (
-    ModelEvaluatorParams,
     evaluate_model,
 )
 
 from t2d_baseline_paper.steps.pipeline_loader import pipeline_loader
 from t2d_baseline_paper.steps.get_train_split import get_train_split
-from t2d_baseline_paper.figures.shap.generate_shap_values import generate_shap_values
 from t2d_baseline_paper.steps.get_train_split import (
     TrainSplitConf,
 )
-from t2d_baseline_paper.figures.shap.shap_plot import plot_shap_scatter
 from zenml.pipelines import pipeline
 
 

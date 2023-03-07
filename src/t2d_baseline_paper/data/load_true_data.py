@@ -4,6 +4,7 @@ from pathlib import Path
 import pandas as pd
 from psycop_model_training.model_eval.dataclasses import EvalDataset
 from sklearn.pipeline import Pipeline
+from psycop_model_training.config_schemas.full_config import FullConfigSchema
 
 
 def df_to_eval_dataset(df: pd.DataFrame) -> pd.DataFrame:
@@ -48,13 +49,13 @@ def load_file_from_pkl(wandb_group: str, wandb_run: str, file_name: str):
         return pickle.load(f)
 
 
-def load_fullconfig(wandb_group: str, wandb_run: str) -> pd.DataFrame:
+def load_fullconfig(wandb_group: str, wandb_run: str) -> FullConfigSchema:
     return load_file_from_pkl(
         wandb_group=wandb_group, wandb_run=wandb_run, file_name="cfg.pkl"
     )
 
 
-def load_pipe(wandb_group: str, wandb_run: str) -> Pipeline():
+def load_pipe(wandb_group: str, wandb_run: str) -> Pipeline:
     return load_file_from_pkl(
         wandb_group=wandb_group, wandb_run=wandb_run, file_name="pipe.pkl"
     )
