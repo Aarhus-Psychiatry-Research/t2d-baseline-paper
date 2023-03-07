@@ -4,10 +4,6 @@ from pathlib import Path
 import pandas as pd
 from psycop_model_training.model_eval.dataclasses import EvalDataset
 
-from .......users.au484925.t2d-baseline-paper.application.config import best_runs
-
-from .......users.au484925.t2d-baseline-paper.application.config import best_runs
-
 
 def df_to_eval_dataset(df: pd.DataFrame) -> pd.DataFrame:
     """Convert dataframe to EvalDataset."""
@@ -61,20 +57,3 @@ def load_pipe(wandb_group: str, wandb_run: str) -> pd.DataFrame:
     return load_file_from_pkl(
         wandb_group=wandb_group, wandb_run=wandb_run, file_name="pipe.pkl"
     )
-
-
-def load_best_xgb_eval_dataset() -> pd.DataFrame:
-    eval_ds = load_eval_dataset(
-        wandb_group=best_runs.wandb_group, wandb_run=best_runs.xgboost
-    )
-
-    return eval_ds
-
-def load_best_lr_eval_dataset() -> pd.DataFrame:
-    eval_ds = load_eval_dataset(
-        wandb_group=best_runs.wandb_group, wandb_run=best_runs.logistic_regression
-    )
-
-    return eval_ds
-
-
