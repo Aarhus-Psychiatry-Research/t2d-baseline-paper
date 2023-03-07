@@ -24,7 +24,7 @@ tests = [
 ]
 
 dev = [
-    "pre-commit>=2.19.0,<2.19.1",
+    "pre-commit>=2.19.0,<3.1.2",
     "black",
 ]
 
