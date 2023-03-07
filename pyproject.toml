@@ -7,7 +7,7 @@ authors = [{name = "Martin Bernstorff", email = "martinbernstorff@gmail.com"}]
 requires-python = ">=3.8.0"
 
 dependencies = [
-    "pandas>=1.4.3,<1.5.0",
+    "pandas>=1.4.3,<1.6.0",
     # Shap dependencies
     "shap>=0.41.0",
     "ipython>=8.10.0",
