@@ -1,3 +1,19 @@
+# Python
+.mypy_cache/
+/.python-version
+/.pytype/
+/dist/
+/docs/_build/
+/src/*.egg-info/
+__pycache__/
+.venv
+
+# VSCode
+.vscode/
+
+# MacOS
+.DS_Store
+
 *.html
 .Rproj.user
 *.csv
@@ -7,3 +23,4 @@ src/t2d_baseline_paper.egg-info
 *.png
 *.pyc
 src/psycop-model-training
+.Rhistory

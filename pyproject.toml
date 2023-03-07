@@ -8,15 +8,24 @@ requires-python = ">=3.8.0"
 
 dependencies = [
     "pandas>=1.4.3,<1.5.0",
-    "black",
     # Shap dependencies
-    "shap=0.41.0",
-    "ipython=8.10.0",
+    "shap>=0.41.0",
+    "ipython>=8.10.0",
+    "psycop-model-training @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-model-training#egg=psycop_model_training",
+    "zenml[server]>=0.34.0,<0.35.0",
 ]
 
 [project.optional-dependencies]
+tests = [
+    "pytest>=7.1.3,<7.3.0",
+    "pytest-cov>=3.0.0,<3.1.0",
+    "pytest-xdist>=3.0.0,<3.2.0",
+    "typeguard>=2.13.3,<2.14.0",
+]
+
 dev = [
     "pre-commit>=2.19.0,<2.19.1",
+    "black",
 ]
 
 [build-system]
@@ -50,7 +59,7 @@ ignore_missing_imports = true
 [tool.pylint]
 load-plugins = "pylint.extensions.docparams,pylint.extensions.code_style,pylint.extensions.for_any_all,pylint.extensions.typing"
 good-names = "df,p,f,d,e,n,k,i,v,y_,X,y"
-disable = "too-many-lines,line-too-long,missing-raises-doc,no-self-argument,unused-wildcard-import,wildcard-import,no-else-return,too-many-arguments,redefined-outer-name,c-extension-no-member,wrong-import-order,import-outside-toplevel,unused-import,wrong-import-position,deprecated-typing-alias,missing-module-docstring"
+disable = "too-many-lines,line-too-long,missing-raises-doc,no-self-argument,unused-wildcard-import,wildcard-import,no-else-return,too-many-arguments,redefined-outer-name,c-extension-no-member,wrong-import-order,import-outside-toplevel,unused-import,wrong-import-position,deprecated-typing-alias,missing-module-docstring,missing-function-docstring,missing-class-docstring"
 extension-pkg-allow-list = "wandb,pydantic"
 
 [tool.pylint.'MESSAGES CONTROL']

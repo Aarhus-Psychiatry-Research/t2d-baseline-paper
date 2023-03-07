@@ -1,42 +1,13 @@
-import pickle
-from typing import List
-from xml.sax.handler import feature_namespace_prefixes
+from t2d_baseline_paper.globals import PROJECT_ROOT
+
 
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 import shap
-from psycop_model_training.data_loader.utils import load_and_filter_split_from_cfg
-from psycop_model_training.utils.col_name_inference import infer_predictor_col_name
-from sklearn.pipeline import Pipeline
-from zenml.steps import BaseParameters, Output, step
+from zenml.steps import step
 
-from t2d_baseline_paper.data.load_true_data import load_fullconfig, load_pipe
-from t2d_baseline_paper.globals import PROJECT_ROOT, BestPerformingRuns
-
-
-class TrainSplitConf(BaseParameters):
-    best_runs: BestPerformingRuns
-
-
-@step
-def plot_beeswarm(shap_values: bytes) -> None:
-    shap_values = pickle.loads(shap_values)
-
-    shap.plots.beeswarm(
-        shap_values,
-        show=False,
-        plot_size=(20, 5),
-        max_display=20,
-    )
-
-    OUTPUT_PATH = (
-        PROJECT_ROOT / "outputs_for_publishing" / "figures" / "shap_beeswarm.png"
-    )
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-
-    plt.savefig(OUTPUT_PATH)
-    plt.close()
+import pickle
 
 
 def widen_df_with_limits(df, widening_factor: float):
@@ -52,7 +23,9 @@ def plot_shap_scatter(shap_values: bytes) -> None:
 
     sns.set(style="whitegrid")
 
-    shap_std = shap_values._numpy_func(fname="std", axis=0)
+    shap_std = shap_values._numpy_func(  # pylint: disable=protected-access
+        fname="std", axis=0
+    )
 
     for i in range(-1, -20, -1):
         shap_for_i: shap._explanation.Explanation = shap_values[:, shap_std.argsort[i]]
@@ -97,7 +70,7 @@ def plot_shap_scatter(shap_values: bytes) -> None:
                 else y_percentiles.iloc[1]
             )
 
-            g = sns.jointplot(
+            graph = sns.jointplot(
                 x=feature_name,
                 y="shap_values",
                 data=df,
@@ -111,7 +84,7 @@ def plot_shap_scatter(shap_values: bytes) -> None:
                 x=feature_name,
                 y="shap_values",
                 data=df,
-                ax=g.ax_joint,
+                ax=graph.ax_joint,
                 lowess=True,
                 color="k",
                 scatter=False,
@@ -130,45 +103,33 @@ def plot_shap_scatter(shap_values: bytes) -> None:
                 color="orange",
             )
 
-            OUTPUT_PATH = (
+            output_path = (
                 PROJECT_ROOT
                 / "outputs_for_publishing"
                 / "figures"
                 / "shap_scatter"
                 / f"shap_scatter_{i}.png"
             )
-            OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-            plt.savefig(OUTPUT_PATH)
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            plt.savefig(output_path)
             plt.close()
 
 
 @step
-def generate_shap_values(train_df: pd.DataFrame, pipeline: Pipeline) -> bytes:
-    pred_col_names = infer_predictor_col_name(train_df)
-    X = train_df[pred_col_names]
+def plot_beeswarm(shap_values: bytes) -> None:
+    shap_values = pickle.loads(shap_values)
 
-    X_subsampled = X.sample(frac=0.11, random_state=42)
-
-    model = pipeline["model"]
-    explainer = shap.Explainer(model)
-    shap_values = explainer(X_subsampled)
-    return pickle.dumps(shap_values)
-
-
-@step
-def pipeline_loader(params: TrainSplitConf) -> Pipeline:
-    return load_pipe(
-        wandb_group=params.best_runs.wandb_group, wandb_run=params.best_runs.xgboost
+    shap.plots.beeswarm(
+        shap_values,
+        show=False,
+        plot_size=(20, 5),
+        max_display=20,
     )
 
-
-@step
-def get_train_split(params: TrainSplitConf) -> pd.DataFrame:
-    cfg = load_fullconfig(
-        wandb_group=params.best_runs.wandb_group, wandb_run=params.best_runs.xgboost
+    output_path = (
+        PROJECT_ROOT / "outputs_for_publishing" / "figures" / "shap_beeswarm.png"
     )
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    pass
-
-    df = load_and_filter_split_from_cfg(cfg=cfg, split="train")
-    return df
+    plt.savefig(output_path)
+    plt.close()

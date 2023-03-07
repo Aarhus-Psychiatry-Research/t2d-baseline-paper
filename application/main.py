@@ -1,14 +1,12 @@
-from typing import Optional
-
 from config import best_runs
-from figures.shap_values import (
+
+from t2d_baseline_paper.steps.pipeline_loader import pipeline_loader
+from t2d_baseline_paper.steps.get_train_split import get_train_split
+from t2d_baseline_paper.figures.shap.generate_shap_values import generate_shap_values
+from t2d_baseline_paper.steps.get_train_split import (
     TrainSplitConf,
-    generate_shap_values,
-    get_train_split,
-    pipeline_loader,
-    plot_beeswarm,
-    plot_shap_scatter,
 )
+from t2d_baseline_paper.figures.shap.shap_plot import plot_shap_scatter
 from zenml.pipelines import pipeline
 
 
@@ -27,7 +25,7 @@ def output_pipeline(
 
 
 if __name__ == "__main__":
-    output_pipeline_instance = output_pipeline(
+    OUTPUT_PIPELINE_INSTANCE = output_pipeline(
         training_data_loader=get_train_split(TrainSplitConf(best_runs=best_runs)),
         pipeline_loader=pipeline_loader(TrainSplitConf(best_runs=best_runs)),
         shap_generator=generate_shap_values(),
@@ -35,4 +33,4 @@ if __name__ == "__main__":
         # beeswarm_fn=plot_beeswarm(),
     )
 
-    output_pipeline_instance.run(unlisted=True)
+    OUTPUT_PIPELINE_INSTANCE.run(unlisted=True)
