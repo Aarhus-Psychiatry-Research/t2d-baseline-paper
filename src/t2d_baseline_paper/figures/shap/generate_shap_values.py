@@ -2,6 +2,7 @@ import pandas as pd
 import shap
 from psycop_model_training.utils.col_name_inference import infer_predictor_col_name
 from sklearn.pipeline import Pipeline
+from zenml.steps import step
 
 
 import pickle
