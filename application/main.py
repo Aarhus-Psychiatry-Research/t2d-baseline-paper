@@ -1,8 +1,9 @@
+from config import best_runs
+
 from t2d_baseline_paper.steps.pipeline_loader import pipeline_loader
 from t2d_baseline_paper.steps.get_train_split import get_train_split
 from t2d_baseline_paper.figures.shap.generate_shap_values import generate_shap_values
-from config import best_runs
-from figures.shap_values import (
+from t2d_baseline_paper.steps.get_train_split import (
     TrainSplitConf,
 )
 from t2d_baseline_paper.figures.shap.shap_plot import plot_shap_scatter

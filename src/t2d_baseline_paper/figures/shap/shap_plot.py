@@ -6,7 +6,6 @@ import pandas as pd
 import seaborn as sns
 import shap
 from zenml.steps import step
-import shap
 
 import pickle
 
