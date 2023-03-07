@@ -24,7 +24,6 @@ def base_evaluation_pipeline(
     train_split = training_data_loader()
     pipe = pipeline_loader()
     roc_auc = model_evaluator(pipe=pipe, train_split=train_split)
-    # beeswarm_fn(shap_values=shap_values)
 
 
 if __name__ == "__main__":
