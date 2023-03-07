@@ -1,4 +1,9 @@
 from t2d_baseline_paper.best_runs import best_runs
+from t2d_baseline_paper.data.load_true_data import load_fullconfig
+from t2d_baseline_paper.steps.model_evaluator import (
+    ModelEvaluatorParams,
+    evaluate_model,
+)
 
 from t2d_baseline_paper.steps.pipeline_loader import pipeline_loader
 from t2d_baseline_paper.steps.get_train_split import get_train_split
@@ -11,26 +16,22 @@ from zenml.pipelines import pipeline
 
 
 @pipeline(enable_cache=True)
-def output_pipeline(
+def base_evaluation_pipeline(
     training_data_loader,
     pipeline_loader,
-    shap_generator,
-    plot_shap_scatter,
+    model_evaluator,
 ):
     train_split = training_data_loader()
     pipe = pipeline_loader()
-    shap_values = shap_generator(train_df=train_split, pipeline=pipe)
-    plot_shap_scatter(shap_values=shap_values)
+    roc_auc = model_evaluator(pipe=pipe, train_split=train_split)
     # beeswarm_fn(shap_values=shap_values)
 
 
 if __name__ == "__main__":
-    OUTPUT_PIPELINE_INSTANCE = output_pipeline(
+    BASE_EVAL_PIPELINE_INSTANCE = base_evaluation_pipeline(
         training_data_loader=get_train_split(TrainSplitConf(best_runs=best_runs)),
         pipeline_loader=pipeline_loader(TrainSplitConf(best_runs=best_runs)),
-        shap_generator=generate_shap_values(),
-        plot_shap_scatter=plot_shap_scatter(),
-        # beeswarm_fn=plot_beeswarm(),
+        model_evaluator=evaluate_model(),
     )
 
-    OUTPUT_PIPELINE_INSTANCE.run(unlisted=True)
+    BASE_EVAL_PIPELINE_INSTANCE.run(unlisted=True)

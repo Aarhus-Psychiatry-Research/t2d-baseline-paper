@@ -11,12 +11,10 @@ class BestPerformingRuns:
     wandb_group: str
     logistic_regression: str
     xgboost: str
-    lookahead_years: int
 
 
 best_runs = BestPerformingRuns(
-    wandb_group="sharky-unsheathing",
+    wandb_group="sci-adenopharyngeal",
     logistic_regression="revived-pond-2619",
-    xgboost="kind-spaceship-6027",
-    lookahead_years=3,
+    xgboost="breathless-caress-4374",
 )
