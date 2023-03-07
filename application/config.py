@@ -1,10 +1,13 @@
 from dataclasses import dataclass
 
-WANDB_GROUP = "chapelet-megaloblastic"
+WANDB_GROUP = ""
 
 
-@dataclass
-class BestPerformingModels:
-    logistic_regression: str = "revived-pond-2619"
-    xgboost: str = "rural-silence-2005"
-    lookahead_years: int = 2
+from t2d_baseline_paper.globals import BestPerformingRuns
+
+best_runs = BestPerformingRuns(
+    wandb_group="sharky-unsheathing",
+    logistic_regression="revived-pond-2619",
+    xgboost="kind-spaceship-6027",
+    lookahead_years=3,
+)
