@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 import shap
-
+from zenml.steps import step
+import shap
 
 import pickle
 
@@ -23,7 +24,9 @@ def plot_shap_scatter(shap_values: bytes) -> None:
 
     sns.set(style="whitegrid")
 
-    shap_std = shap_values._numpy_func(fname="std", axis=0)
+    shap_std = shap_values._numpy_func(  # pylint: disable=protected-access
+        fname="std", axis=0
+    )
 
     for i in range(-1, -20, -1):
         shap_for_i: shap._explanation.Explanation = shap_values[:, shap_std.argsort[i]]
@@ -68,7 +71,7 @@ def plot_shap_scatter(shap_values: bytes) -> None:
                 else y_percentiles.iloc[1]
             )
 
-            g = sns.jointplot(
+            graph = sns.jointplot(
                 x=feature_name,
                 y="shap_values",
                 data=df,
@@ -82,7 +85,7 @@ def plot_shap_scatter(shap_values: bytes) -> None:
                 x=feature_name,
                 y="shap_values",
                 data=df,
-                ax=g.ax_joint,
+                ax=graph.ax_joint,
                 lowess=True,
                 color="k",
                 scatter=False,
@@ -101,15 +104,15 @@ def plot_shap_scatter(shap_values: bytes) -> None:
                 color="orange",
             )
 
-            OUTPUT_PATH = (
+            output_path = (
                 PROJECT_ROOT
                 / "outputs_for_publishing"
                 / "figures"
                 / "shap_scatter"
                 / f"shap_scatter_{i}.png"
             )
-            OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
-            plt.savefig(OUTPUT_PATH)
+            output_path.parent.mkdir(parents=True, exist_ok=True)
+            plt.savefig(output_path)
             plt.close()
 
 
@@ -124,10 +127,10 @@ def plot_beeswarm(shap_values: bytes) -> None:
         max_display=20,
     )
 
-    OUTPUT_PATH = (
+    output_path = (
         PROJECT_ROOT / "outputs_for_publishing" / "figures" / "shap_beeswarm.png"
     )
-    OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    plt.savefig(OUTPUT_PATH)
+    plt.savefig(output_path)
     plt.close()

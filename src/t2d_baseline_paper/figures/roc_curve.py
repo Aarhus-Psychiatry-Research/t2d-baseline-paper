@@ -34,24 +34,15 @@ def plot_auc_roc(
     dpi: int = 160,
     save_path: Optional[Path] = None,
 ) -> Union[None, Path]:
-    """Plot AUC ROC curve.
-
-    Args:
-        eval_dataset (EvalDataset): Evaluation dataset.
-        fig_size (Optional[tuple], optional): figure size. Defaults to None.
-        save_path (Optional[Path], optional): path to save figure. Defaults to None.
-
-    Returns:
-        Union[None, Path]: None if save_path is None, else path to saved figure.
-    """
+    """Plot AUC ROC curve."""
     plt.figure(figsize=fig_size, dpi=dpi)
 
-    for specs in specs:
-        fpr, tpr, _ = roc_curve(specs.y, specs.y_hat_probs)
-        auc = roc_auc_score(specs.y, specs.y_hat_probs)
-        AUC_STR = f"(AUC = {str(round(auc, 3))})"
+    for spec in specs:
+        fpr, tpr, _ = roc_curve(spec.y, spec.y_hat_probs)
+        auc = roc_auc_score(spec.y, spec.y_hat_probs)
+        auc_str = f"(AUC = {str(round(auc, 3))})"
 
-        plt.plot(fpr, tpr, label=f"{specs.legend_title} {AUC_STR}")
+        plt.plot(fpr, tpr, label=f"{spec.legend_title} {auc_str}")
 
     plt.legend(loc=4)
 

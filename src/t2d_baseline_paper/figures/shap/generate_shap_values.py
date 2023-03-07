@@ -11,11 +11,11 @@ import pickle
 @step
 def generate_shap_values(train_df: pd.DataFrame, pipeline: Pipeline) -> bytes:
     pred_col_names = infer_predictor_col_name(train_df)
-    X = train_df[pred_col_names]
+    features = train_df[pred_col_names]
 
-    X_subsampled = X.sample(frac=0.11, random_state=42)
+    features_subsampled = features.sample(frac=0.11, random_state=42)
 
     model = pipeline["model"]
     explainer = shap.Explainer(model)
-    shap_values = explainer(X_subsampled)
+    shap_values = explainer(features_subsampled)
     return pickle.dumps(shap_values)

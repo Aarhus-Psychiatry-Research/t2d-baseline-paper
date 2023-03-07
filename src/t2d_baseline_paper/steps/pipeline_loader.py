@@ -3,6 +3,7 @@ from t2d_baseline_paper.data.load_true_data import load_pipe
 
 
 from sklearn.pipeline import Pipeline
+from zenml.steps import step
 
 
 @step
