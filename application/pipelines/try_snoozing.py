@@ -1,11 +1,11 @@
 import datetime as dt
 
 import pandas as pd
-from config import best_runs
 from sklearn.metrics import roc_auc_score
 
 from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 from t2d_baseline_paper.snoozing import snooze_filter_dataframe_fast
+from t2d_baseline_paper.best_runs import best_runs
 
 if __name__ == "__main__":
     evaluation_dataset = load_eval_dataset(

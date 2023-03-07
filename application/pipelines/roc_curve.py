@@ -1,7 +1,7 @@
 from t2d_baseline_paper.data.load_dev_data import synth_eval_dataset
 from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 from t2d_baseline_paper.figures.roc_curve import eval_ds_to_roc_plot_spec, plot_auc_roc
-from t2d_baseline_paper.globals import PROJECT_ROOT, BestPerformingRuns
+from t2d_baseline_paper.best_runs import PROJECT_ROOT, BestPerformingRuns
 
 
 def generate_roc_curve(use_synth_data: bool, best_runs: BestPerformingRuns):
