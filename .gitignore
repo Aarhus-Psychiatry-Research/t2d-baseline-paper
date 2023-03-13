@@ -24,3 +24,4 @@ src/t2d_baseline_paper.egg-info
 *.pyc
 src/psycop-model-training
 .Rhistory
+outputs_for_publishing/

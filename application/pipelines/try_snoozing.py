@@ -2,10 +2,9 @@ import datetime as dt
 
 import pandas as pd
 from sklearn.metrics import roc_auc_score
-
-from t2d_baseline_paper.data.load_true_data import load_eval_dataset
-from t2d_baseline_paper.snoozing import snooze_filter_dataframe_fast
 from t2d_baseline_paper.best_runs import best_runs
+from t2d_baseline_paper.data.load_true_data import load_eval_dataset
+from t2d_baseline_paper.snoozing import snooze_dataframe
 
 if __name__ == "__main__":
     evaluation_dataset = load_eval_dataset(
@@ -19,17 +18,17 @@ if __name__ == "__main__":
             "pred_timestamps": evaluation_dataset.pred_timestamps,
             "y": evaluation_dataset.y,
             "y_hat_probs": evaluation_dataset.y_hat_probs,
-        }
+        },
     )
 
     pred_threshold = evaluation_dataset.y_hat_probs.quantile(0.99)
 
     eval_df["y_hat_int"] = eval_df["y_hat_probs"].apply(
-        lambda x: 1 if x > pred_threshold else 0
+        lambda x: 1 if x > pred_threshold else 0,
     )
 
     for snooze_days in range(360, 0, -90):
-        filtered_pred_times = snooze_filter_dataframe_fast(
+        filtered_pred_times = snooze_dataframe(
             df=eval_df,
             snoozing_timedelta=dt.timedelta(days=snooze_days),
             prediction_column_name="y_hat_int",
@@ -44,7 +43,8 @@ if __name__ == "__main__":
         )
 
         roc_auc = roc_auc_score(
-            y_true=filtered_eval_df["y"], y_score=filtered_eval_df["y_hat_probs"]
+            y_true=filtered_eval_df["y"],
+            y_score=filtered_eval_df["y_hat_probs"],
         )
 
         print(f"Snooze days: {snooze_days}, ROC AUC: {roc_auc:.4f}")

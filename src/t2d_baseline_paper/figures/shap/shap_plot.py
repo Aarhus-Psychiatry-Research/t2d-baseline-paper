@@ -1,20 +1,18 @@
-from t2d_baseline_paper.best_runs import PROJECT_ROOT
-
+import pickle
 
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 import shap
+from t2d_baseline_paper.best_runs import PROJECT_ROOT
 from zenml.steps import step
 
-import pickle
 
+def widen_df_with_limits(ser: pd.Series, widening_factor: float) -> pd.Series:
+    ser.iloc[0] = ser.iloc[0] * 1 / widening_factor
+    ser.iloc[1] = ser.iloc[1] * widening_factor
 
-def widen_df_with_limits(df, widening_factor: float):
-    df.iloc[0] = df.iloc[0] * 1 / widening_factor
-    df.iloc[1] = df.iloc[1] * widening_factor
-
-    return df
+    return ser
 
 
 @step
@@ -23,12 +21,13 @@ def plot_shap_scatter(shap_values: bytes) -> None:
 
     sns.set(style="whitegrid")
 
-    shap_std = shap_values._numpy_func(  # pylint: disable=protected-access
-        fname="std", axis=0
+    shap_std = shap_values._numpy_func(  # type: ignore
+        fname="std",
+        axis=0,
     )
 
     for i in range(-1, -20, -1):
-        shap_for_i: shap._explanation.Explanation = shap_values[:, shap_std.argsort[i]]
+        shap_for_i: shap._explanation.Explanation = shap_values[:, shap_std.argsort[i]]  # type: ignore
 
         feature_name = shap_for_i.feature_names
 
@@ -36,7 +35,7 @@ def plot_shap_scatter(shap_values: bytes) -> None:
             {
                 feature_name: pd.Series(shap_for_i.data),
                 "shap_values": pd.Series(shap_for_i.values),
-            }
+            },
         )
 
         n_to_sample = 10_000
@@ -119,7 +118,7 @@ def plot_shap_scatter(shap_values: bytes) -> None:
 def plot_beeswarm(shap_values: bytes) -> None:
     shap_values = pickle.loads(shap_values)
 
-    shap.plots.beeswarm(
+    shap.plots.beeswarm(  # type: ignore
         shap_values,
         show=False,
         plot_size=(20, 5),
