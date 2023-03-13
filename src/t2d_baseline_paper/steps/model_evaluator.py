@@ -1,15 +1,13 @@
 from pathlib import Path
-from psycop_model_training.model_eval.model_evaluator import ModelEvaluator, EvalDataset
-from psycop_model_training.config_schemas.full_config import FullConfigSchema
 
-from sklearn.pipeline import Pipeline
-from zenml.steps import BaseParameters, step
 import pandas as pd
-from t2d_baseline_paper.best_runs import BestPerformingRuns
-
-from t2d_baseline_paper.data.load_true_data import load_eval_dataset, load_fullconfig
-from t2d_baseline_paper.best_runs import best_runs
 from psycop_model_training.config_schemas.full_config import FullConfigSchema
+from psycop_model_training.model_eval.model_evaluator import ModelEvaluator
+from sklearn.pipeline import Pipeline
+from t2d_baseline_paper.best_runs import best_runs
+from t2d_baseline_paper.data.load_true_data import load_eval_dataset, load_fullconfig
+from zenml.steps import step
+
 
 @step
 def evaluate_model(
@@ -23,10 +21,13 @@ def evaluate_model(
         wandb_run=best_run,
     )
 
-    cfg: FullConfigSchema = load_fullconfig(wandb_group=best_runs.wandb_group, wandb_run=best_run)
+    cfg: FullConfigSchema = load_fullconfig(
+        wandb_group=best_runs.wandb_group,
+        wandb_run=best_run,
+    )
     cfg.eval.Config.allow_mutation = True
     cfg.eval.lookahead_bins = [0, 90, 180, 270, 360, 450, 540, 630, 720]
-    
+
     eval_dir_path = (
         Path(__file__).parent.parent.parent.parent
         / "outputs_for_publishing"
