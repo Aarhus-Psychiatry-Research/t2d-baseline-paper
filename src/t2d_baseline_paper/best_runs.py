@@ -9,7 +9,6 @@ WANDB_GROUP = ""
 @dataclass
 class BestRun:
     wandb_group: str
-    logistic_regression: str
     model: str
 
 
