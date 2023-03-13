@@ -7,14 +7,13 @@ WANDB_GROUP = ""
 
 
 @dataclass
-class BestPerformingRuns:
+class BestRun:
     wandb_group: str
     logistic_regression: str
-    xgboost: str
+    model: str
 
 
-best_runs = BestPerformingRuns(
+run = BestRun(
     wandb_group="sci-adenopharyngeal",
-    logistic_regression="revived-pond-2619",
-    xgboost="breathless-caress-4374",
+    model="generous-glade-8247",
 )

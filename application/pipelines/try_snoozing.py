@@ -2,14 +2,14 @@ import datetime as dt
 
 import pandas as pd
 from sklearn.metrics import roc_auc_score
-from t2d_baseline_paper.best_runs import best_runs
+from t2d_baseline_paper.best_runs import run
 from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 from t2d_baseline_paper.snoozing import snooze_dataframe
 
 if __name__ == "__main__":
     evaluation_dataset = load_eval_dataset(
-        wandb_group=best_runs.wandb_group,
-        wandb_run=best_runs.xgboost,
+        wandb_group=run.wandb_group,
+        wandb_run=run.model,
     )
 
     eval_df = pd.DataFrame(

@@ -8,5 +8,5 @@ from zenml.steps import step
 def pipeline_loader(params: TrainSplitConf) -> Pipeline:
     return load_pipe(
         wandb_group=params.best_runs.wandb_group,
-        wandb_run=params.best_runs.xgboost,
+        wandb_run=params.best_runs.model,
     )
