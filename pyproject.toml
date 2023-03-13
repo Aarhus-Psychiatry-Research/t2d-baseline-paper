@@ -18,7 +18,6 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "cruft",
-    "pre-commit>=2.19.0,<2.19.1",
     "black",
     "mypy",
     "pre-commit==2.20.0,<2.21.0",
