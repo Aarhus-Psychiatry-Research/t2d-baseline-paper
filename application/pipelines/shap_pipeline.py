@@ -11,7 +11,7 @@ from zenml.pipelines import pipeline
 
 
 @pipeline(enable_cache=True)
-def output_pipeline(
+def shap_pipeline(
     training_data_loader,
     pipeline_loader,
     shap_generator,
@@ -25,7 +25,7 @@ def output_pipeline(
 
 
 if __name__ == "__main__":
-    OUTPUT_PIPELINE_INSTANCE = output_pipeline(
+    SHAP_PIPELINE_INSTANCE = shap_pipeline(
         training_data_loader=get_train_split(TrainSplitConf(best_runs=best_runs)),
         pipeline_loader=pipeline_loader(TrainSplitConf(best_runs=best_runs)),
         shap_generator=generate_shap_values(),
@@ -33,4 +33,4 @@ if __name__ == "__main__":
         # beeswarm_fn=plot_beeswarm(),
     )
 
-    OUTPUT_PIPELINE_INSTANCE.run(unlisted=True)
+    SHAP_PIPELINE_INSTANCE.run(unlisted=True)
