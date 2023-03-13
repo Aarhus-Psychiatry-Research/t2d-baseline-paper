@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.metrics import roc_auc_score
 from t2d_baseline_paper.best_runs import best_runs
 from t2d_baseline_paper.data.load_true_data import load_eval_dataset
-from t2d_baseline_paper.snoozing import snooze_filter_dataframe_fast
+from t2d_baseline_paper.snoozing import snooze_dataframe
 
 if __name__ == "__main__":
     evaluation_dataset = load_eval_dataset(
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     )
 
     for snooze_days in range(360, 0, -90):
-        filtered_pred_times = snooze_filter_dataframe_fast(
+        filtered_pred_times = snooze_dataframe(
             df=eval_df,
             snoozing_timedelta=dt.timedelta(days=snooze_days),
             prediction_column_name="y_hat_int",

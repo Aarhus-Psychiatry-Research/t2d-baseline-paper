@@ -17,7 +17,8 @@ class ROCPlotSpec:
 
 
 def eval_ds_to_roc_plot_spec(
-    eval_dataset: EvalDataset, legend_title: str
+    eval_dataset: EvalDataset,
+    legend_title: str,
 ) -> ROCPlotSpec:
     """Convert EvalDataset to ROCPlotSpec."""
     return ROCPlotSpec(
@@ -28,7 +29,7 @@ def eval_ds_to_roc_plot_spec(
 
 
 def plot_auc_roc(
-    specs: Union[ROCPlotSpec, list[ROCPlotSpec]],
+    specs: list[ROCPlotSpec],
     title: str = "ROC-curve",
     fig_size: Optional[tuple] = (5, 5),
     dpi: int = 160,
