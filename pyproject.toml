@@ -13,6 +13,7 @@ dependencies = [
     "ipython>=8.10.0",
     "psycop-model-training @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-model-training#egg=psycop_model_training",
     "zenml[server]>=0.34.0,<0.35.0",
+    "pydantic"
 ]
 
 [project.optional-dependencies]
