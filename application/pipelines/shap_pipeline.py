@@ -1,9 +1,9 @@
-from t2d_baseline_paper.best_runs import run
+from t2d_baseline_paper.best_runs import best_run
 from t2d_baseline_paper.figures.shap.generate_shap_values import generate_shap_values
 from t2d_baseline_paper.figures.shap.shap_plot import plot_shap_scatter
 from t2d_baseline_paper.steps.get_train_split import (
     TrainSplitConf,
-    get_train_split,
+    get_train_split_step,
 )
 from t2d_baseline_paper.steps.pipeline_loader import pipeline_loader
 from zenml.pipelines import pipeline
@@ -25,8 +25,8 @@ def shap_pipeline(
 
 if __name__ == "__main__":
     SHAP_PIPELINE_INSTANCE = shap_pipeline(
-        training_data_loader=get_train_split(TrainSplitConf(best_runs=run)),
-        pipeline_loader=pipeline_loader(TrainSplitConf(best_runs=run)),
+        training_data_loader=get_train_split_step(TrainSplitConf(best_runs=best_run)),
+        pipeline_loader=pipeline_loader(TrainSplitConf(best_runs=best_run)),
         shap_generator=generate_shap_values(),
         plot_shap_scatter=plot_shap_scatter(),
     )
