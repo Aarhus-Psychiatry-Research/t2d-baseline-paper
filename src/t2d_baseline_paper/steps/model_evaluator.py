@@ -5,7 +5,8 @@ from sklearn.pipeline import Pipeline
 from t2d_baseline_paper.best_runs import GENERAL_ARTIFACT_PATH
 from t2d_baseline_paper.data.load_true_data import load_eval_dataset, load_fullconfig
 from zenml.steps import step
-from application.best_runs import best_run
+
+from t2d_baseline_paper.best_runs import best_run
 
 
 @step
