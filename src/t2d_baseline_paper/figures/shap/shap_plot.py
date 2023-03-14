@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 import shap
-from t2d_baseline_paper.best_runs import FIGURES_PATH, PROJECT_ROOT
+from t2d_baseline_paper.best_runs import FIGURES_PATH
 from zenml.steps import step
 
 
@@ -102,11 +102,7 @@ def plot_shap_scatter(shap_values: bytes) -> None:
                 color="orange",
             )
 
-            output_path = (
-                FIGURES_PATH
-                / "shap_scatter"
-                / f"shap_scatter_{i}.png"
-            )
+            output_path = FIGURES_PATH / "shap_scatter" / f"shap_scatter_{i}.png"
             output_path.parent.mkdir(parents=True, exist_ok=True)
             plt.savefig(output_path)
             plt.close()
@@ -123,9 +119,7 @@ def plot_beeswarm(shap_values: bytes) -> None:
         max_display=20,
     )
 
-    output_path = (
-        FIGURES_PATH / "shap_beeswarm.png"
-    )
+    output_path = FIGURES_PATH / "shap_beeswarm.png"
     output_path.parent.mkdir(parents=True, exist_ok=True)
 
     plt.savefig(output_path)

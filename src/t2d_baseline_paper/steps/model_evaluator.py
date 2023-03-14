@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import pandas as pd
 from psycop_model_training.config_schemas.full_config import FullConfigSchema
 from psycop_model_training.model_eval.model_evaluator import ModelEvaluator
@@ -28,10 +26,7 @@ def evaluate_model(
     cfg.eval.Config.allow_mutation = True
     cfg.eval.lookahead_bins = [0, 90, 180, 270, 360, 450, 540, 630, 720]
 
-    eval_dir_path = (
-        GENERAL_ARTIFACT_PATH
-        / "base_model_eval"
-    )
+    eval_dir_path = GENERAL_ARTIFACT_PATH / "base_model_eval"
 
     roc_auc = ModelEvaluator(
         cfg=cfg,
