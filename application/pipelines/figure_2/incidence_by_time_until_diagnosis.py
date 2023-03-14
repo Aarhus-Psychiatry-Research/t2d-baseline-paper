@@ -14,7 +14,7 @@ def incidence_by_time_until_outcome_pipeline():
     plot_time_from_first_positive_to_event(
         eval_dataset=eval_ds,
         bins=range(0, 37, 1),
-        pos_rate=0.05,
+        pos_rate=best_run.pos_rate,
         save_path=FIGURES_PATH / "time_from_first_positive_to_event.png",
     )
 
