@@ -34,8 +34,8 @@ def get_train_split_step(params: TrainSplitConf) -> pd.DataFrame:
 @memory.cache
 def get_train_split(best_run: BestRun) -> pd.DataFrame:
     cfg: FullConfigSchema = load_fullconfig(
-        wandb_group=params.best_runs.wandb_group,
-        wandb_run=params.best_runs.model,
+        wandb_group=best_run.wandb_group,
+        wandb_run=best_run.model,
     )
 
     df = load_and_filter_split_from_cfg(cfg=cfg, split="train")

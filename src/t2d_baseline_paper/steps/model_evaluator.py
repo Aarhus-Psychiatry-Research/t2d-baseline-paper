@@ -5,6 +5,7 @@ from sklearn.pipeline import Pipeline
 from t2d_baseline_paper.best_runs import GENERAL_ARTIFACT_PATH
 from t2d_baseline_paper.data.load_true_data import load_eval_dataset, load_fullconfig
 from zenml.steps import step
+from application.best_runs import best_run
 
 
 @step
@@ -12,16 +13,14 @@ def evaluate_model(
     pipe: Pipeline,
     train_split: pd.DataFrame,
 ) -> float:
-    best_run = best_run.model
-
     eval_dataset = load_eval_dataset(
         wandb_group=best_run.wandb_group,
-        wandb_run=best_run,
+        wandb_run=best_run.model,
     )
 
     cfg: FullConfigSchema = load_fullconfig(
         wandb_group=best_run.wandb_group,
-        wandb_run=best_run,
+        wandb_run=best_run.model,
     )
     cfg.eval.Config.allow_mutation = True
     cfg.eval.lookahead_bins = [0, 90, 180, 270, 360, 450, 540, 630, 720]
