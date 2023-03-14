@@ -7,11 +7,13 @@ from pathlib import Path
 class BestRun:
     wandb_group: str
     model: str
+    pos_rate: float
 
 
 best_run = BestRun(
     wandb_group="prehominid-concordancy",
     model="eternal-pyramid-7790",
+    pos_rate=0.05,
 )
 
 # Get current date as string
