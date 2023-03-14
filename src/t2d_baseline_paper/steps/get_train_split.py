@@ -19,5 +19,7 @@ def get_train_split(params: TrainSplitConf) -> pd.DataFrame:
     cfg.Config.allow_mutation = True
     cfg.debug = None
 
+    pass
+
     df = load_and_filter_split_from_cfg(cfg=cfg, split="train")
     return df

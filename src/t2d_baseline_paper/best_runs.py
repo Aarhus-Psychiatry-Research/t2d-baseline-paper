@@ -13,6 +13,6 @@ class BestRun:
 
 
 run = BestRun(
-    wandb_group="sci-adenopharyngeal",
-    model="generous-glade-8247",
+    wandb_group="prehominid-concordancy",
+    model="eternal-pyramid-7790",
 )
