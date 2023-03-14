@@ -2,11 +2,9 @@ import pandas as pd
 from psycop_model_training.config_schemas.full_config import FullConfigSchema
 from psycop_model_training.model_eval.model_evaluator import ModelEvaluator
 from sklearn.pipeline import Pipeline
-from t2d_baseline_paper.best_runs import GENERAL_ARTIFACT_PATH
+from t2d_baseline_paper.best_runs import GENERAL_ARTIFACT_PATH, best_run
 from t2d_baseline_paper.data.load_true_data import load_eval_dataset, load_fullconfig
 from zenml.steps import step
-
-from t2d_baseline_paper.best_runs import best_run
 
 
 @step
