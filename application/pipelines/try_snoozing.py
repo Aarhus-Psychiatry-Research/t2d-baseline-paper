@@ -21,13 +21,13 @@ if __name__ == "__main__":
         },
     )
 
-    pred_threshold = evaluation_dataset.y_hat_probs.quantile(0.99)
+    pred_threshold = evaluation_dataset.y_hat_probs.quantile(0.95)
 
     eval_df["y_hat_int"] = eval_df["y_hat_probs"].apply(
         lambda x: 1 if x > pred_threshold else 0,
     )
 
-    for snooze_days in range(360, 0, -90):
+    for snooze_days in range(360, -90, -90):
         filtered_pred_times = snooze_dataframe(
             df=eval_df,
             snoozing_timedelta=dt.timedelta(days=snooze_days),
