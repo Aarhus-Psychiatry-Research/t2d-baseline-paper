@@ -28,7 +28,9 @@ def get_run_item_file_path(wandb_group: str, wandb_run: str, file_name: str) -> 
     )
 
 
-def load_eval_dataset(wandb_group: str, wandb_run: str) -> EvalDataset:
+def load_eval_dataset(
+    wandb_group: str, wandb_run: str, fraction: float = 1.0
+) -> EvalDataset:
     path = get_run_item_file_path(
         wandb_group=wandb_group,
         wandb_run=wandb_run,
@@ -36,6 +38,10 @@ def load_eval_dataset(wandb_group: str, wandb_run: str) -> EvalDataset:
     )
     df = pd.read_parquet(path)
     eval_ds = df_to_eval_dataset(df)
+
+    if fraction != 1.0:
+        eval_ds = eval_ds.subsample(fraction=fraction)
+
     return eval_ds
 
 
