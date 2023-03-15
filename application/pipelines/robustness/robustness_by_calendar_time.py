@@ -1,8 +1,4 @@
-from psycop_model_training.model_eval.base_artifacts.plots.performance_by_age import (
-    plot_performance_by_age,
-)
 from psycop_model_training.model_eval.base_artifacts.plots.performance_over_time import (
-    create_performance_by_calendar_time_df,
     plot_metric_by_calendar_time,
 )
 from t2d_baseline_paper.best_runs import ROBUSTNESS_PATH, best_run
