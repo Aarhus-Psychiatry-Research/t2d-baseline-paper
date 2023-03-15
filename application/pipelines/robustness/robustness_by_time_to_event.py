@@ -1,10 +1,6 @@
-from psycop_model_training.model_eval.base_artifacts.plots.performance_by_sex import (
-    plot_performance_by_sex,
-)
 from psycop_model_training.model_eval.base_artifacts.plots.performance_over_time import (
     plot_metric_by_cyclic_time,
 )
-from sklearn.metrics import roc_auc_score
 from t2d_baseline_paper.best_runs import ROBUSTNESS_PATH, best_run
 from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 
