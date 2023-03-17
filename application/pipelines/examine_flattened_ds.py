@@ -9,5 +9,5 @@ if __name__ == "__main__":
         wandb_run=best_run.model,
     )
     flattened_ds = DataLoader(data_cfg=cfg.data).load_dataset_from_dir(
-        split_names="test"
+        split_names="test",
     )
