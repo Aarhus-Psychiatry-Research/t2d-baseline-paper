@@ -9,7 +9,7 @@ def roc_auc_by_calendar_time():
     eval_ds = load_eval_dataset(
         wandb_group=best_run.wandb_group,
         wandb_run=best_run.model,
-        fraction=1,
+
     )
 
     plot_metric_by_calendar_time(

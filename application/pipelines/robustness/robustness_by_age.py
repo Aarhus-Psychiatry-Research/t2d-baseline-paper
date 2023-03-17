@@ -5,7 +5,7 @@ from t2d_baseline_paper.best_runs import ROBUSTNESS_PATH, best_run
 from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 
 
-def roc_auc_by_sex():
+def roc_auc_by_age():
     eval_ds = load_eval_dataset(
         wandb_group=best_run.wandb_group,
         wandb_run=best_run.model,
@@ -19,4 +19,4 @@ def roc_auc_by_sex():
 
 
 if __name__ == "__main__":
-    roc_auc_by_sex()
+    roc_auc_by_age()

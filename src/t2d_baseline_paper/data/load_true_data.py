@@ -34,7 +34,7 @@ def get_run_item_file_path(wandb_group: str, wandb_run: str, file_name: str) -> 
 def load_eval_dataset(
     wandb_group: str,
     wandb_run: str,
-    custom_columns: Optional[list[str]],
+    custom_columns: Optional[list[str]] = None,
 ) -> EvalDataset:
     path = get_run_item_file_path(
         wandb_group=wandb_group,
