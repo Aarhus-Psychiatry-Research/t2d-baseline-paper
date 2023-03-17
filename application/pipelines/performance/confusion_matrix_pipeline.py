@@ -18,7 +18,10 @@ def get_top_fraction(df: pd.DataFrame, col_name: str, fraction: float) -> pd.Dat
     return top_fraction
 
 
-def confusion_matrix_metrics(y_true: pd.Series, y_pred: pd.Series) -> tuple[pd.DataFrame, pd.DataFrame]:
+def confusion_matrix_metrics(
+    y_true: pd.Series,
+    y_pred: pd.Series,
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Creates a confusion matrix dataframe with PPV, NPV, SENS, and SPEC.
     """
