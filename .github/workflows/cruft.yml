@@ -46,9 +46,13 @@ jobs:
             echo "cruft_updated=false" >> $GITHUB_OUTPUT
           fi
 
+      # Avoid infinite loop where main 
+      # Feature PR -> cruft check from main ->
+      # Cruft update PR -> cruft check from main ->
+      # Cruft update PR ...
       - name: Create Pull Request
-        if: steps.cruft_check.outputs.cruft_updated == 'true'
         uses: peter-evans/create-pull-request@v4
+        if: ${{ steps.cruft_check.outputs.cruft_updated == 'true' && github.event.pull_request.title != "ci: update cruft" }}
         continue-on-error: true
         with:
           commit-message: "ci: update cruft"
