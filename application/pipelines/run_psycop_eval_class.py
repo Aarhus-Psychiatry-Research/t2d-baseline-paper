@@ -1,7 +1,7 @@
-from t2d_baseline_paper.best_runs import best_runs
+from t2d_baseline_paper.best_runs import best_run
 from t2d_baseline_paper.steps.get_train_split import (
     TrainSplitConf,
-    get_train_split,
+    get_train_split_step,
 )
 from t2d_baseline_paper.steps.model_evaluator import (
     evaluate_model,
@@ -24,8 +24,8 @@ def base_evaluation_pipeline(
 
 if __name__ == "__main__":
     BASE_EVAL_PIPELINE_INSTANCE = base_evaluation_pipeline(
-        training_data_loader=get_train_split(TrainSplitConf(best_runs=best_runs)),
-        pipeline_loader=pipeline_loader(TrainSplitConf(best_runs=best_runs)),
+        training_data_loader=get_train_split_step(TrainSplitConf(best_runs=best_run)),
+        pipeline_loader=pipeline_loader(TrainSplitConf(best_runs=best_run)),
         model_evaluator=evaluate_model(),
     )
 

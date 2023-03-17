@@ -3,9 +3,13 @@ from pathlib import Path
 from typing import Any
 
 import pandas as pd
+from joblib import Memory
 from psycop_model_training.config_schemas.full_config import FullConfigSchema
 from psycop_model_training.model_eval.dataclasses import EvalDataset
 from sklearn.pipeline import Pipeline
+
+# create a memory cache with a directory to store the cache
+memory = Memory(location=Path("E:/shared_resources/t2d/model_eval/model_eval_cache"))
 
 
 def df_to_eval_dataset(df: pd.DataFrame) -> pd.DataFrame:
@@ -28,14 +32,24 @@ def get_run_item_file_path(wandb_group: str, wandb_run: str, file_name: str) -> 
     )
 
 
-def load_eval_dataset(wandb_group: str, wandb_run: str) -> EvalDataset:
+@memory.cache()
+def load_eval_dataset(
+    wandb_group: str,
+    wandb_run: str,
+    fraction: float = 1.0,
+) -> EvalDataset:
     path = get_run_item_file_path(
         wandb_group=wandb_group,
         wandb_run=wandb_run,
         file_name="evaluation_dataset.parquet",
     )
     df = pd.read_parquet(path)
+
+    if fraction != 1.0:
+        df = df.sample(frac=fraction)
+
     eval_ds = df_to_eval_dataset(df)
+
     return eval_ds
 
 

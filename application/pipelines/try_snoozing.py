@@ -2,14 +2,14 @@ import datetime as dt
 
 import pandas as pd
 from sklearn.metrics import roc_auc_score
-from t2d_baseline_paper.best_runs import best_runs
+from t2d_baseline_paper.best_runs import best_run
 from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 from t2d_baseline_paper.snoozing import snooze_dataframe
 
 if __name__ == "__main__":
     evaluation_dataset = load_eval_dataset(
-        wandb_group=best_runs.wandb_group,
-        wandb_run=best_runs.xgboost,
+        wandb_group=best_run.wandb_group,
+        wandb_run=best_run.model,
     )
 
     eval_df = pd.DataFrame(
@@ -21,13 +21,13 @@ if __name__ == "__main__":
         },
     )
 
-    pred_threshold = evaluation_dataset.y_hat_probs.quantile(0.99)
+    pred_threshold = evaluation_dataset.y_hat_probs.quantile(0.95)
 
     eval_df["y_hat_int"] = eval_df["y_hat_probs"].apply(
         lambda x: 1 if x > pred_threshold else 0,
     )
 
-    for snooze_days in range(360, 0, -90):
+    for snooze_days in range(360, -90, -90):
         filtered_pred_times = snooze_dataframe(
             df=eval_df,
             snoozing_timedelta=dt.timedelta(days=snooze_days),
