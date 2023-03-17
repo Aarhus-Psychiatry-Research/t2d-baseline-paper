@@ -52,11 +52,11 @@ jobs:
       # Cruft update PR ...
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v4
-        if: ${{ steps.cruft_check.outputs.cruft_updated == 'true' && github.event.pull_request.title != "ci: update cruft" }}
+        if: ${{ steps.cruft_check.outputs.cruft_updated == 'true' && github.event.pull_request.title != "update cruft" }}
         continue-on-error: true
         with:
           commit-message: "ci: update cruft"
-          title: "ci: update cruft"
+          title: "update cruft"
           branch: "update-cruft"
-          body: "This PR updates cruft."
+          body: "🌲 Cruft updates"
           token: ${{ secrets.PAT }}
