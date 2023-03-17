@@ -5,8 +5,10 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "t2d-baseline-paper"
 version = "0.0.1"
-description = "PSYCOP model training utilities"
-authors = [{name = "Martin Bernstorff", email = "martinbernstorff@gmail.com"}]
+description = "T2D baseline paper"
+authors = [
+  {name = "Martin Bernstorff", email = "martinbernstorff@gmail.com"}
+]
 requires-python = ">=3.8.0"
 dependencies = [
   "pandas>=1.4.3,<1.5.0",
