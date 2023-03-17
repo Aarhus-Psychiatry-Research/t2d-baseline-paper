@@ -84,7 +84,6 @@ plugins = "pydantic.mypy"
 [tool.pydantic-mypy]
 init_typed = true
 warn_untyped_fields = true
- 
 
 [tool.pytest.ini_options]
 markers = [
