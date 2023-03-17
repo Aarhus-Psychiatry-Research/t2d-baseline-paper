@@ -15,7 +15,6 @@ def widen_df_with_limits(ser: pd.Series, widening_factor: float) -> pd.Series:
     return ser
 
 
-@step
 def plot_shap_scatter(shap_values: bytes) -> None:
     shap_values = pickle.loads(shap_values)
 
@@ -102,7 +101,7 @@ def plot_shap_scatter(shap_values: bytes) -> None:
                 color="orange",
             )
 
-            output_path = FIGURES_PATH / "shap_scatter" / f"shap_scatter_{i}.png"
+            output_path = FIGURES_PATH / "feature_importance" / f"{i}.png"
             output_path.parent.mkdir(parents=True, exist_ok=True)
             plt.savefig(output_path)
             plt.close()
