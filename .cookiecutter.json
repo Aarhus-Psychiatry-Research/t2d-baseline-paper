@@ -11,5 +11,6 @@
     "license": "MIT",
     "package_name": "t2d_baseline_paper",
     "project_name": "t2d-baseline-paper",
+    "setup_for_dev_bash_script": "y",
     "version": "0.0.0"
 }
