@@ -25,3 +25,4 @@ src/t2d_baseline_paper.egg-info
 src/psycop-model-training
 .Rhistory
 outputs_for_publishing/
+joblib
