@@ -15,7 +15,7 @@ def widen_df_with_limits(ser: pd.Series, widening_factor: float) -> pd.Series:
     return ser
 
 
-def plot_shap_scatter(shap_values: bytes) -> None:
+def plot_shap_scatter(shap_values: bytes, n_to_sample: int) -> None:
     shap_values = pickle.loads(shap_values)
 
     sns.set(style="whitegrid")
@@ -26,6 +26,7 @@ def plot_shap_scatter(shap_values: bytes) -> None:
     )
 
     for i in range(-1, -20, -1):
+        print(f"Plotting {i}")
         shap_for_i: shap._explanation.Explanation = shap_values[:, shap_std.argsort[i]]  # type: ignore
 
         feature_name = shap_for_i.feature_names
@@ -37,10 +38,10 @@ def plot_shap_scatter(shap_values: bytes) -> None:
             },
         )
 
-        n_to_sample = 10_000
         df = df.sample(n=n_to_sample, random_state=42)
 
         with sns.axes_style("white"):
+            # Cut to percentiles
             x_percentiles, y_percentiles = (
                 df[feature_name].quantile([0.05, 0.95]),
                 df["shap_values"].quantile([0.05, 0.95]),
@@ -57,6 +58,7 @@ def plot_shap_scatter(shap_values: bytes) -> None:
             lower_if_nan = mean_if_nan - sd_if_nan
             upper_if_nan = mean_if_nan + sd_if_nan
 
+            # Ensure NaN uncertainty band is within the plot boundaries
             y_percentiles.iloc[0] = (
                 lower_if_nan * 0.9
                 if lower_if_nan < y_percentiles.iloc[0]
@@ -68,25 +70,40 @@ def plot_shap_scatter(shap_values: bytes) -> None:
                 else y_percentiles.iloc[1]
             )
 
-            graph = sns.jointplot(
+            # Create a seaborn scatter plot from the values
+            graph = sns.scatterplot(
+                data=df,
                 x=feature_name,
                 y="shap_values",
-                data=df,
-                xlim=x_percentiles,
-                ylim=y_percentiles,
-                kind="scatter",
                 alpha=dot_alpha,
             )
 
-            sns.regplot(
-                x=feature_name,
-                y="shap_values",
-                data=df,
-                ax=graph.ax_joint,
-                lowess=True,
-                color="k",
-                scatter=False,
-            )
+            # Set the x and y limits
+            graph.set_xlim(x_percentiles)
+            graph.set_ylim(y_percentiles)
+
+            graph.set_ylabel("SHAP")
+            graph.set_xlabel(feature_name)
+
+            # graph = sns.jointplot(
+            #     x=feature_name,
+            #     y="shap_values",
+            #     data=df,
+            #     xlim=x_percentiles,
+            #     ylim=y_percentiles,
+            #     kind="scatter",
+            #     alpha=dot_alpha,
+            # )
+
+            # sns.regplot(
+            #     x=feature_name,
+            #     y="shap_values",
+            #     data=df,
+            #     ax=graph.ax_joint,
+            #     lowess=True,
+            #     color="k",
+            #     scatter=False,
+            # )
 
             plt.axhspan(ymin=lower_if_nan, ymax=upper_if_nan, color="orange", alpha=0.2)
             plt.axhline(y=mean_if_nan, color="orange")
@@ -94,7 +111,7 @@ def plot_shap_scatter(shap_values: bytes) -> None:
             plt.text(
                 x=1,
                 y=1,
-                s="Mean (SD) if val is NaN",
+                s="Mean (SD) if no value found within lookbehind window",
                 ha="right",
                 va="top",
                 transform=plt.gca().transAxes,

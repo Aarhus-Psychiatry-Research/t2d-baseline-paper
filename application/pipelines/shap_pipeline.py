@@ -1,4 +1,3 @@
-
 from operator import concat
 
 import pandas as pd
@@ -25,14 +24,18 @@ if __name__ == "__main__":
         wandb_run=best_run.model,
     )
 
+    # Keep only one outcome col
     cfg.preprocessing.pre_split.Config.allow_mutation = True
     cfg.preprocessing.pre_split.keep_only_one_outcome_col = True
+
+    # Disable feature selection
     cfg.preprocessing.post_split.feature_selection.Config.allow_mutation = True
     cfg.preprocessing.post_split.feature_selection.name = None
     cfg.preprocessing.post_split.feature_selection.params = None
 
-    dataset = load_and_filter_train_and_val_from_cfg(cfg)
     pipe = create_post_split_pipeline(cfg)
+
+    dataset = load_and_filter_train_and_val_from_cfg(cfg)
 
     train_col_names = infer_predictor_col_name(df=dataset.train)
 
@@ -56,4 +59,4 @@ if __name__ == "__main__":
         pipeline=pipe,
     )
 
-    plot_shap_scatter(shap_values=shap_values)
+    plot_shap_scatter(shap_values=shap_values, n_to_sample=10_000)
