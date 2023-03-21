@@ -4,7 +4,15 @@ import re
 def parse_static_feature(full_string: str) -> str:
     """Takes a static feature name and returns a human readable version of it."""
     feature_name = full_string.replace("pred_", "")
+
     feature_capitalised = feature_name[0].upper() + feature_name[1:]
+
+    manual_overrides = {
+        "Age_in_years": "Age (years)",
+    }
+
+    if feature_capitalised in manual_overrides:
+        feature_capitalised = manual_overrides[feature_capitalised]
     return feature_capitalised
 
 
@@ -14,6 +22,12 @@ def parse_temporal_feature(full_string: str) -> str:
 
     feature_name_mappings = {
         "hba1c": "HbA1c",
+        "fasting_p_glc": "fasting p-Glc",
+        "weight_in_kg": "weight (kg)",
+        "unscheduled_p_glc": "unscheduled p-Glc",
+        "alat": "ALAT",
+        "arterial_p_glc": "arterial p-Glc",
+        "bmi": "BMI",
     }
 
     if feature_name in feature_name_mappings:

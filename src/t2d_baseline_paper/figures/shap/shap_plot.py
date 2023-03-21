@@ -5,17 +5,26 @@ import pandas as pd
 import seaborn as sns
 import shap
 from t2d_baseline_paper.best_runs import FIGURES_PATH
+from t2d_baseline_paper.feature_name_to_readable import feature_name_to_readable
 from zenml.steps import step
 
 
 def widen_df_with_limits(ser: pd.Series, widening_factor: float) -> pd.Series:
-    ser.iloc[0] = ser.iloc[0] * 1 / widening_factor
-    ser.iloc[1] = ser.iloc[1] * widening_factor
+    upper_percentile = ser.quantile(0.9)
+    lower_percentile = ser.quantile(0.1)
+    percentile_range = upper_percentile - lower_percentile
+
+    ser.iloc[0] = ser.iloc[0] - widening_factor * percentile_range
+    ser.iloc[1] = ser.iloc[1] + widening_factor * percentile_range
 
     return ser
 
 
-def plot_shap_scatter(shap_values: bytes, n_to_sample: int) -> None:
+def plot_shap_scatter(
+    shap_values: bytes,
+    n_to_sample: int,
+    plot_nan: bool = False,
+) -> None:
     shap_values = pickle.loads(shap_values)
 
     sns.set(style="whitegrid")
@@ -47,8 +56,8 @@ def plot_shap_scatter(shap_values: bytes, n_to_sample: int) -> None:
                 df["shap_values"].quantile([0.01, 0.99]),
             )
 
-            x_percentiles = widen_df_with_limits(x_percentiles, 1.1)
-            y_percentiles = widen_df_with_limits(y_percentiles, 1.1)
+            x_percentiles = widen_df_with_limits(x_percentiles, 0.2)
+            y_percentiles = widen_df_with_limits(y_percentiles, 0.2)
             dot_alpha = 1 / (n_to_sample / 1_000)
 
             # Create a seaborn scatter plot from the values
@@ -59,48 +68,66 @@ def plot_shap_scatter(shap_values: bytes, n_to_sample: int) -> None:
                 alpha=dot_alpha,
             )
 
-            # Get mean shap_value when feature_name is NaN
-            mean_if_nan = df.loc[df[feature_name].isna(), "shap_values"].mean()
-            sd_if_nan = df.loc[df[feature_name].isna(), "shap_values"].std()
-            lower_if_nan = mean_if_nan - sd_if_nan
-            upper_if_nan = mean_if_nan + sd_if_nan
-
-            # Ensure NaN uncertainty band is within the plot boundaries
-            y_percentiles.iloc[0] = (
-                lower_if_nan * 0.9
-                if lower_if_nan < y_percentiles.iloc[0]
-                else y_percentiles.iloc[0]
-            )
-            y_percentiles.iloc[1] = (
-                upper_if_nan * 1.1
-                if upper_if_nan > y_percentiles.iloc[1]
-                else y_percentiles.iloc[1]
+            # Add a running average line with SD.
+            graph = sns.lineplot(
+                data=df,
+                x=feature_name,
+                y="shap_values",
+                estimator="mean",
+                errorbar="sd",
+                color="orange",
+                n_boot=5,
             )
 
-            plt.axhspan(ymin=lower_if_nan, ymax=upper_if_nan, color="orange", alpha=0.2)
-            plt.axhline(y=mean_if_nan, color="orange")
+            if plot_nan:
+                # Get mean shap_value when feature_name is NaN
+                mean_if_nan = df.loc[df[feature_name].isna(), "shap_values"].mean()
+                sd_if_nan = df.loc[df[feature_name].isna(), "shap_values"].std()
+                lower_if_nan = mean_if_nan - sd_if_nan
+                upper_if_nan = mean_if_nan + sd_if_nan
+
+                # Ensure NaN uncertainty band is within the plot boundaries
+                y_percentiles.iloc[0] = (
+                    lower_if_nan * 0.9
+                    if lower_if_nan < y_percentiles.iloc[0]
+                    else y_percentiles.iloc[0]
+                )
+                y_percentiles.iloc[1] = (
+                    upper_if_nan * 1.1
+                    if upper_if_nan > y_percentiles.iloc[1]
+                    else y_percentiles.iloc[1]
+                )
+
+                plt.axhspan(
+                    ymin=lower_if_nan,
+                    ymax=upper_if_nan,
+                    color="orange",
+                    alpha=0.2,
+                )
+                plt.axhline(y=mean_if_nan, color="orange")
+
+                plt.text(
+                    x=1,
+                    y=0.9,
+                    s="Mean (SD) if no value found within lookbehind window",
+                    ha="right",
+                    va="top",
+                    transform=plt.gca().transAxes,
+                    color="orange",
+                )
 
             # Set the x and y limits
             graph.set_xlim(x_percentiles)
             graph.set_ylim(y_percentiles)
 
             graph.set_ylabel("SHAP")
-            graph.set_xlabel(feature_name)
-
-            plt.text(
-                x=1,
-                y=0.9,
-                s="Mean (SD) if no value found within lookbehind window",
-                ha="right",
-                va="top",
-                transform=plt.gca().transAxes,
-                color="orange",
-            )
+            graph.set_xlabel(feature_name_to_readable(feature_name))
 
             output_path = FIGURES_PATH / "feature_importance" / f"{i}.png"
             output_path.parent.mkdir(parents=True, exist_ok=True)
-            plt.savefig(output_path)
+            plt.savefig(output_path, dpi=300, dimensions=(5, 5))
             plt.close()
+            print(f"Saved plot to {output_path}")
 
 
 @step
