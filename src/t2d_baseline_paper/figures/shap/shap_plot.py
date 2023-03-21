@@ -43,14 +43,21 @@ def plot_shap_scatter(shap_values: bytes, n_to_sample: int) -> None:
         with sns.axes_style("white"):
             # Cut to percentiles
             x_percentiles, y_percentiles = (
-                df[feature_name].quantile([0.05, 0.95]),
-                df["shap_values"].quantile([0.05, 0.95]),
+                df[feature_name].quantile([0.01, 0.99]),
+                df["shap_values"].quantile([0.01, 0.99]),
             )
 
             x_percentiles = widen_df_with_limits(x_percentiles, 1.1)
             y_percentiles = widen_df_with_limits(y_percentiles, 1.1)
-
             dot_alpha = 1 / (n_to_sample / 1_000)
+
+            # Create a seaborn scatter plot from the values
+            graph = sns.scatterplot(
+                data=df,
+                x=feature_name,
+                y="shap_values",
+                alpha=dot_alpha,
+            )
 
             # Get mean shap_value when feature_name is NaN
             mean_if_nan = df.loc[df[feature_name].isna(), "shap_values"].mean()
@@ -70,13 +77,8 @@ def plot_shap_scatter(shap_values: bytes, n_to_sample: int) -> None:
                 else y_percentiles.iloc[1]
             )
 
-            # Create a seaborn scatter plot from the values
-            graph = sns.scatterplot(
-                data=df,
-                x=feature_name,
-                y="shap_values",
-                alpha=dot_alpha,
-            )
+            plt.axhspan(ymin=lower_if_nan, ymax=upper_if_nan, color="orange", alpha=0.2)
+            plt.axhline(y=mean_if_nan, color="orange")
 
             # Set the x and y limits
             graph.set_xlim(x_percentiles)
@@ -85,32 +87,9 @@ def plot_shap_scatter(shap_values: bytes, n_to_sample: int) -> None:
             graph.set_ylabel("SHAP")
             graph.set_xlabel(feature_name)
 
-            # graph = sns.jointplot(
-            #     x=feature_name,
-            #     y="shap_values",
-            #     data=df,
-            #     xlim=x_percentiles,
-            #     ylim=y_percentiles,
-            #     kind="scatter",
-            #     alpha=dot_alpha,
-            # )
-
-            # sns.regplot(
-            #     x=feature_name,
-            #     y="shap_values",
-            #     data=df,
-            #     ax=graph.ax_joint,
-            #     lowess=True,
-            #     color="k",
-            #     scatter=False,
-            # )
-
-            plt.axhspan(ymin=lower_if_nan, ymax=upper_if_nan, color="orange", alpha=0.2)
-            plt.axhline(y=mean_if_nan, color="orange")
-
             plt.text(
                 x=1,
-                y=1,
+                y=0.9,
                 s="Mean (SD) if no value found within lookbehind window",
                 ha="right",
                 va="top",
