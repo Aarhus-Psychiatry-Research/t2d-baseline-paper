@@ -1,16 +1,6 @@
 import re
 
 
-def feature_name_to_readable(full_string: str) -> str:
-    """Takes a feature name and returns a human readable version of it."""
-    if "within" not in full_string:
-        output_string = parse_static_feature(full_string)
-    else:
-        output_string = parse_temporal_feature(full_string)
-
-    return output_string
-
-
 def parse_static_feature(full_string: str) -> str:
     """Takes a static feature name and returns a human readable version of it."""
     feature_name = full_string.replace("pred_", "")
@@ -34,4 +24,14 @@ def parse_temporal_feature(full_string: str) -> str:
     resolve_multiple = re.findall(r"days_(.*)?_fallback", full_string)[0]
 
     output_string = f"{lookbehind}-day {resolve_multiple} {feature_name}"
+    return output_string
+
+
+def feature_name_to_readable(full_string: str) -> str:
+    """Takes a feature name and returns a human readable version of it."""
+    if "within" not in full_string:
+        output_string = parse_static_feature(full_string)
+    else:
+        output_string = parse_temporal_feature(full_string)
+
     return output_string
