@@ -1,5 +1,3 @@
-from operator import concat
-
 import pandas as pd
 from psycop_model_training.config_schemas.full_config import FullConfigSchema
 from psycop_model_training.data_loader.utils import (

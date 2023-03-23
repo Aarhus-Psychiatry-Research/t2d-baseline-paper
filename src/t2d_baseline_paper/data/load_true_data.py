@@ -1,15 +1,17 @@
 import pickle
 from pathlib import Path
-from typing import Any, List, Optional
+from typing import Any, Optional
 
 import pandas as pd
-from joblib import Memory
 from psycop_model_training.config_schemas.full_config import FullConfigSchema
 from psycop_model_training.model_eval.dataclasses import EvalDataset
 from sklearn.pipeline import Pipeline
 
 
-def df_to_eval_dataset(df: pd.DataFrame, custom_columns: Optional[list[str]]) -> pd.DataFrame:
+def df_to_eval_dataset(
+    df: pd.DataFrame,
+    custom_columns: Optional[list[str]],
+) -> pd.DataFrame:
     """Convert dataframe to EvalDataset."""
     return EvalDataset(
         ids=df["ids"],
@@ -21,7 +23,9 @@ def df_to_eval_dataset(df: pd.DataFrame, custom_columns: Optional[list[str]]) ->
         age=df["age"],
         is_female=df["is_female"],
         exclusion_timestamps=df["exclusion_timestamps"],
-        custom_columns={col: df[col] for col in custom_columns} if custom_columns else None,
+        custom_columns={col: df[col] for col in custom_columns}
+        if custom_columns
+        else None,
     )
 
 

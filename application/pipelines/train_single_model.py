@@ -1,4 +1,3 @@
-
 from pathlib import Path
 
 from psycop_model_training.config_schemas.full_config import FullConfigSchema
