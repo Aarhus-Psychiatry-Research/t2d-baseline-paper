@@ -9,7 +9,8 @@ from sklearn.pipeline import Pipeline
 
 
 def df_to_eval_dataset(
-    df: pd.DataFrame, custom_columns: Optional[list[str]],
+    df: pd.DataFrame,
+    custom_columns: Optional[list[str]],
 ) -> pd.DataFrame:
     """Convert dataframe to EvalDataset."""
     return EvalDataset(
