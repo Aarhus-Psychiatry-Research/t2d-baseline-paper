@@ -1,6 +1,6 @@
 import pickle
 from pathlib import Path
-from typing import Any
+from typing import Any, List, Optional
 
 import pandas as pd
 from joblib import Memory
@@ -8,11 +8,8 @@ from psycop_model_training.config_schemas.full_config import FullConfigSchema
 from psycop_model_training.model_eval.dataclasses import EvalDataset
 from sklearn.pipeline import Pipeline
 
-# create a memory cache with a directory to store the cache
-memory = Memory(location=Path("E:/shared_resources/t2d/model_eval/model_eval_cache"))
 
-
-def df_to_eval_dataset(df: pd.DataFrame) -> pd.DataFrame:
+def df_to_eval_dataset(df: pd.DataFrame, custom_columns: Optional[list[str]]) -> pd.DataFrame:
     """Convert dataframe to EvalDataset."""
     return EvalDataset(
         ids=df["ids"],
@@ -22,7 +19,9 @@ def df_to_eval_dataset(df: pd.DataFrame) -> pd.DataFrame:
         pred_timestamps=df["pred_timestamps"],
         outcome_timestamps=df["outcome_timestamps"],
         age=df["age"],
+        is_female=df["is_female"],
         exclusion_timestamps=df["exclusion_timestamps"],
+        custom_columns={col: df[col] for col in custom_columns} if custom_columns else None,
     )
 
 
@@ -32,11 +31,10 @@ def get_run_item_file_path(wandb_group: str, wandb_run: str, file_name: str) -> 
     )
 
 
-@memory.cache()
 def load_eval_dataset(
     wandb_group: str,
     wandb_run: str,
-    fraction: float = 1.0,
+    custom_columns: Optional[list[str]] = None,
 ) -> EvalDataset:
     path = get_run_item_file_path(
         wandb_group=wandb_group,
@@ -45,10 +43,7 @@ def load_eval_dataset(
     )
     df = pd.read_parquet(path)
 
-    if fraction != 1.0:
-        df = df.sample(frac=fraction)
-
-    eval_ds = df_to_eval_dataset(df)
+    eval_ds = df_to_eval_dataset(df, custom_columns=custom_columns)
 
     return eval_ds
 

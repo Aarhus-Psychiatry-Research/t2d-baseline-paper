@@ -2,17 +2,24 @@ import pickle
 
 import pandas as pd
 import shap
-from psycop_model_training.utils.col_name_inference import infer_predictor_col_name
 from sklearn.pipeline import Pipeline
-from zenml.steps import step
+
+from joblib import Memory
+
+mem = Memory(location=".", verbose=0)
 
 
-@step
-def generate_shap_values(train_df: pd.DataFrame, pipeline: Pipeline) -> bytes:
-    pred_col_names = infer_predictor_col_name(train_df)
-    features = train_df[pred_col_names]
+@mem.cache
+def generate_shap_values(
+    features: pd.DataFrame,
+    outcome: pd.DataFrame,
+    pipeline: Pipeline,
+) -> bytes:
+    for feature in features.columns:
+        if len(features[feature].unique()) > 100:
+            features[feature] = features[feature].round(1)
 
     model = pipeline["model"]
-    explainer = shap.Explainer(model)  # type: ignore
-    shap_values = explainer(features)
+    explainer = shap.TreeExplainer(model)  # type: ignore
+    shap_values = explainer(features, y=outcome)
     return pickle.dumps(shap_values)
