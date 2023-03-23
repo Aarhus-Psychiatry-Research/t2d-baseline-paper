@@ -1,17 +1,9 @@
-from collections.abc import Iterable
-from typing import Callable
 
-import pandas as pd
-from psycop_model_training.config_schemas.full_config import FullConfigSchema
-from psycop_model_training.data_loader.utils import (
-    load_and_filter_train_and_val_from_cfg,
-)
 from psycop_model_training.model_eval.base_artifacts.tables.descriptive_stats_table import (
     DescriptiveStatsTable,
 )
-from psycop_model_training.model_eval.dataclasses import EvalDataset
 from t2d_baseline_paper.best_runs import TABLES_PATH, best_run
-from t2d_baseline_paper.data.load_true_data import load_eval_dataset, load_fullconfig
+from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 
 
 def descriptive_stats_table():

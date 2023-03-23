@@ -10,7 +10,6 @@ class TrainSplitConf(BaseParameters):
     best_runs: BestRun
 
 
-from joblib import Memory
 
 
 @step
@@ -24,8 +23,11 @@ def get_train_split_step(params: TrainSplitConf) -> pd.DataFrame:
 
     pass
 
-    df = load_and_filter_split_from_cfg(pre_split_cfg=cfg.preprocessing.pre_split, data_cfg=cfg.data, split="train")
+    df = load_and_filter_split_from_cfg(
+        pre_split_cfg=cfg.preprocessing.pre_split, data_cfg=cfg.data, split="train",
+    )
     return df
+
 
 def get_train_split(best_run: BestRun) -> pd.DataFrame:
     cfg: FullConfigSchema = load_fullconfig(
@@ -33,6 +35,8 @@ def get_train_split(best_run: BestRun) -> pd.DataFrame:
         wandb_run=best_run.model,
     )
 
-    df = load_and_filter_split_from_cfg(pre_split_cfg=cfg.preprocessing.pre_split, data_cfg=cfg.data, split="train")
+    df = load_and_filter_split_from_cfg(
+        pre_split_cfg=cfg.preprocessing.pre_split, data_cfg=cfg.data, split="train",
+    )
 
     return df

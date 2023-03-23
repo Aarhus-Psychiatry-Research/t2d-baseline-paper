@@ -9,7 +9,6 @@ def roc_auc_by_time_from_first_visit():
     eval_ds = load_eval_dataset(
         wandb_group=best_run.wandb_group,
         wandb_run=best_run.model,
-
     )
 
     plot_auc_by_time_from_first_visit(
