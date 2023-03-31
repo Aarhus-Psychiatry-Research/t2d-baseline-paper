@@ -17,6 +17,7 @@ __pycache__/
 *.html
 .Rproj.user
 *.csv
+*.xslx
 src/t2d_baseline_paper.egg-info
 .idea
 .vscode
