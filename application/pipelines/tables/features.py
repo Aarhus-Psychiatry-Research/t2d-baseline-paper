@@ -1,14 +1,12 @@
 # %%
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
-import pdfkit
 from t2d_baseline_paper.best_runs import TABLES_PATH
 
 # %%
 feature_description_path = Path(
-    "E:/shared_resources/t2d/feature_sets/psycop_t2d_adminmanber_features_2023_03_22_15_14/feature_set_descriptive_stats/train_feature_descriptive_stats.csv"
+    "E:/shared_resources/t2d/feature_sets/psycop_t2d_adminmanber_features_2023_03_22_15_14/feature_set_descriptive_stats/train_feature_descriptive_stats.csv",
 )
 df = pd.read_csv(feature_description_path)
 
@@ -16,7 +14,7 @@ df = pd.read_csv(feature_description_path)
 # %%
 # Sort by columns predictor_df, then resolve_multiple, then lookbehin_days, then fallback_strategy
 df_sorted = df.sort_values(
-    by=["Predictor df", "Resolve multiple", "Lookbehind days", "Fallback strategy"]
+    by=["Predictor df", "Resolve multiple", "Lookbehind days", "Fallback strategy"],
 )
 
 df_renamed = df_sorted.rename(
@@ -25,13 +23,12 @@ df_renamed = df_sorted.rename(
         "Resolve multiple": "Aggregation method",
         "N unique": "N unique values",
         "50.0-percentile": "Median",
-    }
+    },
 )
 
 # Capitalise the first letter in aggregation method
 df_renamed["Aggregation method"] = df_renamed["Aggregation method"].str.capitalize()
 
-import numpy as np
 
 df_selected = df_renamed[
     [
