@@ -3,6 +3,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import pdfkit
 from t2d_baseline_paper.best_runs import TABLES_PATH
 
 # %%
@@ -30,9 +31,6 @@ df_renamed = df_sorted.rename(
 # Capitalise the first letter in aggregation method
 df_renamed["Aggregation method"] = df_renamed["Aggregation method"].str.capitalize()
 
-# Round mean to one decimal place
-df_renamed["Mean"] = df_renamed["Mean"].round(1)
-
 import numpy as np
 
 df_selected = df_renamed[
@@ -56,4 +54,3 @@ df_selected
 # Save to excel
 TABLES_PATH.mkdir(parents=True, exist_ok=True)
 df_selected.to_excel(TABLES_PATH / "feature_descriptive_stats.xlsx", index=False)
-# %%
