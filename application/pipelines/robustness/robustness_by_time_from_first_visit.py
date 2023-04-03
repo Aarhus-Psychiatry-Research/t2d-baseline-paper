@@ -1,5 +1,5 @@
-from psycop_model_training.model_eval.base_artifacts.plots.performance_over_time import (
-    plot_auc_by_time_from_first_visit,
+from psycop_model_evaluation.binary.time.timedelta_plots import (
+    plot_roc_auc_by_time_from_first_visit,
 )
 from t2d_baseline_paper.best_runs import ROBUSTNESS_PATH, best_run
 from t2d_baseline_paper.data.load_true_data import load_eval_dataset
@@ -11,7 +11,7 @@ def roc_auc_by_time_from_first_visit():
         wandb_run=best_run.model,
     )
 
-    plot_auc_by_time_from_first_visit(
+    plot_roc_auc_by_time_from_first_visit(
         eval_dataset=eval_ds,
         bins=range(0, 37, 3),
         bin_unit="M",
