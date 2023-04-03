@@ -27,3 +27,4 @@ src/psycop-model-training
 .Rhistory
 outputs_for_publishing/
 joblib
+*_cache/
