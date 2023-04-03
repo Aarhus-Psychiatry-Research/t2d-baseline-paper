@@ -37,7 +37,7 @@ def git_init(c: Context):
 def setup_venv(
     c: Context,
     python_version: str,
-):
+) -> str:
     venv_name = f'.venv{python_version.replace(".", "")}'
 
     if not Path(venv_name).exists():
