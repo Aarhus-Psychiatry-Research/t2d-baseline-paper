@@ -3,7 +3,7 @@ from psycop_model_training.config_schemas.full_config import FullConfigSchema
 from psycop_model_training.data_loader.utils import load_and_filter_split_from_cfg
 from t2d_baseline_paper.best_runs import BestRun
 from t2d_baseline_paper.data.load_true_data import load_fullconfig
-from zenml.steps import BaseParameters, step
+from zenml.steps import BaseParameters
 
 
 class TrainSplitConf(BaseParameters):
