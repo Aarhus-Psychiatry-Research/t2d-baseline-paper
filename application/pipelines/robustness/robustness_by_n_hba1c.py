@@ -1,4 +1,4 @@
-from collections.abc import Callable, Sequence
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Optional, Union
 
@@ -7,7 +7,6 @@ from psycop_model_training.model_eval.base_artifacts.plots.base_charts import (
     plot_basic_chart,
 )
 from psycop_model_training.model_eval.dataclasses import EvalDataset
-from sklearn.metrics import roc_auc_score
 from t2d_baseline_paper.best_runs import ROBUSTNESS_PATH, best_run
 from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 
