@@ -111,7 +111,7 @@ def test(c: Context, min_latency: bool = True):
             line_sans_suffix = line_sans_prefix[line_sans_prefix.find("::") + 2 :]
             print(f"FAILED {Emo.FAILURE} #{line_sans_suffix}     ")
 
-    if "failed" in test_result.stdout or "error" in test_result.stdout: 
+    if "failed" in test_result.stdout or "error" in test_result.stdout:
         exit(0)
 
 
