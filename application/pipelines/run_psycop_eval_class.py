@@ -1,5 +1,5 @@
 from t2d_baseline_paper.best_runs import best_run
-from t2d_baseline_paper.steps.get_train_split import (
+from t2d_baseline_paper.data.get_train_split import (
     TrainSplitConf,
     get_train_split_step,
 )
