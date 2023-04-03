@@ -78,7 +78,7 @@ exclude_lines = [
 [tool.mypy]
 ignore_missing_imports = true
 no_implicit_optional = true
-warn_unused_ignores = true
+warn_unused_ignores = false
 warn_unreachable = true
 plugins = "pydantic.mypy"
 
