@@ -3,21 +3,21 @@ from pathlib import Path
 from typing import Any, Optional
 
 import pandas as pd
+import psycop_model_evaluation
 from psycop_model_training.config_schemas.full_config import FullConfigSchema
-from psycop_model_training.model_eval.dataclasses import EvalDataset
+from psycop_model_training.training_output.dataclasses import EvalDataset
 from sklearn.pipeline import Pipeline
 
 
 def df_to_eval_dataset(
     df: pd.DataFrame,
     custom_columns: Optional[list[str]],
-) -> pd.DataFrame:
+) -> EvalDataset:
     """Convert dataframe to EvalDataset."""
     return EvalDataset(
         ids=df["ids"],
         y=df["y"],
         y_hat_probs=df["y_hat_probs"],
-        y_hat_int=df["y_hat_int"],
         pred_timestamps=df["pred_timestamps"],
         outcome_timestamps=df["outcome_timestamps"],
         age=df["age"],
