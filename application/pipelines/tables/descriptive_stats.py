@@ -44,11 +44,9 @@ def load_full_dataset(
 
 def descriptive_stats_table():
     run = best_run
-    
-    flattened = load_full_dataset(
-        path=run.get_dataset_dir_path()
-    )
-    
+
+    flattened = load_full_dataset(path=run.get_dataset_dir_path())
+
     patients_group = VariableGroupSpec(
         title="Patients",
         group_column_name="dw_ek_borger",
@@ -59,37 +57,62 @@ def descriptive_stats_table():
                 variable_df_col_name="pred_sex_female",
                 positive_class=1,
             )
-        ]
+        ],
     )
-        
+
     # Get diagnosis columns
     pattern = re.compile(r"pred_f\d_disorders")
-    fx_disorders = sorted([c for c in flattened.columns if pattern.search(c) and "max" in c and "730" in c])
+    fx_disorders = sorted(
+        [
+            c
+            for c in flattened.columns
+            if pattern.search(c) and "max" in c and "730" in c
+        ]
+    )
 
     disorder_specs = []
     for i, column_name in enumerate(fx_disorders):
-        spec = BinaryVariableSpec(variable_title=f"F{i}", variable_df_col_name=column_name, positive_class=1)
+        spec = BinaryVariableSpec(
+            variable_title=f"F{i}", variable_df_col_name=column_name, positive_class=1
+        )
         disorder_specs.append(spec)
-        
+
     contacts_group = VariableGroupSpec(
         title="Contacts",
         group_column_name=None,
         add_total_row="True",
-        variable_specs=[ContinuousVariableSpec(variable_title="Age at contact", variable_df_col_name="pred_age_in_years", aggregation_measure="mean", variance_measure="std", n_decimals=None), ContinuousVariableToCategorical(variable_title="Age at contact", variable_df_col_name="pred_age_in_years", bins=[18, 24, 34, 44, 54, 64, 74], n_decimals=None, bin_decimals=None), BinaryVariableSpec(variable_title="Incident type 2 diabetes within 3 years", variable_df_col_name="outc_first_diabetes_lab_result_within_1095_days_max_fallback_0_dichotomous", positive_class=1), *disorder_specs]
+        variable_specs=[
+            ContinuousVariableSpec(
+                variable_title="Age at contact",
+                variable_df_col_name="pred_age_in_years",
+                aggregation_measure="mean",
+                variance_measure="std",
+                n_decimals=None,
+            ),
+            ContinuousVariableToCategorical(
+                variable_title="Age at contact",
+                variable_df_col_name="pred_age_in_years",
+                bins=[18, 24, 34, 44, 54, 64, 74],
+                n_decimals=None,
+                bin_decimals=None,
+            ),
+            *disorder_specs,
+            BinaryVariableSpec(
+                variable_title="Incident type 2 diabetes within 3 years",
+                variable_df_col_name="outc_first_diabetes_lab_result_within_1095_days_max_fallback_0_dichotomous",
+                positive_class=1,
+            ),
+        ],
     )
 
-    datasets = [
-        DatasetSpec(title="Train", df=flattened)
-    ]
+    datasets = [DatasetSpec(title="Train", df=flattened)]
 
     descriptive_table = create_descriptive_stats_table(
         variable_group_specs=[patients_group, contacts_group],
         datasets=datasets,
     )
-    
-    descriptive_table.to_excel(TABLES_PATH / "descriptive_stats_table.xlsx", index=False)
 
-    pass
+    descriptive_table.to_csv(TABLES_PATH / "descriptive_stats_table.csv", index=False)
 
 
 if __name__ == "__main__":
