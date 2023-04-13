@@ -51,10 +51,10 @@ def descriptive_stats_table():
     # Ensure no rows are dropped because of insufficient lookbehind or lookahead
     pre_split_cfg = run.cfg.preprocessing.pre_split
     pre_split_cfg.Config.allow_mutation = True
-    pre_split_cfg.min_lookahead_days = 99999
+    pre_split_cfg.min_lookahead_days = 0
     pre_split_cfg.lookbehind_combination = [
         *pre_split_cfg.lookbehind_combination,
-        99999,
+        9999,
     ]
 
     flattened = PreSplitRowFilter(
