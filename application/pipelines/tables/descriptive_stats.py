@@ -19,7 +19,6 @@ from psycop_model_training.preprocessing.pre_split.processors.row_filter import 
     PreSplitRowFilter,
 )
 from t2d_baseline_paper.best_runs import TABLES_PATH, best_run
-from t2d_baseline_paper.data.load_true_data import load_eval_dataset, load_fullconfig
 
 
 def load_full_dataset(
@@ -55,7 +54,7 @@ def descriptive_stats_table():
     pre_split_cfg.min_lookahead_days = 99999
     pre_split_cfg.lookbehind_combination = [
         *pre_split_cfg.lookbehind_combination,
-        "99999",
+        99999,
     ]
 
     flattened = PreSplitRowFilter(

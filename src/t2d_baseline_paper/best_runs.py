@@ -1,7 +1,9 @@
 import json
+import pickle
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
+from typing import Any
 
 from psycop_model_training.config_schemas.full_config import FullConfigSchema
 from sklearn.pipeline import Pipeline
@@ -21,7 +23,7 @@ class wandb_run:
 
     @property
     def dataset_dir(self) -> Path:
-        config_path = self.get_run_item_file_path(file_name="cfg.json")
+        config_path = self.eval_dir / "cfg.json"
 
         with config_path.open() as f:
             config_str = json.load(f)
