@@ -46,26 +46,24 @@ def load_full_dataset(
 
 def descriptive_stats_table():
     run = best_run
-    flattened = load_full_dataset(path=run.dataset_dir)
+    full_dataset = load_full_dataset(path=run.dataset_dir)
 
     # Ensure no rows are dropped because of insufficient lookbehind or lookahead
     pre_split_cfg = run.cfg.preprocessing.pre_split
     pre_split_cfg.Config.allow_mutation = True
-    pre_split_cfg.min_lookahead_days = 0
-    pre_split_cfg.lookbehind_combination = [
-        *pre_split_cfg.lookbehind_combination,
-        9999,
-    ]
+    pre_split_cfg.min_lookahead_days = None
+    pre_split_cfg.lookbehind_combination = None
 
-    flattened = PreSplitRowFilter(
+    preprocessed_dataset = PreSplitRowFilter(
         pre_split_cfg=pre_split_cfg, data_cfg=run.cfg.data
-    ).run_filter(dataset=flattened)
+    ).run_filter(dataset=full_dataset)
 
-    flattened["first_visit"] = flattened.groupby("dw_ek_borger")["timestamp"].transform(
-        "min"
-    )
-    flattened["time_from_first_visit_to_t2d"] = (
-        flattened["timestamp_first_diabetes_lab_result"] - flattened["first_visit"]
+    preprocessed_dataset["first_visit"] = preprocessed_dataset.groupby("dw_ek_borger")[
+        "timestamp"
+    ].transform("min")
+    preprocessed_dataset["time_from_first_visit_to_t2d"] = (
+        preprocessed_dataset["timestamp_first_diabetes_lab_result"]
+        - preprocessed_dataset["first_visit"]
     ).dt.days
 
     patients_group = VariableGroupSpec(
@@ -100,7 +98,7 @@ def descriptive_stats_table():
     fx_disorders = sorted(
         [
             c
-            for c in flattened.columns
+            for c in preprocessed_dataset.columns
             if pattern.search(c) and "max" in c and "730" in c
         ]
     )
@@ -140,7 +138,7 @@ def descriptive_stats_table():
         ],
     )
 
-    datasets = [DatasetSpec(title="Train", df=flattened)]
+    datasets = [DatasetSpec(title="Train", df=preprocessed_dataset)]
 
     descriptive_table = create_descriptive_stats_table(
         variable_group_specs=[patients_group, contacts_group],
