@@ -15,6 +15,9 @@ from psycop_model_evaluation.descriptive_stats_table import (
 )
 from psycop_model_training.config_schemas.full_config import FullConfigSchema
 from psycop_model_training.data_loader.data_loader import DataLoader
+from psycop_model_training.preprocessing.pre_split.processors.row_filter import (
+    PreSplitRowFilter,
+)
 from t2d_baseline_paper.best_runs import TABLES_PATH, best_run
 from t2d_baseline_paper.data.load_true_data import load_eval_dataset, load_fullconfig
 
@@ -44,8 +47,27 @@ def load_full_dataset(
 
 def descriptive_stats_table():
     run = best_run
+    flattened = load_full_dataset(path=run.dataset_dir)
 
-    flattened = load_full_dataset(path=run.get_dataset_dir_path())
+    # Ensure no rows are dropped because of insufficient lookbehind or lookahead
+    pre_split_cfg = run.cfg.preprocessing.pre_split
+    pre_split_cfg.Config.allow_mutation = True
+    pre_split_cfg.min_lookahead_days = 99999
+    pre_split_cfg.lookbehind_combination = [
+        *pre_split_cfg.lookbehind_combination,
+        "99999",
+    ]
+
+    flattened = PreSplitRowFilter(
+        pre_split_cfg=pre_split_cfg, data_cfg=run.cfg.data
+    ).run_filter(dataset=flattened)
+
+    flattened["first_visit"] = flattened.groupby("dw_ek_borger")["timestamp"].transform(
+        "min"
+    )
+    flattened["time_from_first_visit_to_t2d"] = (
+        flattened["timestamp_first_diabetes_lab_result"] - flattened["first_visit"]
+    ).dt.days
 
     patients_group = VariableGroupSpec(
         title="Patients",
@@ -55,8 +77,22 @@ def descriptive_stats_table():
             BinaryVariableSpec(
                 variable_title="Female sex",
                 variable_df_col_name="pred_sex_female",
+                within_group_aggregation="max",
                 positive_class=1,
-            )
+            ),
+            BinaryVariableSpec(
+                variable_title="Incident T2D",
+                variable_df_col_name="outc_first_diabetes_lab_result_within_1095_days_max_fallback_0_dichotomous",
+                within_group_aggregation="max",
+                positive_class=1,
+            ),
+            ContinuousVariableSpec(
+                variable_title="Days from first contact to first outcome",
+                variable_df_col_name="time_from_first_visit_to_t2d",
+                within_group_aggregation="max",
+                aggregation_function="median",
+                variance_measure="iqr",
+            ),
         ],
     )
 
@@ -80,12 +116,12 @@ def descriptive_stats_table():
     contacts_group = VariableGroupSpec(
         title="Contacts",
         group_column_name=None,
-        add_total_row="True",
+        add_total_row=True,
         variable_specs=[
             ContinuousVariableSpec(
                 variable_title="Age at contact",
                 variable_df_col_name="pred_age_in_years",
-                aggregation_measure="mean",
+                aggregation_function="mean",
                 variance_measure="std",
                 n_decimals=None,
             ),
