@@ -1,19 +1,19 @@
 import pandas as pd
 from psycop_model_training.config_schemas.full_config import FullConfigSchema
 from psycop_model_training.data_loader.utils import load_and_filter_split_from_cfg
-from t2d_baseline_paper.best_runs import BestRun
+from t2d_baseline_paper.best_runs import wandb_run
 from t2d_baseline_paper.data.load_true_data import load_fullconfig
 from zenml.steps import BaseParameters
 
 
 class TrainSplitConf(BaseParameters):
-    best_runs: BestRun
+    best_runs: wandb_run
 
 
-def get_train_split(best_run: BestRun) -> pd.DataFrame:
+def get_train_split(best_run: wandb_run) -> pd.DataFrame:
     cfg: FullConfigSchema = load_fullconfig(
         wandb_group=best_run.wandb_group,
-        wandb_run=best_run.model,
+        wandb_run=best_run.wandb_run,
     )
 
     df = load_and_filter_split_from_cfg(

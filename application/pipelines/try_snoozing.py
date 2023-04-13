@@ -9,7 +9,7 @@ from t2d_baseline_paper.snoozing import snooze_dataframe
 if __name__ == "__main__":
     evaluation_dataset = load_eval_dataset(
         wandb_group=best_run.wandb_group,
-        wandb_run=best_run.model,
+        wandb_run=best_run.wandb_run,
     )
 
     eval_df = pd.DataFrame(

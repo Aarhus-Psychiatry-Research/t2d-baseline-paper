@@ -29,10 +29,7 @@ def df_to_eval_dataset(
     )
 
 
-def get_run_item_file_path(wandb_group: str, wandb_run: str, file_name: str) -> Path:
-    return Path(
-        f"E:/shared_resources/t2d/model_eval/{wandb_group}/{wandb_run}/{file_name}",
-    )
+
 
 
 def load_eval_dataset(

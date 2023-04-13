@@ -8,7 +8,7 @@ from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 def incidence_by_time_until_outcome_pipeline():
     eval_ds = load_eval_dataset(
         wandb_group=best_run.wandb_group,
-        wandb_run=best_run.model,
+        wandb_run=best_run.wandb_run,
     )
 
     plot_recall_by_calendar_time(

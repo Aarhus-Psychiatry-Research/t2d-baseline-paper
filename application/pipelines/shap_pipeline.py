@@ -19,7 +19,7 @@ from t2d_baseline_paper.figures.shap.shap_plot import plot_shap_scatter
 if __name__ == "__main__":
     cfg: FullConfigSchema = load_fullconfig(
         wandb_group=best_run.wandb_group,
-        wandb_run=best_run.model,
+        wandb_run=best_run.wandb_run,
     )
 
     # Keep only one outcome col

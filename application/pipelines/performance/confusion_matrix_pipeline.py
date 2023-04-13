@@ -57,7 +57,7 @@ def confusion_matrix_metrics(
 def incidence_by_time_until_outcome_pipeline():
     eval_ds = load_eval_dataset(
         wandb_group=best_run.wandb_group,
-        wandb_run=best_run.model,
+        wandb_run=best_run.wandb_run,
     )
 
     df = pd.DataFrame({"y": eval_ds.y, "y_hat_probs": eval_ds.y_hat_probs})

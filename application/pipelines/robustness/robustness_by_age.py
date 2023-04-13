@@ -8,7 +8,7 @@ from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 def roc_auc_by_age():
     eval_ds = load_eval_dataset(
         wandb_group=best_run.wandb_group,
-        wandb_run=best_run.model,
+        wandb_run=best_run.wandb_run,
     )
 
     plot_roc_auc_by_age(
