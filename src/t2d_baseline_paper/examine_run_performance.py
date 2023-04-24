@@ -63,6 +63,6 @@ if __name__ == "__main__":
 
     models_trained_by_architecure_and_lookahead = all_models.groupby(
         ["model_name", "lookahead_days"]
-    ).count()
+    ).count()["run_name"]
 
     print(best_models_by_architecture_lookahead)
