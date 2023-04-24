@@ -26,14 +26,16 @@ if __name__ == "__main__":
 
     best_in_last_hour = (
         all_models[all_models["timestamp"] > now - datetime.timedelta(hours=1)]
-        .sort_values("roc_auc")
-        .head(1)["roc_auc"][0]
+        .sort_values("roc_auc", ascending=False)
+        .head(1)
+        .reset_index(drop=True)["roc_auc"][0]
     )
     try:
         best_before_last_hour = (
             all_models[all_models["timestamp"] < now - datetime.timedelta(hours=1)]
-            .sort_values("roc_auc")
-            .head(1)["roc_auc"][0]
+            .sort_values("roc_auc", ascending=False)
+            .head(1)
+            .reset_index(drop=True)["roc_auc"][0]
         )
     except KeyError:
         best_before_last_hour = None
@@ -58,4 +60,9 @@ if __name__ == "__main__":
     models_trained_total = len(all_models)
     print(f"In total, {models_trained_total} models have been trained")
     print("\n")
+
+    models_trained_by_architecure_and_lookahead = all_models.groupby(
+        ["model_name", "lookahead_days"]
+    ).count()
+
     print(best_models_by_architecture_lookahead)
