@@ -5,7 +5,7 @@ from datetime import datetime
 from pathlib import Path
 from typing import Any
 
-from psycop_model_training.config_schemas.full_config import FullConfigSchema
+# from psycop_model_training.config_schemas.full_config import FullConfigSchema
 from sklearn.pipeline import Pipeline
 
 
@@ -18,7 +18,7 @@ class RunGroup:
         return Path(f"E:/shared_resources/t2d/model_eval/{self.name}")
 
 
-current_group = RunGroup(name="archtreasurership-cunette")
+current_group = RunGroup(name="mameluco-cobblestone")
 
 
 @dataclass
@@ -42,7 +42,7 @@ class Run:
         return Path(config_dict["data"]["dir"])
 
     @property
-    def cfg(self) -> FullConfigSchema:
+    def cfg(self):  # -> FullConfigSchema: # noqa
         return load_file_from_pkl(self.eval_dir / "cfg.pkl")
 
     @property
