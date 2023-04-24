@@ -1,6 +1,5 @@
 import re
 from pathlib import Path
-from tkinter import Variable
 from typing import Sequence
 
 import pandas as pd

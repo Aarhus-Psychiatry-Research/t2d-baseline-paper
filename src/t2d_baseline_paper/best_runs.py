@@ -10,16 +10,26 @@ from sklearn.pipeline import Pipeline
 
 
 @dataclass
-class wandb_run:
-    wandb_group: str
+class RunGroup:
+    name: str
+
+    @property
+    def group_dir(self) -> Path:
+        return Path(f"E:/shared_resources/t2d/model_eval/{self.name}")
+
+
+current_group = RunGroup(name="archtreasurership-cunette")
+
+
+@dataclass
+class Run:
+    wandb_group: RunGroup
     wandb_run: str
     pos_rate: float
 
     @property
     def eval_dir(self) -> Path:
-        return Path(
-            f"E:/shared_resources/t2d/model_eval/{self.wandb_group}/{self.wandb_run}"
-        )
+        return self.wandb_group.group_dir / self.wandb_run
 
     @property
     def dataset_dir(self) -> Path:
@@ -40,8 +50,8 @@ class wandb_run:
         return load_file_from_pkl(self.eval_dir / "pipe.pkl")
 
 
-best_run = wandb_run(
-    wandb_group="nonvariably-overpet",
+best_run = Run(
+    wandb_group=current_group,
     wandb_run="visionary-armadillo-34",
     pos_rate=0.03,
 )
