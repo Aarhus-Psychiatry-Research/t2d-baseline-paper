@@ -37,14 +37,14 @@ class RunGroup:
 
 @dataclass
 class Run:
-    wandb_group: RunGroup
-    wandb_run: str
+    group: RunGroup
+    name: str
     pos_rate: float
 
     def get_flattened_split(
         self, split: Literal["train", "test", "val"]
     ) -> pd.DataFrame:
-        return pd.read_parquet(self.wandb_group.flattened_ds_dir / f"{split}.parquet")
+        return pd.read_parquet(self.group.flattened_ds_dir / f"{split}.parquet")
 
     @property
     def cfg(self):  # -> FullConfigSchema: # noqa
@@ -52,7 +52,7 @@ class Run:
 
     @property
     def eval_dir(self) -> Path:
-        return self.wandb_group.group_dir / self.wandb_run
+        return self.group.group_dir / self.name
 
     @cache  # noqa: B019
     def get_eval_dataset(
@@ -72,8 +72,8 @@ class Run:
 current_group = RunGroup(name="mameluco-cobblestone")
 
 best_run = Run(
-    wandb_group=current_group,
-    wandb_run="airnwhiteback",
+    group=current_group,
+    name="airnwhiteback",
     pos_rate=0.03,
 )
 
@@ -85,8 +85,8 @@ GENERAL_ARTIFACT_PATH = (
     PROJECT_ROOT
     / "outputs_for_publishing"
     / date_str
-    / f"{best_run.wandb_group}"
-    / f"{best_run.wandb_run}"
+    / f"{best_run.group}"
+    / f"{best_run.name}"
 )
 FIGURES_PATH = GENERAL_ARTIFACT_PATH / "figures"
 TABLES_PATH = GENERAL_ARTIFACT_PATH / "tables"

@@ -17,8 +17,8 @@ from t2d_baseline_paper.data.load_true_data import load_fullconfig
 
 if __name__ == "__main__":
     cfg: FullConfigSchema = load_fullconfig(
-        wandb_group=best_run.wandb_group,
-        wandb_run=best_run.wandb_run,
+        wandb_group=best_run.group,
+        wandb_run=best_run.name,
     )
 
     cfg.preprocessing.pre_split.Config.allow_mutation = True

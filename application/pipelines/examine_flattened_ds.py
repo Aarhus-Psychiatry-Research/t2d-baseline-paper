@@ -5,8 +5,8 @@ from t2d_baseline_paper.data.load_true_data import load_fullconfig
 
 if __name__ == "__main__":
     cfg: FullConfigSchema = load_fullconfig(
-        wandb_group=best_run.wandb_group,
-        wandb_run=best_run.wandb_run,
+        wandb_group=best_run.group,
+        wandb_run=best_run.name,
     )
     flattened_ds = DataLoader(data_cfg=cfg.data).load_dataset_from_dir(
         split_names="test",
