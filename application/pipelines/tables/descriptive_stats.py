@@ -45,7 +45,7 @@ def load_full_dataset(
 
 def descriptive_stats_table():
     run = best_run
-    full_dataset = load_full_dataset(path=run.dataset_dir)
+    full_dataset = load_full_dataset(path=run.train_dataset_dir)
 
     # Ensure no rows are dropped because of insufficient lookbehind or lookahead
     pre_split_cfg = run.cfg.preprocessing.pre_split

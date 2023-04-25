@@ -29,7 +29,7 @@ if __name__ == "__main__":
 
     train_col_names = infer_predictor_col_name(df=dataset.train)
 
-    eval_dataset = train_and_predict(
+    get_eval_dataset = train_and_predict(
         cfg=cfg,
         train=dataset.train,
         val=dataset.val,
@@ -43,7 +43,7 @@ if __name__ == "__main__":
         eval_dir_path=Path("E:/shared_resources/eval_debugging/"),
         cfg=cfg,
         pipe=pipe,
-        eval_ds=eval_dataset,
+        eval_ds=get_eval_dataset,
         raw_train_set=dataset.train,
         upload_to_wandb="offline",
     ).evaluate()

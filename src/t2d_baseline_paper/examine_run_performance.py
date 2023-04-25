@@ -3,13 +3,20 @@ import datetime
 import pandas as pd
 from t2d_baseline_paper.best_runs import current_group
 
-if __name__ == "__main__":
-    print("\n\n")
+
+def get_all_runs_df():
     run_performance_files = current_group.group_dir.glob("*.parquet")
 
     all_models = pd.concat(
         pd.read_parquet(parquet_file) for parquet_file in run_performance_files
     )
+
+    return all_models
+
+
+if __name__ == "__main__":
+    print("\n\n")
+    all_models = get_all_runs_df()
 
     all_models["roc_auc"] = all_models["roc_auc"].round(2)
 
@@ -42,7 +49,7 @@ if __name__ == "__main__":
 
     if best_before_last_hour is not None:
         improvement_over_last_hour = best_in_last_hour - best_before_last_hour
-        auroc_improvement_threshold = 0.01
+        auroc_improvement_threshold = 0.001
         if improvement_over_last_hour < auroc_improvement_threshold:
             print(
                 f"---- READY TO TERMINATE: Improvement of {improvement_over_last_hour} is smaller than threshold of {auroc_improvement_threshold} ----"

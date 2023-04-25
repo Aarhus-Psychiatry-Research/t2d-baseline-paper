@@ -37,7 +37,7 @@ if __name__ == "__main__":
 
     train_col_names = infer_predictor_col_name(df=dataset.train)
 
-    eval_dataset, pipe = train_and_predict(
+    get_eval_dataset, pipe = train_and_predict(
         cfg=cfg,
         train=dataset.train,
         val=dataset.val,

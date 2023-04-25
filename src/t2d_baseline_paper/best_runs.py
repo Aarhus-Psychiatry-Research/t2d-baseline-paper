@@ -3,10 +3,13 @@ import pickle
 from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Optional, Sequence
+
+import pandas as pd
 
 # from psycop_model_training.config_schemas.full_config import FullConfigSchema
 from sklearn.pipeline import Pipeline
+from t2d_baseline_paper.data_loaders.py.load_true_data import df_to_eval_dataset
 
 
 @dataclass
@@ -16,9 +19,6 @@ class RunGroup:
     @property
     def group_dir(self) -> Path:
         return Path(f"E:/shared_resources/t2d/model_eval/{self.name}")
-
-
-current_group = RunGroup(name="mameluco-cobblestone")
 
 
 @dataclass
@@ -32,7 +32,7 @@ class Run:
         return self.wandb_group.group_dir / self.wandb_run
 
     @property
-    def dataset_dir(self) -> Path:
+    def train_dataset_dir(self) -> Path:
         config_path = self.eval_dir / "cfg.json"
 
         with config_path.open() as f:
@@ -45,14 +45,25 @@ class Run:
     def cfg(self):  # -> FullConfigSchema: # noqa
         return load_file_from_pkl(self.eval_dir / "cfg.pkl")
 
+    def get_eval_dataset(
+        self, custom_columns: Optional[Sequence[str]] = None
+    ) -> pd.DataFrame:
+        df = pd.read_parquet(self.eval_dir / "evaluation_dataset.parquet")
+
+        eval_df = df_to_eval_dataset(df, custom_columns=custom_columns)
+
+        return eval_df
+
     @property
     def pipe(self) -> Pipeline:
         return load_file_from_pkl(self.eval_dir / "pipe.pkl")
 
 
+current_group = RunGroup(name="mameluco-cobblestone")
+
 best_run = Run(
     wandb_group=current_group,
-    wandb_run="visionary-armadillo-34",
+    wandb_run="airnwhiteback",
     pos_rate=0.03,
 )
 

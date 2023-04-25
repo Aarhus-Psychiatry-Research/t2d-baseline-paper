@@ -6,10 +6,7 @@ from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 
 
 def precision_recall_pipeline():
-    eval_ds = load_eval_dataset(
-        wandb_group=best_run.wandb_group,
-        wandb_run=best_run.wandb_run,
-    )
+    eval_ds = best_run.get_eval_dataset()
 
     plot_precision_recall(
         eval_dataset=eval_ds,

@@ -57,10 +57,8 @@ def plot_performance_by_n_hba1c(
 
 
 def roc_auc_by_n_hba1c():
-    eval_ds = load_eval_dataset(
-        wandb_group=best_run.wandb_group,
-        wandb_run=best_run.wandb_run,
-        custom_columns=["eval_hba1c_within_9999_days_count_fallback_nan"],
+    eval_ds = best_run.get_eval_dataset(
+        custom_columns=["eval_hba1c_within_9999_days_count_fallback_nan"]
     )
 
     plot_performance_by_n_hba1c(
