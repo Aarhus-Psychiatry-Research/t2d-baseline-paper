@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from functools import cache
 from pathlib import Path
-from typing import Any, Optional, Sequence
+from typing import Any, Literal, Optional, Sequence
 
 import pandas as pd
 from psycop_model_training.training_output.dataclasses import EvalDataset
@@ -34,7 +34,7 @@ class Run:
         return self.wandb_group.group_dir / self.wandb_run
 
     @property
-    def train_dataset_dir(self) -> Path:
+    def flattened_ds_dir(self) -> Path:
         config_path = self.eval_dir / "cfg.json"
 
         with config_path.open() as f:
@@ -42,6 +42,11 @@ class Run:
             config_dict = json.loads(config_str)
 
         return Path(config_dict["data"]["dir"])
+
+    def get_flattened_split(
+        self, split: Literal["train", "test", "val"]
+    ) -> pd.DataFrame:
+        return pd.read_parquet(self.flattened_ds_dir / f"{split}.parquet")
 
     @property
     def cfg(self):  # -> FullConfigSchema: # noqa
