@@ -22,20 +22,11 @@ class RunGroup:
     def group_dir(self) -> Path:
         return Path(f"E:/shared_resources/t2d/model_eval/{self.name}")
 
-
-@dataclass
-class Run:
-    wandb_group: RunGroup
-    wandb_run: str
-    pos_rate: float
-
-    @property
-    def eval_dir(self) -> Path:
-        return self.wandb_group.group_dir / self.wandb_run
-
     @property
     def flattened_ds_dir(self) -> Path:
-        config_path = self.eval_dir / "cfg.json"
+        first_run = list(self.group_dir.glob(r"*"))[0]
+
+        config_path = first_run / "cfg.json"
 
         with config_path.open() as f:
             config_str = json.load(f)
@@ -43,14 +34,25 @@ class Run:
 
         return Path(config_dict["data"]["dir"])
 
+
+@dataclass
+class Run:
+    wandb_group: RunGroup
+    wandb_run: str
+    pos_rate: float
+
     def get_flattened_split(
         self, split: Literal["train", "test", "val"]
     ) -> pd.DataFrame:
-        return pd.read_parquet(self.flattened_ds_dir / f"{split}.parquet")
+        return pd.read_parquet(self.wandb_group.flattened_ds_dir / f"{split}.parquet")
 
     @property
     def cfg(self):  # -> FullConfigSchema: # noqa
         return load_file_from_pkl(self.eval_dir / "cfg.pkl")
+
+    @property
+    def eval_dir(self) -> Path:
+        return self.wandb_group.group_dir / self.wandb_run
 
     @cache  # noqa: B019
     def get_eval_dataset(
