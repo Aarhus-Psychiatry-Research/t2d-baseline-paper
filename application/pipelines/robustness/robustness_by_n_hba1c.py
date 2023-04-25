@@ -8,7 +8,6 @@ from psycop_model_training.model_eval.base_artifacts.plots.base_charts import (
 )
 from psycop_model_training.model_eval.dataclasses import EvalDataset
 from t2d_baseline_paper.best_runs import ROBUSTNESS_PATH, best_run
-from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 
 
 def plot_performance_by_n_hba1c(

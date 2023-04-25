@@ -2,7 +2,6 @@ from psycop_model_training.model_eval.base_artifacts.plots.performance_over_time
     plot_recall_by_calendar_time,
 )
 from t2d_baseline_paper.best_runs import FIGURES_PATH, best_run
-from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 
 
 def incidence_by_time_until_outcome_pipeline():

@@ -1,6 +1,6 @@
 import pickle
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Optional, Sequence
 
 import pandas as pd
 import psycop_model_evaluation
@@ -10,7 +10,7 @@ from sklearn.pipeline import Pipeline
 
 def df_to_eval_dataset(
     df: pd.DataFrame,
-    custom_columns: Optional[list[str]],
+    custom_columns: Optional[Sequence[str]],
 ) -> EvalDataset:
     """Convert dataframe to EvalDataset."""
     return EvalDataset(
@@ -25,29 +25,4 @@ def df_to_eval_dataset(
         custom_columns={col: df[col] for col in custom_columns}
         if custom_columns
         else None,
-    )
-
-
-def load_eval_dataset(
-    wandb_group: str,
-    wandb_run: str,
-    custom_columns: Optional[list[str]] = None,
-) -> EvalDataset:
-    path = get_run_item_file_path(
-        wandb_group=wandb_group,
-        wandb_run=wandb_run,
-        file_name="evaluation_dataset.parquet",
-    )
-    df = pd.read_parquet(path)
-
-    eval_ds = df_to_eval_dataset(df, custom_columns=custom_columns)
-
-    return eval_ds
-
-
-def load_pipe(wandb_group: str, wandb_run: str) -> Pipeline:
-    return load_file_from_pkl(
-        wandb_group=wandb_group,
-        wandb_run=wandb_run,
-        file_name="pipe.pkl",
     )

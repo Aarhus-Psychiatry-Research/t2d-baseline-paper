@@ -4,7 +4,7 @@ import pandas as pd
 from t2d_baseline_paper.best_runs import current_group
 
 
-def get_all_runs_df():
+def get_all_runs_df() -> pd.DataFrame:
     run_performance_files = current_group.group_dir.glob("*.parquet")
 
     all_models = pd.concat(

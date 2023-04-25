@@ -1,7 +1,6 @@
 import pandas as pd
 from sklearn.metrics import confusion_matrix
 from t2d_baseline_paper.best_runs import TABLES_PATH, best_run
-from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 
 
 def get_top_fraction(df: pd.DataFrame, col_name: str, fraction: float) -> pd.DataFrame:
