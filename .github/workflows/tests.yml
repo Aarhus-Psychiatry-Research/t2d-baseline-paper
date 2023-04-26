@@ -3,11 +3,11 @@
 # and add it to the PR. This badge will be updated if the PR is updated.
 
 name: Tests
-# on:
-#   push:
-#     branches: [main]
-#   pull_request:
-#     branches: [main]
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 
 jobs:
   pytest:
