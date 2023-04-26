@@ -7,6 +7,8 @@ from pathlib import Path
 from typing import Any, Literal, Optional, Sequence
 
 import pandas as pd
+import polars as pl
+from outcome import Value
 from psycop_model_training.training_output.dataclasses import EvalDataset
 
 # from psycop_model_training.config_schemas.full_config import FullConfigSchema
@@ -35,16 +37,27 @@ class RunGroup:
         return Path(config_dict["data"]["dir"])
 
 
+SplitNames = Literal["train", "test", "val"]
+
+
 @dataclass
 class Run:
     group: RunGroup
     name: str
     pos_rate: float
 
-    def get_flattened_split(
-        self, split: Literal["train", "test", "val"]
-    ) -> pd.DataFrame:
-        return pd.read_parquet(self.group.flattened_ds_dir / f"{split}.parquet")
+    def _get_flattened_split_path(self, split: SplitNames) -> Path:
+        matches = list(self.group.flattened_ds_dir.glob(f"*{split}*.parquet"))
+
+        if len(matches) != 1:
+            raise ValueError("More than one matching split file found")
+        return matches[0]
+
+    def get_flattened_split_as_pd(self, split: SplitNames) -> pd.DataFrame:
+        return pd.read_parquet(self._get_flattened_split_path(split=split))
+
+    def get_flattened_split_as_lazyframe(self, split: SplitNames) -> pl.LazyFrame:
+        return pl.scan_parquet(self._get_flattened_split_path(split=split))
 
     @property
     def cfg(self):  # -> FullConfigSchema: # noqa
