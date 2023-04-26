@@ -69,7 +69,8 @@ class Run:
 
     @cache  # noqa: B019
     def get_eval_dataset(
-        self, custom_columns: Optional[Sequence[str]] = None,
+        self,
+        custom_columns: Optional[Sequence[str]] = None,
     ) -> EvalDataset:
         df = pd.read_parquet(self.eval_dir / "evaluation_dataset.parquet")
 

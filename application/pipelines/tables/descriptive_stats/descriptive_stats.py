@@ -33,7 +33,9 @@ from t2d_baseline_paper.tables.descriptive_stats import (
 
 visit_row_specs = [
     RowSpecification(
-        source_col_name="pred_age_in_years", readable_name="Age", nonnormal=True,
+        source_col_name="pred_age_in_years",
+        readable_name="Age",
+        nonnormal=True,
     ),
     RowSpecification(
         source_col_name="age_grouped",
@@ -102,7 +104,9 @@ from t2d_baseline_paper.tables.descriptive_stats import (
 )
 
 visit_table_one = create_table(
-    row_specs=visit_row_specs, data=visit_flattened_df, groupby_col_name="dataset",
+    row_specs=visit_row_specs,
+    data=visit_flattened_df,
+    groupby_col_name="dataset",
 )
 
 # %%
