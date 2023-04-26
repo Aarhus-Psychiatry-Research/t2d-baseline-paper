@@ -43,7 +43,7 @@ if __name__ == "__main__":
     shap_values = generate_shap_values(
         features=concatenated_df[feature_cols],
         outcome=concatenated_df[outcome_cols],
-        pipeline=pipe,  # type: ignore # noqa
+        pipeline=pipe,  # type: ignore
     )
 
     plot_shap_scatter(shap_values=shap_values, n_to_sample=10_000)
