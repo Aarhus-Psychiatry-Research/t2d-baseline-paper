@@ -10,8 +10,6 @@ from typing import Any, Literal, Optional
 import pandas as pd
 import polars as pl
 from psycop_model_training.training_output.dataclasses import EvalDataset
-
-# from psycop_model_training.config_schemas.full_config import FullConfigSchema
 from sklearn.pipeline import Pipeline
 from t2d_baseline_paper.data_loaders.load_true_data import df_to_eval_dataset
 
