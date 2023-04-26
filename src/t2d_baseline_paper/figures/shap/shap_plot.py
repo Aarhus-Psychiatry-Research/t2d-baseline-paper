@@ -6,7 +6,6 @@ import seaborn as sns
 import shap
 from t2d_baseline_paper.best_runs import FIGURES_PATH
 from t2d_baseline_paper.feature_name_to_readable import feature_name_to_readable
-from zenml.steps import step
 
 
 def widen_df_with_limits(ser: pd.Series, widening_factor: float) -> pd.Series:
@@ -38,7 +37,7 @@ def plot_shap_scatter(
         print(f"Plotting {i}")
         shap_for_i: shap._explanation.Explanation = shap_values[:, shap_std.argsort[i]]  # type: ignore
 
-        feature_name = shap_for_i.feature_names
+        feature_name: str = shap_for_i.feature_names  # type: ignore
 
         df = pd.DataFrame(
             {
@@ -81,8 +80,8 @@ def plot_shap_scatter(
 
             if plot_nan:
                 # Get mean shap_value when feature_name is NaN
-                mean_if_nan = df.loc[df[feature_name].isna(), "shap_values"].mean()
-                sd_if_nan = df.loc[df[feature_name].isna(), "shap_values"].std()
+                mean_if_nan: float = df.loc[df[feature_name].isna(), "shap_values"].mean()  # type: ignore
+                sd_if_nan: float = df.loc[df[feature_name].isna(), "shap_values"].std()  # type: ignore
                 lower_if_nan = mean_if_nan - sd_if_nan
                 upper_if_nan = mean_if_nan + sd_if_nan
 
@@ -128,21 +127,3 @@ def plot_shap_scatter(
             plt.savefig(output_path, dpi=300, dimensions=(5, 5))
             plt.close()
             print(f"Saved plot to {output_path}")
-
-
-@step
-def plot_beeswarm(shap_values: bytes) -> None:
-    shap_values = pickle.loads(shap_values)
-
-    shap.plots.beeswarm(  # type: ignore
-        shap_values,
-        show=False,
-        plot_size=(20, 5),
-        max_display=20,
-    )
-
-    output_path = FIGURES_PATH / "shap_beeswarm.png"
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-
-    plt.savefig(output_path)
-    plt.close()

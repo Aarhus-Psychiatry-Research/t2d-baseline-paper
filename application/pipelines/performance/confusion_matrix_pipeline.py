@@ -1,7 +1,6 @@
 import pandas as pd
 from sklearn.metrics import confusion_matrix
 from t2d_baseline_paper.best_runs import TABLES_PATH, best_run
-from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 
 
 def get_top_fraction(df: pd.DataFrame, col_name: str, fraction: float) -> pd.DataFrame:
@@ -55,10 +54,7 @@ def confusion_matrix_metrics(
 
 
 def incidence_by_time_until_outcome_pipeline():
-    eval_ds = load_eval_dataset(
-        wandb_group=best_run.wandb_group,
-        wandb_run=best_run.model,
-    )
+    eval_ds = best_run.get_eval_dataset()
 
     df = pd.DataFrame({"y": eval_ds.y, "y_hat_probs": eval_ds.y_hat_probs})
 

@@ -2,13 +2,12 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Optional, Union
 
-from psycop_model_evaluation.binary.subgroups.base import create_roc_auc_by_input
-from psycop_model_training.model_eval.base_artifacts.plots.base_charts import (
+from psycop_model_evaluation.base_charts import (
     plot_basic_chart,
 )
-from psycop_model_training.model_eval.dataclasses import EvalDataset
+from psycop_model_evaluation.binary.subgroups.base import create_roc_auc_by_input
+from psycop_model_training.training_output.model_evaluator import EvalDataset
 from t2d_baseline_paper.best_runs import ROBUSTNESS_PATH, best_run
-from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 
 
 def plot_performance_by_n_hba1c(
@@ -57,9 +56,7 @@ def plot_performance_by_n_hba1c(
 
 
 def roc_auc_by_n_hba1c():
-    eval_ds = load_eval_dataset(
-        wandb_group=best_run.wandb_group,
-        wandb_run=best_run.model,
+    eval_ds = best_run.get_eval_dataset(
         custom_columns=["eval_hba1c_within_9999_days_count_fallback_nan"],
     )
 

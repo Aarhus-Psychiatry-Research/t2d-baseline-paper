@@ -2,14 +2,10 @@ from psycop_model_evaluation.binary.time.timedelta_plots import (
     plot_roc_auc_by_time_from_first_visit,
 )
 from t2d_baseline_paper.best_runs import ROBUSTNESS_PATH, best_run
-from t2d_baseline_paper.data.load_true_data import load_eval_dataset
 
 
 def roc_auc_by_time_from_first_visit():
-    eval_ds = load_eval_dataset(
-        wandb_group=best_run.wandb_group,
-        wandb_run=best_run.model,
-    )
+    eval_ds = best_run.get_eval_dataset()
 
     plot_roc_auc_by_time_from_first_visit(
         eval_dataset=eval_ds,
