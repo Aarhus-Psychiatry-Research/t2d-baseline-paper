@@ -26,6 +26,7 @@ dependencies = [
   "psycop-model-evaluation @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-model-evaluation#egg=psycop_model_evaluation",
   "pydantic",
   "seaborn",
+  "polars",
 ]
 
 [project.license]
