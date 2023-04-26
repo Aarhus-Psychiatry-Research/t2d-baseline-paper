@@ -40,7 +40,7 @@ visit_row_specs = [
         readable_name="Age grouped",
         categorical=True,
     ),
-    *get_psychiatric_diagnosis_row_specs(readable_col_names=model_train_df.columns),  # type: ignore
+    *get_psychiatric_diagnosis_row_specs(readable_col_names=model_train_df.columns),
     RowSpecification(
         source_col_name="eval_hba1c_within_9999_days_count_fallback_nan",
         readable_name="N HbA1c measurements prior to contact",
@@ -83,7 +83,6 @@ visit_flattened_df = (
         ).is_not_null()
     )
     .collect()
-    .sample(n=100_000)
     .to_pandas()
 )
 
