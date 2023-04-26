@@ -40,6 +40,9 @@ visit_row_specs = [
         readable_name="Age grouped",
         categorical=True,
     ),
+    RowSpecification(
+        source_col_name="pred_sex_female", readable_name="Female", categorical=True, values_to_display=[1]
+    ),
     *get_psychiatric_diagnosis_row_specs(readable_col_names=model_train_df.columns),
     RowSpecification(
         source_col_name="eval_hba1c_within_9999_days_count_fallback_nan",
