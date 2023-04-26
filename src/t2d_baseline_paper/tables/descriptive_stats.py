@@ -56,6 +56,7 @@ def create_table(
     groupby_col_name: str,
     pval: bool = False,
 ) -> pd.DataFrame:
+    """Unpacks a sequence of row specs into the format used by TableOne"""
     source_col_names = [r.source_col_name for r in row_specs]
     categorical_col_names = [r.source_col_name for r in row_specs if r.categorical]
     nonnormal_col_names = [r.source_col_name for r in row_specs if r.nonnormal]
