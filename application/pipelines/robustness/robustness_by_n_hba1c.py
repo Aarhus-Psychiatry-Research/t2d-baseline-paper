@@ -2,11 +2,11 @@ from collections.abc import Sequence
 from pathlib import Path
 from typing import Optional, Union
 
-from psycop_model_evaluation.binary.subgroups.base import create_roc_auc_by_input
-from psycop_model_training.model_eval.base_artifacts.plots.base_charts import (
+from psycop_model_evaluation.base_charts import (
     plot_basic_chart,
 )
-from psycop_model_training.model_eval.dataclasses import EvalDataset
+from psycop_model_evaluation.binary.subgroups.base import create_roc_auc_by_input
+from psycop_model_training.training_output.model_evaluator import EvalDataset
 from t2d_baseline_paper.best_runs import ROBUSTNESS_PATH, best_run
 
 

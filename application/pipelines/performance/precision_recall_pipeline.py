@@ -1,4 +1,4 @@
-from psycop_model_training.model_eval.base_artifacts.plots.precision_recall import (
+from psycop_model_evaluation.binary.global_performance.precision_recall import (
     plot_precision_recall,
 )
 from t2d_baseline_paper.best_runs import FIGURES_PATH, best_run

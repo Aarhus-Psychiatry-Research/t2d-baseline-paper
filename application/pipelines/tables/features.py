@@ -46,8 +46,6 @@ df_selected = df_renamed[
     ]
 ]
 
-df_selected
-
 # Save to excel
 TABLES_PATH.mkdir(parents=True, exist_ok=True)
 df_selected.to_excel(TABLES_PATH / "feature_descriptive_stats.xlsx", index=False)
