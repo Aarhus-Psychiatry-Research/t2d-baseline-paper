@@ -13,7 +13,6 @@ classifiers = [
   "Operating System :: POSIX :: Linux",
   "Operating System :: MacOS :: MacOS X",
   "Operating System :: Microsoft :: Windows",
-  "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10"
 ]
@@ -142,7 +141,6 @@ exclude = [
   ".eggs",
   ".git",
   ".hg",
-  ".mypy_cache",
   ".nox",
   ".pants.d",
   ".pytype",
@@ -157,7 +155,8 @@ exclude = [
   "dist",
   "node_modules",
   "venv",
-  "__init__.py"
+  "__init__.py",
+  "docs/conf.py",
 ]
 # Allow unused variables when underscore-prefixed.
 dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
@@ -185,3 +184,33 @@ build_command = "python -m pip install build; python -m build"
 
 [tool.setuptools]
 include-package-data = true
+
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+envlist = py{39,310}
+
+[testenv]
+description: run unit tests
+extras = tests
+use_develop = true
+commands =
+  pytest -n auto {posargs:test}
+
+[testenv:type]
+description: run type checks
+extras = test, dev
+basepython = py39 # Setting these explicitly avoid recreating env if your shell is set to a different version
+use_develop = true
+commands =
+  pyright .
+
+[testenv:docs]
+description: build docs
+extras = docs
+basepython = py39 # Setting these explicitly avoid recreating env if your shell is set to a different version
+use_develop = true
+commands =
+  sphinx-build -b html docs docs/_build/html
+"""

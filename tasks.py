@@ -82,12 +82,12 @@ def add_and_commit(c: Context, msg: Optional[str] = None):
     if is_uncommitted_changes(c):
         uncommitted_changes_descr = c.run(
             "git status --porcelain",
-            pty=True,
+            pty=NOT_WINDOWS,
             hide=True,
         ).stdout
 
         echo_header(
-            f"{Emo.WARN} Uncommitted changes detected",
+            f"{msg_type.WARN} Uncommitted changes detected",
         )
 
         for line in uncommitted_changes_descr.splitlines():
@@ -108,7 +108,7 @@ def branch_exists_on_remote(c: Context) -> bool:
 
 
 def update_branch(c: Context):
-    echo_header(f"{Emo.SYNC} Syncing branch with remote")
+    echo_header(f"{msg_type.SYNC} Syncing branch with remote")
 
     if not branch_exists_on_remote(c):
         c.run("git push --set-upstream origin HEAD")
@@ -122,12 +122,12 @@ def update_branch(c: Context):
 def create_pr(c: Context):
     c.run(
         "gh pr create --web",
-        pty=True,
+        pty=NOT_WINDOWS,
     )
 
 
 def update_pr(c: Context):
-    echo_header(f"{Emo.COMMUNICATE} Syncing PR")
+    echo_header(f"{msg_type.COMMUNICATE} Syncing PR")
     # Get current branch name
     branch_name = Path(".git/HEAD").read_text().split("/")[-1].strip()
     pr_result: Result = c.run(
@@ -234,22 +234,55 @@ def test(c: Context):
 
             # Keep only that after ::
             line_sans_suffix = line_sans_prefix[line_sans_prefix.find("::") + 2 :]
-            print(f"FAILED {Emo.FAIL} #{line_sans_suffix}     ")
+            print(f"FAILED {msg_type.FAIL} #{line_sans_suffix}     ")
 
-    if "failed" in test_result.stdout or "error" in test_result.stdout:
+    if test_result.return_code != 0:
         exit(0)
 
 
-@task
-def lint(c: Context):
-    pre_commit(c)
-    mypy(c)
+def test_for_rej():
+    # Get all paths in current directory or subdirectories that end in .rej
+    rej_files = list(Path(".").rglob("*.rej"))
+
+    if len(rej_files) > 0:
+        print(f"\n{msg_type.FAIL} Found .rej files leftover from cruft update.\n")
+        for file in rej_files:
+            print(f"    /{file}")
+        print("\nResolve the conflicts and try again. \n")
+        exit(1)
 
 
 @task
-def pr(c: Context):
+def lint(c: Context, auto_fix: bool = False):
+    """Lint the project."""
+    test_for_rej()
+    pre_commit(c=c, auto_fix=auto_fix)
+    static_type_checks(c)
+
+
+@task
+def pr(c: Context, auto_fix: bool = False):
+    """Run all checks and update the PR."""
     add_and_commit(c)
-    lint(c)
-    test(c)
+    lint(c, auto_fix=auto_fix)
+    test(c, python_versions=SUPPORTED_PYTHON_VERSIONS)
     update_branch(c)
     update_pr(c)
+
+
+@task
+def docs(c: Context, view: bool = False, view_only: bool = False):
+    """
+    Build and view docs. If neither build or view are specified, both are run.
+    """
+    if not view_only:
+        echo_header(f"{msg_type.DOING}: Building docs")
+        c.run("tox -e docs")
+
+    if view or view_only:
+        echo_header(f"{msg_type.EXAMINE}: Opening docs in browser")
+        # check the OS and open the docs in the browser
+        if platform.system() == "Windows":
+            c.run("start docs/_build/html/index.html")
+        else:
+            c.run("open docs/_build/html/index.html")
