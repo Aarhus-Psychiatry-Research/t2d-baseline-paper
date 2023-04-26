@@ -1,11 +1,8 @@
-import pickle
-from pathlib import Path
-from typing import Any, Optional, Sequence
+from collections.abc import Sequence
+from typing import Optional
 
 import pandas as pd
-import psycop_model_evaluation
 from psycop_model_training.training_output.dataclasses import EvalDataset
-from sklearn.pipeline import Pipeline
 
 
 def df_to_eval_dataset(

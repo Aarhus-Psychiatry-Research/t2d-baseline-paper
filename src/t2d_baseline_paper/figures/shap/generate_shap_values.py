@@ -2,8 +2,9 @@ import pickle
 
 import pandas as pd
 import shap
-from joblib import Memory
 from sklearn.pipeline import Pipeline
+
+from joblib import Memory
 
 mem = Memory(location=".", verbose=0)
 

@@ -1,14 +1,14 @@
 import json
 import pickle
+from collections.abc import Sequence
 from dataclasses import dataclass
 from datetime import datetime
 from functools import cache
 from pathlib import Path
-from typing import Any, Literal, Optional, Sequence
+from typing import Any, Literal, Optional
 
 import pandas as pd
 import polars as pl
-from outcome import Value
 from psycop_model_training.training_output.dataclasses import EvalDataset
 
 # from psycop_model_training.config_schemas.full_config import FullConfigSchema
@@ -69,7 +69,7 @@ class Run:
 
     @cache  # noqa: B019
     def get_eval_dataset(
-        self, custom_columns: Optional[Sequence[str]] = None
+        self, custom_columns: Optional[Sequence[str]] = None,
     ) -> EvalDataset:
         df = pd.read_parquet(self.eval_dir / "evaluation_dataset.parquet")
 

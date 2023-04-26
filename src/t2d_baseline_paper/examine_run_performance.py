@@ -52,7 +52,7 @@ if __name__ == "__main__":
         auroc_improvement_threshold = 0.001
         if improvement_over_last_hour < auroc_improvement_threshold:
             print(
-                f"---- READY TO TERMINATE: Improvement of {improvement_over_last_hour} is smaller than threshold of {auroc_improvement_threshold} ----"
+                f"---- READY TO TERMINATE: Improvement of {improvement_over_last_hour} is smaller than threshold of {auroc_improvement_threshold} ----",
             )
         else:
             print(f"AUROC improvement over last hour was {improvement_over_last_hour}")
@@ -69,7 +69,7 @@ if __name__ == "__main__":
     print("\n")
 
     models_trained_by_architecure_and_lookahead = all_models.groupby(
-        ["model_name", "lookahead_days"]
+        ["model_name", "lookahead_days"],
     ).count()["run_name"]
 
     print(best_models_by_architecture_lookahead)

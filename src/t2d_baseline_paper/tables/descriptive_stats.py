@@ -1,6 +1,7 @@
 import re
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Optional, Sequence, Union
+from typing import Optional, Union
 
 import pandas as pd
 from tableone import TableOne
@@ -25,7 +26,7 @@ def get_psychiatric_diagnosis_row_specs(
             c
             for c in readable_col_names
             if pattern.search(c) and "max" in c and "1095" in c
-        ]
+        ],
     )
 
     readable_col_names = []
@@ -44,7 +45,7 @@ def get_psychiatric_diagnosis_row_specs(
                 categorical=True,
                 nonnormal=False,
                 values_to_display=[1],
-            )
+            ),
         )
 
     return specs
