@@ -4,7 +4,7 @@ import pandas as pd
 from sklearn.metrics import roc_auc_score
 
 from t2d.evaluation.config import best_run
-from t2d.evaluation.snoozing import snooze_dataframe
+from t2d.evaluation.snoozing.snoozing import snooze_dataframe
 
 if __name__ == "__main__":
     evaluation_dataset = best_run.get_eval_dataset()
