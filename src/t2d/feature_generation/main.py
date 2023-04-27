@@ -25,6 +25,9 @@ from psycop_feature_generation.loaders.raw.load_moves import (
 from psycop_feature_generation.loaders.raw.load_visits import (
     physical_visits_to_psychiatry,
 )
+from t2d.feature_generation.eligible_prediction_times.loader import (
+    get_eligible_prediction_times_as_pandas,
+)
 from t2d.feature_generation.specify_features import FeatureSpecifier
 
 log = logging.getLogger()
@@ -41,10 +44,7 @@ def main():
 
     flattened_df = create_flattened_dataset(
         feature_specs=feature_specs,
-        prediction_times_df=physical_visits_to_psychiatry(
-            timestamps_only=True,
-            timestamp_for_output="start",
-        ),
+        prediction_times_df=get_eligible_prediction_times_as_pandas(),
         drop_pred_times_with_insufficient_look_distance=False,
         project_info=project_info,
         quarantine_df=load_move_into_rm_for_exclusion(),
@@ -58,7 +58,7 @@ def main():
 
     save_flattened_dataset_description_to_disk(
         project_info=project_info,
-        feature_specs=feature_specs,
+        feature_specs=feature_specs,  # type: ignore
     )
 
 
