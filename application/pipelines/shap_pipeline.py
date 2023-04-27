@@ -8,9 +8,9 @@ from psycop_model_training.utils.col_name_inference import (
     infer_outcome_col_name,
     infer_predictor_col_name,
 )
-from t2d_baseline_paper.best_runs import best_run
-from t2d_baseline_paper.figures.shap.generate_shap_values import generate_shap_values
-from t2d_baseline_paper.figures.shap.shap_plot import plot_shap_scatter
+from t2d.evaluation.best_runs import best_run
+from t2d.evaluation.figures.shap.generate_shap_values import generate_shap_values
+from t2d.evaluation.figures.shap.shap_plot import plot_shap_scatter
 
 if __name__ == "__main__":
     cfg: FullConfigSchema = best_run.cfg

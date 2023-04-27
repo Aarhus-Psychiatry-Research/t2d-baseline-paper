@@ -1,7 +1,7 @@
 import datetime
 
 import pandas as pd
-from t2d_baseline_paper.best_runs import current_group
+from t2d.evaluation.best_runs import current_group
 
 
 def get_all_runs_df() -> pd.DataFrame:

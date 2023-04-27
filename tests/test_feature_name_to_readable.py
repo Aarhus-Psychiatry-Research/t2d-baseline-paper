@@ -1,5 +1,5 @@
 import pytest
-from t2d_baseline_paper.feature_name_to_readable import feature_name_to_readable
+from t2d.evaluation.feature_name_to_readable import feature_name_to_readable
 
 
 @pytest.mark.parametrize(

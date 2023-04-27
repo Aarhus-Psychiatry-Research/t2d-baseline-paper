@@ -21,7 +21,7 @@ _build/
 .Rproj.user
 *.csv
 *.xslx
-src/t2d_baseline_paper.egg-info
+src/t2d.evaluation.egg-info
 .idea
 .vscode
 *.png

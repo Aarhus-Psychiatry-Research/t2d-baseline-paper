@@ -4,8 +4,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 import shap
-from t2d_baseline_paper.best_runs import FIGURES_PATH
-from t2d_baseline_paper.feature_name_to_readable import feature_name_to_readable
+from t2d.evaluation.best_runs import FIGURES_PATH
+from t2d.evaluation.feature_name_to_readable import feature_name_to_readable
 
 
 def widen_df_with_limits(ser: pd.Series, widening_factor: float) -> pd.Series:
