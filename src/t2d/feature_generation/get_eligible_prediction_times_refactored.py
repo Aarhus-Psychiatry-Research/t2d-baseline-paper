@@ -172,14 +172,7 @@ def add_age(df: pl.DataFrame) -> pl.DataFrame:
     return df
 
 
-if __name__ == "__main__":
-    df = pl.from_pandas(
-        physical_visits_to_psychiatry(
-            timestamps_only=True,
-            timestamp_for_output="start",
-        ),
-    )
-
+def filter_prediction_times_by_eligibility(df: pl.DataFrame) -> pl.DataFrame:
     steps = [
         min_date,
         add_age,
@@ -191,6 +184,27 @@ if __name__ == "__main__":
 
     for step in steps:
         df = step(df)
+
+    return df
+
+
+def get_eligible_prediction_times() -> pl.DataFrame:
+    df = pl.from_pandas(
+        physical_visits_to_psychiatry(
+            timestamps_only=True,
+            timestamp_for_output="start",
+        ),
+    )
+
+    df = filter_prediction_times_by_eligibility(
+        df=df,
+    )
+
+    return df
+
+
+if __name__ == "__main__":
+    df = get_eligible_prediction_times()
 
     for stepdelta in stepdeltas:
         print(
