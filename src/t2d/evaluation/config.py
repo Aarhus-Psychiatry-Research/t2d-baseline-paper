@@ -6,7 +6,7 @@ from t2d.evaluation.data_loaders.best_runs import Run, RunGroup
 ########################################
 # UPDATE THESE FOR ALTERNATIVE OUTPUTS #
 ########################################
-RUN_GROUP = "mameluco-cobblestone"
+RUN_GROUP = "mistouching-unwontedness"
 BEST_RUN_NAME = "airnwhiteback"
 
 date_str = datetime.now().strftime("%Y-%m-%d")
