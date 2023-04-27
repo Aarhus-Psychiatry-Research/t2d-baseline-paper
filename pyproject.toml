@@ -21,9 +21,9 @@ dependencies = [
   "pandas>=1.4.3,<1.5.0",
   # Shap dependencies
   "shap>=0.41.0",
-  "ipython>=8.10.0",
-  "psycop-model-training @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-model-training#egg=psycop_model_training",
-  "psycop-model-evaluation @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-model-evaluation#egg=psycop_model_evaluation",
+  "ipython>=7.10.0",
+  "timeseriesflattener",
+  "psycopmlutils",
   "pydantic",
   "seaborn",
   "polars"
@@ -52,6 +52,11 @@ tests = [
   "pytest-xdist>=3.0.0,<3.2.0",
   "pytest-sugar>=0.9.4,<0.10.0",
   "tox"
+]
+src = [
+  "psycop-model-training @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-model-training#egg=psycop_model_training",
+  "psycop-feature-generation @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-feature-generation#egg=psycop_model_training",
+  "psycop-model-evaluation @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-model-evaluation#egg=psycop_model_evaluation"
 ]
 
 [project.urls]
@@ -190,14 +195,14 @@ envlist = py{39,310}
 
 [testenv]
 description: run unit tests
-extras = tests
+extras = tests, src
 use_develop = true
 commands =
   pytest -n auto {posargs:test}
 
 [testenv:type]
 description: run type checks
-extras = test, dev
+extras = test, dev, src
 basepython = py39 # Setting these explicitly avoid recreating env if your shell is set to a different version
 use_develop = true
 commands =
