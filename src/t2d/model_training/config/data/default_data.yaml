@@ -19,5 +19,6 @@ data:
     age: pred_age_in_years
     is_female: pred_sex_female
     exclusion_timestamp: first_diabetes_indicator
+    pred_time_uuid: prediction_time_uuid
     custom_columns:
       - eval_hba1c_within_9999_days_count_fallback_nan

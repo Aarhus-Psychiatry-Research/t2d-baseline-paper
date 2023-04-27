@@ -34,3 +34,4 @@ outputs_for_publishing/
 joblib
 *_cache/
 wandb
+multirun

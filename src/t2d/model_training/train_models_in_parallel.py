@@ -29,7 +29,7 @@ def main(
 
     # Load dataset without dropping any rows for inferring
     # which look distances to grid search over
-    train_df = DataLoader(data_cfg=cfg.data).load_dataset_from_dir(split_names="train")
+    train_df = DataLoader(data_cfg=cfg.data).load_dataset_from_dir(split_names="val")
 
     trainer_specs = SearchSpaceInferrer(
         cfg=cfg,
@@ -42,6 +42,9 @@ def main(
         config_file_name=config_file_name,
         wandb_prefix=wandb_group,
         trainer_specs=trainer_specs,
+        train_single_model_file_path=Path(
+            "src/t2d/model_training/train_model_from_application_module.py"
+        ),
     )
 
 
