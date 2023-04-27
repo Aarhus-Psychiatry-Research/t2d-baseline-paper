@@ -9,6 +9,9 @@ data:
   pred_prefix: pred_
   outc_prefix: outc_
 
+  splits_for_training: ["train", "val"]
+  splits_for_evaluation: null
+
   col_name:
     pred_timestamp: timestamp
     outcome_timestamp: timestamp_first_diabetes_lab_result

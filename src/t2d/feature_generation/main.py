@@ -1,6 +1,7 @@
 """Main feature generation."""
 
 import logging
+from pathlib import Path
 
 from psycop_feature_generation.application_modules.describe_flattened_dataset import (
     save_flattened_dataset_description_to_disk,
@@ -10,6 +11,7 @@ from psycop_feature_generation.application_modules.flatten_dataset import (
 )
 from psycop_feature_generation.application_modules.loggers import init_root_logger
 from psycop_feature_generation.application_modules.project_setup import (
+    ProjectInfo,
     get_project_info,
     init_wandb,
 )
@@ -28,7 +30,7 @@ log = logging.getLogger()
 
 
 @wandb_alert_on_exception
-def main():
+def _generate_feature_set(project_info: ProjectInfo) -> Path:
     """Main function for loading, generating and evaluating a flattened
     dataset."""
     feature_specs = FeatureSpecifier(
@@ -53,8 +55,10 @@ def main():
         feature_specs=feature_specs,  # type: ignore
     )
 
+    return project_info.feature_set_path
 
-if __name__ == "__main__":
+
+def generate_feature_set() -> Path:
     # Run elements that are required before wandb init first,
     # then run the rest in main so you can wrap it all in
     # wandb_alert_on_exception, which will send a slack alert
@@ -77,4 +81,8 @@ if __name__ == "__main__":
         project_info=project_info,
     )
 
-    main()
+    return _generate_feature_set(project_info=project_info)
+
+
+if __name__ == "__main__":
+    generate_feature_set()
