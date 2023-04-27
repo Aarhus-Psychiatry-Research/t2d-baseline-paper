@@ -12,6 +12,7 @@ from psycop_feature_generation.loaders.raw.load_moves import (
 from psycop_feature_generation.loaders.raw.load_visits import (
     physical_visits_to_psychiatry,
 )
+
 from t2d.feature_generation.outcome_specification.combined import (
     get_first_diabetes_indicator,
 )
