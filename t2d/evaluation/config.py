@@ -16,7 +16,6 @@ best_run = Run(
 GENERAL_ARTIFACT_PATH = (
     EVALUATION_ROOT
     / "outputs_for_publishing"
-    / date_str
     / f"{best_run.group}"
     / f"{best_run.name}"
 )
