@@ -19,6 +19,7 @@ def df_to_eval_dataset(
         age=df["age"],
         is_female=df["is_female"],
         exclusion_timestamps=df["exclusion_timestamps"],
+        pred_time_uuids=df["pred_time_uuids"],
         custom_columns={col: df[col] for col in custom_columns}
         if custom_columns
         else None,
