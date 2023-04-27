@@ -103,7 +103,9 @@ def without_prevalent_diabetes(df: pl.DataFrame) -> pl.DataFrame:
     )
 
     add_stepdelta_from_df(
-        step_name="No prevalent diabetes", before_df=df, after_df=no_prevalent_diabetes,
+        step_name="No prevalent diabetes",
+        before_df=df,
+        after_df=no_prevalent_diabetes,
     )
 
     return no_prevalent_diabetes
