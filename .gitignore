@@ -9,8 +9,8 @@ __pycache__/
 _build/
 .tox
 
-# src/psycop-feature-generation
-# src/psycop-model-evaluation
+src/psycop-feature-generation
+src/psycop-model-evaluation
 
 #
 
