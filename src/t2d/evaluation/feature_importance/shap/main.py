@@ -8,7 +8,6 @@ from psycop_model_training.utils.col_name_inference import (
     infer_outcome_col_name,
     infer_predictor_col_name,
 )
-
 from t2d.evaluation.config import best_run
 from t2d.evaluation.feature_importance.shap.generate_shap_values import (
     generate_shap_values,

@@ -4,7 +4,6 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 import shap
-
 from t2d.evaluation.config import FIGURES_PATH
 from t2d.evaluation.feature_name_to_readable import feature_name_to_readable
 

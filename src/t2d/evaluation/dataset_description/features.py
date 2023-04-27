@@ -2,7 +2,6 @@
 from pathlib import Path
 
 import pandas as pd
-
 from t2d.evaluation.config import TABLES_PATH
 
 # %%

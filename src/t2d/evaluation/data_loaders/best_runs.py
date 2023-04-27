@@ -9,7 +9,6 @@ import pandas as pd
 import polars as pl
 from psycop_model_training.training_output.dataclasses import EvalDataset
 from sklearn.pipeline import Pipeline
-
 from t2d.evaluation.data_loaders.get_eval_dataset import df_to_eval_dataset
 
 

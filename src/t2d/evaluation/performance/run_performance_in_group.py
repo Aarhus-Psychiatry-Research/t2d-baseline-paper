@@ -1,7 +1,6 @@
 import datetime
 
 import pandas as pd
-
 from t2d.evaluation.config import current_group
 
 

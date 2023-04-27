@@ -3,7 +3,6 @@
 # Load the data #
 #################
 import polars as pl
-
 from t2d.evaluation.config import TABLES_PATH, best_run
 
 model_train_df = pl.concat(
@@ -27,7 +26,6 @@ flattened_combined = pl.concat([model_train_df, test_dataset], how="vertical")
 # %%
 import pandas as pd
 from psycop_model_evaluation.utils import bin_continuous_data
-
 from t2d.evaluation.dataset_description.table_one.table_one_lib import (
     RowSpecification,
     get_psychiatric_diagnosis_row_specs,

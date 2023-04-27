@@ -4,6 +4,12 @@ from typing import Sequence  # noqa
 
 import numpy as np
 from psycop_feature_generation.application_modules.project_setup import ProjectInfo
+from t2d.feature_generation.outcome_specification.combined import (  # noqa noqa: RUF100
+    get_first_diabetes_indicator,
+)
+from t2d.feature_generation.outcome_specification.lab_results import (  # noqa noqa: RUF100
+    get_first_diabetes_lab_result_above_threshold,
+)
 from timeseriesflattener.feature_spec_objects import (
     BaseModel,
     OutcomeGroupSpec,
@@ -12,13 +18,6 @@ from timeseriesflattener.feature_spec_objects import (
     PredictorSpec,
     StaticSpec,
     _AnySpec,
-)
-
-from t2d.feature_generation.outcome_specification.combined import (  # noqa noqa: RUF100
-    get_first_diabetes_indicator,
-)
-from t2d.feature_generation.outcome_specification.lab_results import (  # noqa noqa: RUF100
-    get_first_diabetes_lab_result_above_threshold,
 )
 
 log = logging.getLogger(__name__)

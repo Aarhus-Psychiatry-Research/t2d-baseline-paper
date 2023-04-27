@@ -1,7 +1,6 @@
 from psycop_model_evaluation.binary.time.absolute_plots import (
     plot_metric_by_absolute_time,
 )
-
 from t2d.evaluation.config import ROBUSTNESS_PATH, best_run
 
 

@@ -1,7 +1,6 @@
 from psycop_model_evaluation.binary.global_performance.precision_recall import (
     plot_precision_recall,
 )
-
 from t2d.evaluation.config import FIGURES_PATH, best_run
 
 

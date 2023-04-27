@@ -76,7 +76,7 @@ def without_prevalent_diabetes(df: pl.DataFrame) -> pl.DataFrame:
     first_diabetes_indicator = pl.from_pandas(get_first_diabetes_indicator())
 
     indicator_before_min_date = first_diabetes_indicator.filter(
-        pl.col("timestamp") < MIN_DATE
+        pl.col("timestamp") < MIN_DATE,
     )
 
     prediction_times_from_patients_with_diabetes = df.join(
@@ -103,7 +103,7 @@ def without_prevalent_diabetes(df: pl.DataFrame) -> pl.DataFrame:
     )
 
     add_stepdelta_from_df(
-        step_name="No prevalent diabetes", before_df=df, after_df=no_prevalent_diabetes
+        step_name="No prevalent diabetes", before_df=df, after_df=no_prevalent_diabetes,
     )
 
     return no_prevalent_diabetes
@@ -208,7 +208,7 @@ if __name__ == "__main__":
 
     for stepdelta in stepdeltas:
         print(
-            f"{stepdelta.step_name} dropped {stepdelta.n_dropped}, remaining: {stepdelta.n_after}"
+            f"{stepdelta.step_name} dropped {stepdelta.n_dropped}, remaining: {stepdelta.n_after}",
         )
 
     print(f"Remaining: {df.shape[0]}")
