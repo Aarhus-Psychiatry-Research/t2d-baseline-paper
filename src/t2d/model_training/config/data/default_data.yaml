@@ -2,7 +2,7 @@
 data:
   # General config
   n_training_samples: null
-  dir: "E:/shared_resources/t2d/feature_sets/psycop_t2d_adminmanber_features_2023_03_22_15_14"
+  dir: "E:/shared_resources/t2d/feature_sets/psycop_t2d_adminmanber_features_2023_04_27_14_25"
   suffix: parquet
 
   # Feature specs
