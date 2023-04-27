@@ -342,7 +342,6 @@ def test(
 
     if not pytest_args:
         pytest_args = [
-            "tests",
             "-n auto",
             "-rfE",
             "--failed-first",
