@@ -1,6 +1,6 @@
 from psycop_model_evaluation.binary.subgroups.sex import plot_roc_auc_by_sex
 
-from t2d.evaluation.best_runs import ROBUSTNESS_PATH, best_run
+from t2d.evaluation.config import ROBUSTNESS_PATH, best_run
 
 
 def roc_auc_by_sex():

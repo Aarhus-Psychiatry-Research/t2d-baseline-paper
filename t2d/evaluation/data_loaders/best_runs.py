@@ -2,7 +2,6 @@ import json
 import pickle
 from collections.abc import Sequence
 from dataclasses import dataclass
-from datetime import datetime
 from pathlib import Path
 from typing import Any, Literal, Optional
 
@@ -11,7 +10,7 @@ import polars as pl
 from psycop_model_training.training_output.dataclasses import EvalDataset
 from sklearn.pipeline import Pipeline
 
-from t2d.evaluation.data_loaders.load_true_data import df_to_eval_dataset
+from t2d.evaluation.data_loaders.get_eval_dataset import df_to_eval_dataset
 
 
 @dataclass
@@ -78,30 +77,6 @@ class Run:
     @property
     def pipe(self) -> Pipeline:
         return load_file_from_pkl(self.eval_dir / "pipe.pkl")
-
-
-current_group = RunGroup(name="mameluco-cobblestone")
-
-best_run = Run(
-    group=current_group,
-    name="airnwhiteback",
-    pos_rate=0.03,
-)
-
-# Get current date as string
-date_str = datetime.now().strftime("%Y-%m-%d")
-
-PROJECT_ROOT = Path(__file__).parent.parent.parent
-GENERAL_ARTIFACT_PATH = (
-    PROJECT_ROOT
-    / "outputs_for_publishing"
-    / date_str
-    / f"{best_run.group}"
-    / f"{best_run.name}"
-)
-FIGURES_PATH = GENERAL_ARTIFACT_PATH / "figures"
-TABLES_PATH = GENERAL_ARTIFACT_PATH / "tables"
-ROBUSTNESS_PATH = FIGURES_PATH / "robustness"
 
 
 def load_file_from_pkl(file_path: Path) -> Any:
