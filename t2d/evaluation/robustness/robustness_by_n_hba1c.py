@@ -6,7 +6,7 @@ from psycop_model_evaluation.base_charts import (
     plot_basic_chart,
 )
 from psycop_model_evaluation.binary.subgroups.base import create_roc_auc_by_input
-from psycop_model_training.training_output.model_evaluator import EvalDataset
+from psycop_model_training.training_output import EvalDataset
 
 from t2d.evaluation.best_runs import ROBUSTNESS_PATH, best_run
 
