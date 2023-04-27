@@ -12,7 +12,6 @@ from psycop_feature_generation.loaders.raw.load_moves import (
 from psycop_feature_generation.loaders.raw.load_visits import (
     physical_visits_to_psychiatry,
 )
-
 from t2d.feature_generation.outcome_specification.combined import (
     get_first_diabetes_indicator,
 )
@@ -29,16 +28,20 @@ AGE_COL_NAME = "age"
 @dataclass
 class StepDelta:
     step_name: str
-    n_before_filtering: int
-    n_dropped_by_filter: int
+    n_before: int
+    n_after: int
+
+    @property
+    def n_dropped(self) -> int:
+        return self.n_before - self.n_after
 
 
 def add_stepdelta_manual(step_name: str, n_before: int, n_after: int) -> None:
     stepdeltas.append(
         StepDelta(
             step_name=step_name,
-            n_before_filtering=n_before,
-            n_dropped_by_filter=n_before - n_after,
+            n_before=n_before,
+            n_after=n_after,
         ),
     )
 
@@ -51,30 +54,30 @@ def add_stepdelta_from_df(
     stepdeltas.append(
         StepDelta(
             step_name=step_name,
-            n_before_filtering=before_df.shape[0],
-            n_dropped_by_filter=before_df.shape[0] - after_df.shape[0],
+            n_before=before_df.shape[0],
+            n_after=after_df.shape[0],
         ),
     )
 
 
 def min_date(df: pl.DataFrame) -> pl.DataFrame:
-    after_df = df[df["timestamp"] > MIN_DATE]
-    add_stepdelta_from_df(step_name=__name__, before_df=df, after_df=after_df)
+    after_df = df.filter(pl.col("timestamp") > MIN_DATE)
+    add_stepdelta_from_df(step_name="min_date", before_df=df, after_df=after_df)
     return after_df
 
 
 def min_age(df: pl.DataFrame) -> pl.DataFrame:
-    after_df = df[df[AGE_COL_NAME] >= MIN_AGE]
-    add_stepdelta_from_df(step_name=__name__, before_df=df, after_df=after_df)
+    after_df = df.filter(pl.col(AGE_COL_NAME) >= MIN_AGE)
+    add_stepdelta_from_df(step_name="min_age", before_df=df, after_df=after_df)
     return after_df
 
 
 def without_prevalent_diabetes(df: pl.DataFrame) -> pl.DataFrame:
-    first_diabetes_indicator = pl.from_dataframe(get_first_diabetes_indicator())
+    first_diabetes_indicator = pl.from_pandas(get_first_diabetes_indicator())
 
-    indicator_before_min_date = first_diabetes_indicator[
-        first_diabetes_indicator["timestamp"] < MIN_DATE
-    ]
+    indicator_before_min_date = first_diabetes_indicator.filter(
+        pl.col("timestamp") < MIN_DATE
+    )
 
     prediction_times_from_patients_with_diabetes = df.join(
         indicator_before_min_date,
@@ -86,18 +89,24 @@ def without_prevalent_diabetes(df: pl.DataFrame) -> pl.DataFrame:
         "source",
     ).count()
 
-    for indicator in hit_indicator:
+    for indicator in hit_indicator.rows(named=True):
         add_stepdelta_manual(
             step_name=indicator["source"],
             n_before=df.shape[0],
-            n_after=df.shape[0] - indicator["value"],
+            n_after=df.shape[0] - indicator["count"],
         )
 
-    return df.join(
+    no_prevalent_diabetes = df.join(
         prediction_times_from_patients_with_diabetes,
         on="dw_ek_borger",
         how="anti",
     )
+
+    add_stepdelta_from_df(
+        step_name="No prevalent diabetes", before_df=df, after_df=no_prevalent_diabetes
+    )
+
+    return no_prevalent_diabetes
 
 
 def no_incident_diabetes(df: pl.DataFrame) -> pl.DataFrame:
@@ -123,7 +132,7 @@ def no_incident_diabetes(df: pl.DataFrame) -> pl.DataFrame:
     )
 
     add_stepdelta_from_df(
-        step_name=__name__,
+        step_name="no_incident_diabetes",
         before_df=df,
         after_df=not_after_incident_diabetes,
     )
@@ -138,12 +147,12 @@ def washout_move(df: pl.DataFrame) -> pl.DataFrame:
             entity_id_col_name="dw_ek_borger",
             quarantine_timestamps_df=load_move_into_rm_for_exclusion(),
             quarantine_interval_days=730,
-            timestamp_col_name="timestamp_contact",
+            timestamp_col_name="timestamp",
         ).run_filter(),
     )
 
     add_stepdelta_from_df(
-        step_name=__name__,
+        step_name="washout_move",
         before_df=df,
         after_df=not_within_two_years_from_move,
     )
@@ -156,8 +165,9 @@ def add_age(df: pl.DataFrame) -> pl.DataFrame:
 
     df = df.join(birthday_df, on="dw_ek_borger", how="inner")
     df = df.with_columns(
-        ((pl.col("timestamp") - pl.col("date_of_birth")) / 365.25).alias(AGE_COL_NAME),
+        ((pl.col("timestamp") - pl.col("date_of_birth")).dt.days()).alias(AGE_COL_NAME),
     )
+    df = df.with_columns((pl.col(AGE_COL_NAME) / 365.25).alias(AGE_COL_NAME))
 
     return df
 
@@ -175,10 +185,18 @@ if __name__ == "__main__":
         add_age,
         min_age,
         without_prevalent_diabetes,
+        no_incident_diabetes,
         washout_move,
     ]
 
     for step in steps:
         df = step(df)
+
+    for stepdelta in stepdeltas:
+        print(
+            f"{stepdelta.step_name} dropped {stepdelta.n_dropped}, remaining: {stepdelta.n_after}"
+        )
+
+    print(f"Remaining: {df.shape[0]}")
 
     print(stepdeltas)
