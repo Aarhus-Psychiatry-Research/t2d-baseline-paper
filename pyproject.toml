@@ -26,6 +26,7 @@ dependencies = [
   "psycop-feature-generation @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-feature-generation#egg=psycop_model_training",
   "psycop-model-evaluation @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-model-evaluation#egg=psycop_model_evaluation",
   "timeseriesflattener",
+  "psycopmlutils",
   "pydantic",
   "seaborn",
   "polars"
