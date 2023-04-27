@@ -39,19 +39,19 @@ def add_stepdelta_manual(step_name: str, n_before: int, n_after: int) -> None:
             step_name=step_name,
             n_before_filtering=n_before,
             n_dropped_by_filter=n_before - n_after,
-        )
+        ),
     )
 
 
 def add_stepdelta_from_df(
-    step_name: str, before_df: pl.DataFrame, after_df: pl.DataFrame
+    step_name: str, before_df: pl.DataFrame, after_df: pl.DataFrame,
 ) -> None:
     stepdeltas.append(
         StepDelta(
             step_name=step_name,
             n_before_filtering=before_df.shape[0],
             n_dropped_by_filter=before_df.shape[0] - after_df.shape[0],
-        )
+        ),
     )
 
 
@@ -81,7 +81,7 @@ def without_prevalent_diabetes(df: pl.DataFrame) -> pl.DataFrame:
     )
 
     hit_indicator = prediction_times_from_patients_with_diabetes.groupby(
-        "source"
+        "source",
     ).count()
 
     for indicator in hit_indicator:
@@ -92,13 +92,13 @@ def without_prevalent_diabetes(df: pl.DataFrame) -> pl.DataFrame:
         )
 
     return df.join(
-        prediction_times_from_patients_with_diabetes, on="dw_ek_borger", how="anti"
+        prediction_times_from_patients_with_diabetes, on="dw_ek_borger", how="anti",
     )
 
 
 def no_incident_diabetes(df: pl.DataFrame) -> pl.DataFrame:
     results_above_threshold = pl.from_pandas(
-        get_first_diabetes_lab_result_above_threshold()
+        get_first_diabetes_lab_result_above_threshold(),
     )
 
     contacts_with_hba1c = df.join(
@@ -109,15 +109,15 @@ def no_incident_diabetes(df: pl.DataFrame) -> pl.DataFrame:
     )
 
     after_incident_diabetes = contacts_with_hba1c.filter(
-        pl.col("timestamp") > pl.col("timestamp_result")
+        pl.col("timestamp") > pl.col("timestamp_result"),
     )
 
     not_after_incident_diabetes = contacts_with_hba1c.join(
-        after_incident_diabetes, on="dw_ek_borger", how="anti"
+        after_incident_diabetes, on="dw_ek_borger", how="anti",
     )
 
     add_stepdelta_from_df(
-        step_name=__name__, before_df=df, after_df=not_after_incident_diabetes
+        step_name=__name__, before_df=df, after_df=not_after_incident_diabetes,
     )
 
     return not_after_incident_diabetes
@@ -131,11 +131,11 @@ def washout_move(df: pl.DataFrame) -> pl.DataFrame:
             quarantine_timestamps_df=load_move_into_rm_for_exclusion(),
             quarantine_interval_days=730,
             timestamp_col_name="timestamp_contact",
-        ).run_filter()
+        ).run_filter(),
     )
 
     add_stepdelta_from_df(
-        step_name=__name__, before_df=df, after_df=not_within_two_years_from_move
+        step_name=__name__, before_df=df, after_df=not_within_two_years_from_move,
     )
 
     return not_within_two_years_from_move
@@ -146,7 +146,7 @@ def add_age(df: pl.DataFrame) -> pl.DataFrame:
 
     df = df.join(birthday_df, on="dw_ek_borger", how="inner")
     df = df.with_columns(
-        ((pl.col("timestamp") - pl.col("date_of_birth")) / 365.25).alias(AGE_COL_NAME)
+        ((pl.col("timestamp") - pl.col("date_of_birth")) / 365.25).alias(AGE_COL_NAME),
     )
 
     return df
@@ -157,7 +157,7 @@ if __name__ == "__main__":
         physical_visits_to_psychiatry(
             timestamps_only=True,
             timestamp_for_output="start",
-        )
+        ),
     )
 
     steps = [
