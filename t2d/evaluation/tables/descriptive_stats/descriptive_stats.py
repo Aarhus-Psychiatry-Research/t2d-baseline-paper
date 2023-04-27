@@ -4,7 +4,7 @@
 #################
 import polars as pl
 
-from t2d.evaluation.best_runs import TABLES_PATH, best_run
+from t2d.evaluation.config import TABLES_PATH, best_run
 
 model_train_df = pl.concat(
     [
