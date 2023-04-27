@@ -4,6 +4,9 @@
 #################
 import polars as pl
 from t2d.evaluation.config import TABLES_PATH, best_run
+from t2d.feature_generation.eligible_prediction_times.combined_filters import (
+    filter_prediction_times_by_eligibility,
+)
 
 model_train_df = pl.concat(
     [
@@ -17,7 +20,9 @@ test_dataset = best_run.get_flattened_split_as_lazyframe(split="test").with_colu
     dataset=pl.format("test"),
 )
 
-flattened_combined = pl.concat([model_train_df, test_dataset], how="vertical")
+flattened_combined = pl.concat([model_train_df, test_dataset], how="vertical").collect()
+
+flattened_combined = filter_prediction_times_by_eligibility(flattened_combined).lazy()
 
 # %%
 ####################
