@@ -85,7 +85,7 @@ exclude_lines = [
 ]
 
 [tool.pyright]
-exclude = [".*venv*", ".tox", "src"]
+exclude = [".*venv*", ".tox"]
 pythonPlatform = "Darwin"
 
 [tool.pytest.ini_options]
