@@ -3,13 +3,19 @@ from pathlib import Path
 
 from t2d.evaluation.data_loaders.best_runs import Run, RunGroup
 
+########################################
+# UPDATE THESE FOR ALTERNATIVE OUTPUTS #
+########################################
+RUN_GROUP = "mameluco-cobblestone"
+BEST_RUN_NAME = "airnwhiteback"
+
 date_str = datetime.now().strftime("%Y-%m-%d")
 EVALUATION_ROOT = Path(__file__).parent
 
-current_group = RunGroup(name="mameluco-cobblestone")
+current_group = RunGroup(name=RUN_GROUP)
 best_run = Run(
     group=current_group,
-    name="airnwhiteback",
+    name=BEST_RUN_NAME,
     pos_rate=0.03,
 )
 
