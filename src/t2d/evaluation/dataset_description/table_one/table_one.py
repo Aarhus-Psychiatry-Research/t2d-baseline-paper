@@ -21,7 +21,7 @@ test_dataset = best_run.get_flattened_split_as_lazyframe(split="test").with_colu
 )
 
 flattened_combined = pl.concat([model_train_df, test_dataset], how="vertical").rename(
-    {"prediction_time_uuid": "pred_time_uuid"}
+    {"prediction_time_uuid": "pred_time_uuid"},
 )
 
 # %%
@@ -32,12 +32,12 @@ pred_times_to_keep = get_eligible_prediction_times_as_polars()
 pred_times_to_keep_with_uuid = pred_times_to_keep.lazy().with_columns(
     pred_time_uuid=pl.col("dw_ek_borger").cast(pl.Utf8)
     + "-"
-    + pl.col("timestamp").dt.strftime(format="%Y-%m-%d-%H-%M-%S")
+    + pl.col("timestamp").dt.strftime(format="%Y-%m-%d-%H-%M-%S"),
 )
 
 # %%
 eligible_prediction_times = flattened_combined.join(
-    pred_times_to_keep_with_uuid, on="pred_time_uuid", how="inner"
+    pred_times_to_keep_with_uuid, on="pred_time_uuid", how="inner",
 )
 
 # %%
