@@ -1,6 +1,7 @@
 from psycop_model_evaluation.binary.time.timedelta_plots import (
     plot_sensitivity_by_time_to_event,
 )
+
 from t2d.evaluation.best_runs import FIGURES_PATH, best_run
 
 

@@ -1,4 +1,6 @@
 import pandas as pd
+from timeseriesflattener.utils import data_loaders
+
 from t2d.feature_generation.outcome_specification.lab_results import (
     get_first_diabetes_lab_result_above_threshold,
 )
@@ -11,7 +13,6 @@ from t2d.feature_generation.outcome_specification.t1d_diagnoses import (
 from t2d.feature_generation.outcome_specification.t2d_diagnoses import (
     get_first_type_2_diabetes_diagnosis,
 )
-from timeseriesflattener.utils import data_loaders
 
 
 @data_loaders.register("first_diabetes_indicator")
