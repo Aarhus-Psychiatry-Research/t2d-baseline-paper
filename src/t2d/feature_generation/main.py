@@ -22,9 +22,6 @@ from psycop_feature_generation.application_modules.wandb_utils import (
 from psycop_feature_generation.loaders.raw.load_moves import (
     load_move_into_rm_for_exclusion,
 )
-from psycop_feature_generation.loaders.raw.load_visits import (
-    physical_visits_to_psychiatry,
-)
 from t2d.feature_generation.eligible_prediction_times.loader import (
     get_eligible_prediction_times_as_pandas,
 )
