@@ -44,7 +44,9 @@ def add_stepdelta_manual(step_name: str, n_before: int, n_after: int) -> None:
 
 
 def add_stepdelta_from_df(
-    step_name: str, before_df: pl.DataFrame, after_df: pl.DataFrame,
+    step_name: str,
+    before_df: pl.DataFrame,
+    after_df: pl.DataFrame,
 ) -> None:
     stepdeltas.append(
         StepDelta(
@@ -92,7 +94,9 @@ def without_prevalent_diabetes(df: pl.DataFrame) -> pl.DataFrame:
         )
 
     return df.join(
-        prediction_times_from_patients_with_diabetes, on="dw_ek_borger", how="anti",
+        prediction_times_from_patients_with_diabetes,
+        on="dw_ek_borger",
+        how="anti",
     )
 
 
@@ -113,11 +117,15 @@ def no_incident_diabetes(df: pl.DataFrame) -> pl.DataFrame:
     )
 
     not_after_incident_diabetes = contacts_with_hba1c.join(
-        after_incident_diabetes, on="dw_ek_borger", how="anti",
+        after_incident_diabetes,
+        on="dw_ek_borger",
+        how="anti",
     )
 
     add_stepdelta_from_df(
-        step_name=__name__, before_df=df, after_df=not_after_incident_diabetes,
+        step_name=__name__,
+        before_df=df,
+        after_df=not_after_incident_diabetes,
     )
 
     return not_after_incident_diabetes
@@ -135,7 +143,9 @@ def washout_move(df: pl.DataFrame) -> pl.DataFrame:
     )
 
     add_stepdelta_from_df(
-        step_name=__name__, before_df=df, after_df=not_within_two_years_from_move,
+        step_name=__name__,
+        before_df=df,
+        after_df=not_within_two_years_from_move,
     )
 
     return not_within_two_years_from_move
