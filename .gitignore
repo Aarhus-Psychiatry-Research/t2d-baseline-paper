@@ -34,3 +34,4 @@ src/psycop-model-training
 outputs_for_publishing/
 joblib
 *_cache/
+wandb
