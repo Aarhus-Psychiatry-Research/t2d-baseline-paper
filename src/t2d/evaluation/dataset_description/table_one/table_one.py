@@ -37,7 +37,9 @@ pred_times_to_keep_with_uuid = pred_times_to_keep.lazy().with_columns(
 
 # %%
 eligible_prediction_times = flattened_combined.join(
-    pred_times_to_keep_with_uuid, on="pred_time_uuid", how="inner",
+    pred_times_to_keep_with_uuid,
+    on="pred_time_uuid",
+    how="inner",
 )
 
 # %%
