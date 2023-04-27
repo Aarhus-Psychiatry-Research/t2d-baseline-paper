@@ -26,7 +26,7 @@ flattened_combined = pl.concat([model_train_df, test_dataset], how="vertical")
 # %%
 import pandas as pd
 from psycop_model_evaluation.utils import bin_continuous_data
-from t2d.evaluation.tables.descriptive_stats import (
+from t2d.evaluation.tables.descriptive_stats.descriptive_stats_lib import (
     RowSpecification,
     get_psychiatric_diagnosis_row_specs,
 )
@@ -99,7 +99,7 @@ visit_flattened_df["age_grouped"] = pd.Series(
 ).astype(str)
 
 # %%
-from t2d.evaluation.tables.descriptive_stats import (
+from t2d.evaluation.tables.descriptive_stats.descriptive_stats_lib import (
     create_table,
 )
 
