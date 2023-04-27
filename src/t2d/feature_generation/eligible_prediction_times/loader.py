@@ -6,11 +6,10 @@ from psycop_feature_generation.loaders.raw.load_visits import (
 from t2d.feature_generation.eligible_prediction_times.combined_filters import (
     filter_prediction_times_by_eligibility,
 )
+from t2d.feature_generation.eligible_prediction_times.tooling import stepdeltas
 
-stepdeltas = []
 
-
-def get_eligible_prediction_times_as_pandas() -> pd.DataFrame:
+def get_eligible_prediction_times_as_polars() -> pl.DataFrame:
     df = pl.from_pandas(
         physical_visits_to_psychiatry(
             timestamps_only=True,
@@ -18,11 +17,13 @@ def get_eligible_prediction_times_as_pandas() -> pd.DataFrame:
         ),
     )
 
-    df = filter_prediction_times_by_eligibility(
+    return filter_prediction_times_by_eligibility(
         df=df,
     )
 
-    return df.to_pandas()
+
+def get_eligible_prediction_times_as_pandas() -> pd.DataFrame:
+    return get_eligible_prediction_times_as_polars().to_pandas()
 
 
 if __name__ == "__main__":

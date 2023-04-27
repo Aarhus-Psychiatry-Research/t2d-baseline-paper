@@ -4,8 +4,8 @@
 #################
 import polars as pl
 from t2d.evaluation.config import TABLES_PATH, best_run
-from t2d.feature_generation.eligible_prediction_times.combined_filters import (
-    filter_prediction_times_by_eligibility,
+from t2d.feature_generation.eligible_prediction_times.loader import (
+    get_eligible_prediction_times_as_polars,
 )
 
 model_train_df = pl.concat(
@@ -20,15 +20,30 @@ test_dataset = best_run.get_flattened_split_as_lazyframe(split="test").with_colu
     dataset=pl.format("test"),
 )
 
-flattened_combined = pl.concat([model_train_df, test_dataset], how="vertical").collect()
+flattened_combined = pl.concat([model_train_df, test_dataset], how="vertical").rename(
+    {"prediction_time_uuid": "pred_time_uuid"}
+)
 
-flattened_combined = filter_prediction_times_by_eligibility(flattened_combined).lazy()
+# %%
+pred_times_to_keep = get_eligible_prediction_times_as_polars()
+
+
+# %%
+pred_times_to_keep_with_uuid = pred_times_to_keep.lazy().with_columns(
+    pred_time_uuid=pl.col("dw_ek_borger").cast(pl.Utf8)
+    + "-"
+    + pl.col("timestamp").dt.strftime(format="%Y-%m-%d-%H-%M-%S")
+)
+
+# %%
+eligible_prediction_times = flattened_combined.join(
+    pred_times_to_keep_with_uuid, on="pred_time_uuid", how="inner"
+)
 
 # %%
 ####################
 # Grouped by visit #
 ####################
-# %%
 import pandas as pd
 from psycop_model_evaluation.utils import bin_continuous_data
 from t2d.evaluation.dataset_description.table_one.table_one_lib import (
@@ -82,7 +97,7 @@ visit_row_specs = [
 age_bins = [18, *list(range(19, 90, 10))]
 
 visit_flattened_df = (
-    flattened_combined.select(
+    eligible_prediction_times.select(
         [
             r.source_col_name
             for r in visit_row_specs
@@ -140,7 +155,7 @@ patient_row_specs = [
 
 patient_df = (
     (
-        flattened_combined.groupby("dw_ek_borger")
+        eligible_prediction_times.groupby("dw_ek_borger")
         .agg(
             pred_sex_female=pl.col("pred_sex_female").first(),
             incident_t2d=pl.col(

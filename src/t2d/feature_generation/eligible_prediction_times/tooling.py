@@ -1,7 +1,6 @@
 from dataclasses import dataclass
 
 import polars as pl
-from t2d.feature_generation.eligible_prediction_times.loader import stepdeltas
 
 
 @dataclass
@@ -13,6 +12,9 @@ class StepDelta:
     @property
     def n_dropped(self) -> int:
         return self.n_before - self.n_after
+
+
+stepdeltas = []
 
 
 def add_stepdelta_manual(step_name: str, n_before: int, n_after: int) -> None:
