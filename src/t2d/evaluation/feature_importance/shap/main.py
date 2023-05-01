@@ -1,10 +1,10 @@
 import pandas as pd
-from psycop_model_training.config_schemas.full_config import FullConfigSchema
-from psycop_model_training.preprocessing.post_split.pipeline import (
+from psycop.model_training.config_schemas.full_config import FullConfigSchema
+from psycop.model_training.preprocessing.post_split.pipeline import (
     create_post_split_pipeline,
 )
-from psycop_model_training.training.train_and_predict import train_and_predict
-from psycop_model_training.utils.col_name_inference import (
+from psycop.model_training.training.train_and_predict import train_and_predict
+from psycop.model_training.utils.col_name_inference import (
     infer_outcome_col_name,
     infer_predictor_col_name,
 )

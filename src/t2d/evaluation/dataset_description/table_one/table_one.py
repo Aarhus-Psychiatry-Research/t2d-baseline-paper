@@ -47,7 +47,7 @@ eligible_prediction_times = flattened_combined.join(
 # Grouped by visit #
 ####################
 import pandas as pd
-from psycop_model_evaluation.utils import bin_continuous_data
+from psycop.model_evaluation.utils import bin_continuous_data
 from t2d.evaluation.dataset_description.table_one.table_one_lib import (
     RowSpecification,
     get_psychiatric_diagnosis_row_specs,

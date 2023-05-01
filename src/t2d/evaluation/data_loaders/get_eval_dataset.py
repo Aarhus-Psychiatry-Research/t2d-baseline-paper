@@ -2,7 +2,7 @@ from collections.abc import Sequence
 from typing import Optional
 
 import pandas as pd
-from psycop_model_training.training_output.dataclasses import EvalDataset
+from psycop.model_training.training_output.dataclasses import EvalDataset
 
 
 def df_to_eval_dataset(
