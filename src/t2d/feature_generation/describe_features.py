@@ -3,7 +3,7 @@
 import logging
 from pathlib import Path
 
-from psycop_feature_generation.application_modules.project_setup import (
+from psycop.feature_generation.application_modules.project_setup import (
     get_project_info,
 )
 from timeseriesflattener.utils import load_dataset_from_file
@@ -42,7 +42,7 @@ dataset = load_dataset_from_file(
 )
 
 # %%
-from psycop_feature_generation.data_checks.flattened.feature_describer import (
+from psycop.feature_generation.data_checks.flattened.feature_describer import (
     save_feature_descriptive_stats_from_dir,
 )
 

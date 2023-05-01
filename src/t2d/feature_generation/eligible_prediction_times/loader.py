@@ -1,6 +1,6 @@
 import pandas as pd
 import polars as pl
-from psycop_feature_generation.loaders.raw.load_visits import (
+from psycop.feature_generation.loaders.raw.load_visits import (
     physical_visits_to_psychiatry,
 )
 from t2d.feature_generation.eligible_prediction_times.combined_filters import (
