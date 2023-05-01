@@ -9,6 +9,8 @@ __pycache__/
 _build/
 .tox
 
+src/psycop-*
+
 #
 
 # VSCode
@@ -31,3 +33,5 @@ src/psycop-model-training
 outputs_for_publishing/
 joblib
 *_cache/
+wandb
+multirun
