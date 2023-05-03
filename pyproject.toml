@@ -199,7 +199,7 @@ description: run unit tests
 extras = tests, src
 use_develop = true
 commands =
-  pytest -n auto {posargs:test}
+  pytest src/t2d -n auto {posargs:test}
 
 [testenv:type]
 description: run type checks
