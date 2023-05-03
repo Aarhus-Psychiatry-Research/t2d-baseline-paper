@@ -7,6 +7,9 @@ from typing import Any, Literal, Optional
 
 import pandas as pd
 import polars as pl
+from psycop.model_training.config_schemas.conf_utils import (
+    FullConfigSchema,
+)
 from psycop.model_training.training_output.dataclasses import EvalDataset
 from sklearn.pipeline import Pipeline
 from t2d.evaluation.data_loaders.get_eval_dataset import df_to_eval_dataset
@@ -56,12 +59,16 @@ class Run:
         return pl.scan_parquet(self._get_flattened_split_path(split=split))
 
     @property
-    def cfg(self):  # -> FullConfigSchema: # noqa
+    def cfg(self) -> FullConfigSchema:  # noqa
         return load_file_from_pkl(self.eval_dir / "cfg.pkl")
 
     @property
     def eval_dir(self) -> Path:
         return self.group.group_dir / self.name
+
+    @property
+    def model_type(self) -> str:
+        return self.cfg.model.name
 
     def get_eval_dataset(
         self,
