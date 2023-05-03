@@ -35,3 +35,4 @@ joblib
 *_cache/
 wandb
 multirun
+build
