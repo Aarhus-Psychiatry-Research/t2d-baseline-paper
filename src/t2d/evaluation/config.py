@@ -7,9 +7,7 @@ from t2d.evaluation.data_loaders.best_runs import Run, RunGroup
 # UPDATE THESE FOR ALTERNATIVE OUTPUTS #
 ########################################
 RUN_GROUP = "mistouching-unwontedness"
-BEST_RUN_NAME = "townwardspluralistic"
-
-# TODO: Update RUN_GROUP with latest training
+BEST_RUN_NAME = "phototonicunelucidated"
 
 date_str = datetime.now().strftime("%Y-%m-%d")
 EVALUATION_ROOT = Path(__file__).parent
@@ -24,7 +22,7 @@ best_run = Run(
 GENERAL_ARTIFACT_PATH = (
     EVALUATION_ROOT
     / "outputs_for_publishing"
-    / f"{best_run.group}"
+    / f"{best_run.group.name}"
     / f"{best_run.name}"
 )
 FIGURES_PATH = GENERAL_ARTIFACT_PATH / "figures"
