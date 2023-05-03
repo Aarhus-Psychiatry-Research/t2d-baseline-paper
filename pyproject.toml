@@ -57,7 +57,7 @@ tests = [
   "tox"
 ]
 src = [
-  "psycop @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-common.git"
+  "psycop @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-common.git@v0.61.0"
 ]
 
 [project.urls]
