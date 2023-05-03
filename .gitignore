@@ -36,3 +36,4 @@ joblib
 wandb
 multirun
 build
+src/psycop
