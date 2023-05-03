@@ -54,9 +54,7 @@ tests = [
   "tox"
 ]
 src = [
-  "psycop-model-training @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-model-training#egg=psycop_model_training",
-  "psycop-feature-generation @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-feature-generation#egg=psycop_model_training",
-  "psycop-model-evaluation @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-model-evaluation#egg=psycop_model_evaluation"
+  "psycop-common @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-common#egg=psycop",
 ]
 
 [project.urls]
