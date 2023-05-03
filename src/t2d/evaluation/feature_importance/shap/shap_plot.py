@@ -103,7 +103,7 @@ def plot_shap_scatter(
                     color="orange",
                     alpha=0.2,
                 )
-                plt.axhline(y=mean_if_nan, color="orange")
+                plt.axhline(y=mean_if_nan, color="orange")  # type: ignore
 
                 plt.text(
                     x=1,

@@ -35,4 +35,5 @@ joblib
 *_cache/
 wandb
 multirun
+build
 src/psycop

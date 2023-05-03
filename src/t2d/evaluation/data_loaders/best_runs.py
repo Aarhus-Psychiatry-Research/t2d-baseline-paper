@@ -59,8 +59,10 @@ class Run:
         return pl.scan_parquet(self._get_flattened_split_path(split=split))
 
     @property
-    def cfg(self) -> FullConfigSchema:  # noqa
-        return load_file_from_pkl(self.eval_dir / "cfg.pkl")
+    def cfg(self) -> FullConfigSchema:
+        # Loading the json instead of the .pkl makes us independent
+        # of whether the imports in psycop-common model-training have changed
+        return FullConfigSchema.parse_obj(self.get_cfg_as_json())
 
     @property
     def eval_dir(self) -> Path:
@@ -69,6 +71,11 @@ class Run:
     @property
     def model_type(self) -> str:
         return self.cfg.model.name
+
+    def get_cfg_as_json(self) -> FullConfigSchema:
+        # Load json
+        path = self.eval_dir / "cfg.json"
+        return json.loads(json.loads(path.read_text()))
 
     def get_eval_dataset(
         self,

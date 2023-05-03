@@ -26,7 +26,8 @@ dependencies = [
   "psycopmlutils",
   "pydantic",
   "seaborn",
-  "polars"
+  "polars",
+  "tableone"
 ]
 
 [project.license]
@@ -46,7 +47,7 @@ dev = [
 ]
 type = [
   "pyright",
-  "pyright-polite",
+  "pyright-polite"
 ]
 tests = [
   "pytest>=7.1.3,<7.3.0",
@@ -56,7 +57,7 @@ tests = [
   "tox"
 ]
 src = [
-  "psycop @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-common#egg=psycop"
+  "psycop @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-common.git@v0.61.0"
 ]
 
 [project.urls]
@@ -85,7 +86,7 @@ exclude_lines = [
 ]
 
 [tool.pyright]
-exclude = [".*venv*", ".tox", "src/psycop"]
+exclude = [".*venv*", ".tox", "src/psycop", "build"]
 pythonPlatform = "Darwin"
 
 [tool.pytest.ini_options]
@@ -198,7 +199,7 @@ description: run unit tests
 extras = tests, src
 use_develop = true
 commands =
-  pytest -n auto {posargs:test}
+  pytest src/t2d -n auto {posargs:test}
 
 [testenv:type]
 description: run type checks
