@@ -47,7 +47,7 @@ class FeatureSpecifier:
         """Get static predictor specs."""
         return [
             StaticSpec(
-                values_loader="sex_female",
+                values_loader="sex_female",  # type: ignore
                 input_col_name_override="sex_female",
                 prefix=self.project_info.prefix.predictor,
             ),
@@ -58,24 +58,24 @@ class FeatureSpecifier:
         log.info("-------- Generating metadata specs --------")
 
         if self.min_set_for_debug:
-            return [
+            return [  # type: ignore
                 StaticSpec(
-                    values_loader="first_diabetes_indicator",
+                    values_loader="first_diabetes_indicator",  # type: ignore
                     input_col_name_override="timestamp",
                     output_col_name_override="first_diabetes_indicator",
                     prefix="",
                 ),
             ]
 
-        return [
+        return [  # type: ignore
             StaticSpec(
-                values_loader="first_diabetes_lab_result",
+                values_loader="first_diabetes_lab_result",  # type: ignore
                 input_col_name_override="timestamp",
                 output_col_name_override="timestamp_first_diabetes_lab_result",
                 prefix="",
             ),
             StaticSpec(
-                values_loader="first_diabetes_indicator",
+                values_loader="first_diabetes_indicator",  # type: ignore
                 input_col_name_override="timestamp",
                 output_col_name_override="first_diabetes_indicator",
                 prefix="",
@@ -119,9 +119,9 @@ class FeatureSpecifier:
 
     def _get_medication_specs(
         self,
-        resolve_multiple: Sequence[str],
-        interval_days: Sequence[int],
-        allowed_nan_value_prop: Sequence[float],
+        resolve_multiple: list[str],
+        interval_days: list[float],
+        allowed_nan_value_prop: list[float],
     ) -> list[PredictorSpec]:
         """Get medication specs."""
         log.info("-------- Generating medication specs --------")
@@ -143,7 +143,7 @@ class FeatureSpecifier:
                 "benzodiazepine_related_sleeping_agents",
             ),
             lookbehind_days=interval_days,
-            resolve_multiple_fn=resolve_multiple,
+            resolve_multiple_fn=resolve_multiple,  # type: ignore
             fallback=[0],
             allowed_nan_value_prop=allowed_nan_value_prop,
         ).create_combinations()
@@ -156,7 +156,7 @@ class FeatureSpecifier:
                 "diuretics",
             ),
             lookbehind_days=interval_days,
-            resolve_multiple_fn=resolve_multiple,
+            resolve_multiple_fn=resolve_multiple,  # type: ignore
             fallback=[0],
             allowed_nan_value_prop=allowed_nan_value_prop,
         ).create_combinations()
@@ -165,9 +165,9 @@ class FeatureSpecifier:
 
     def _get_diagnoses_specs(
         self,
-        resolve_multiple: Sequence[str],
-        interval_days: Sequence[int],
-        allowed_nan_value_prop: Sequence[float],
+        resolve_multiple: list[str],
+        interval_days: list[float],
+        allowed_nan_value_prop: list[float],
     ) -> list[PredictorSpec]:
         """Get diagnoses specs."""
         log.info("-------- Generating diagnoses specs --------")
@@ -180,7 +180,7 @@ class FeatureSpecifier:
                 "sleep_apnea",
                 "gerd",
             ),
-            resolve_multiple_fn=resolve_multiple,
+            resolve_multiple_fn=resolve_multiple,  # type: ignore
             lookbehind_days=interval_days,
             fallback=[0],
             allowed_nan_value_prop=allowed_nan_value_prop,
@@ -199,7 +199,7 @@ class FeatureSpecifier:
                 "f8_disorders",
                 "hyperkinetic_disorders",
             ),
-            resolve_multiple_fn=resolve_multiple,
+            resolve_multiple_fn=resolve_multiple,  # type: ignore
             lookbehind_days=interval_days,
             fallback=[0],
             allowed_nan_value_prop=allowed_nan_value_prop,
@@ -209,9 +209,9 @@ class FeatureSpecifier:
 
     def _get_lab_result_specs(
         self,
-        resolve_multiple: Sequence[str],
-        interval_days: Sequence[int],
-        allowed_nan_value_prop: Sequence[float],
+        resolve_multiple: list[str],
+        interval_days: list[float],
+        allowed_nan_value_prop: list[float],
     ) -> list[PredictorSpec]:
         """Get lab result specs."""
         log.info("-------- Generating lab result specs --------")
@@ -227,7 +227,7 @@ class FeatureSpecifier:
                 "arterial_p_glc",
                 "urinary_glc",
             ),
-            resolve_multiple_fn=resolve_multiple,
+            resolve_multiple_fn=resolve_multiple,  # type: ignore
             lookbehind_days=interval_days,
             fallback=[np.nan],
             allowed_nan_value_prop=allowed_nan_value_prop,
@@ -243,7 +243,7 @@ class FeatureSpecifier:
                 "egfr",
                 "albumine_creatinine_ratio",
             ),
-            resolve_multiple_fn=resolve_multiple,
+            resolve_multiple_fn=resolve_multiple,  # type: ignore
             lookbehind_days=interval_days,
             fallback=[np.nan],
             allowed_nan_value_prop=allowed_nan_value_prop,
@@ -268,8 +268,8 @@ class FeatureSpecifier:
             ]
 
         resolve_multiple = ["max", "min", "mean", "latest"]
-        interval_days = [30, 180, 365, 730, 1095, 1460, 1825]
-        allowed_nan_value_prop = [0]
+        interval_days: list[float] = [30, 180, 365, 730, 1095, 1460, 1825]
+        allowed_nan_value_prop: list[float] = [0]
 
         lab_results = self._get_lab_result_specs(
             resolve_multiple,

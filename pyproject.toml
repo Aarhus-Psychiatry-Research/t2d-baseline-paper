@@ -26,7 +26,8 @@ dependencies = [
   "psycopmlutils",
   "pydantic",
   "seaborn",
-  "polars"
+  "polars",
+  "tableone"
 ]
 
 [project.license]
