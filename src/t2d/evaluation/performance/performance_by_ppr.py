@@ -6,15 +6,16 @@ from t2d.evaluation.config import TABLES_PATH, best_run
 
 
 def output_performance_by_ppr():
+    eval_dataset = best_run.get_eval_dataset()
+
     df: pd.DataFrame = generate_performance_by_ppr_table(  # type: ignore
-        eval_dataset=best_run.get_eval_dataset(),
+        eval_dataset=eval_dataset,
         positive_rates=[0.05, 0.04, 0.03, 0.02, 0.01],
     )
 
     table_path = TABLES_PATH / "performance_by_ppr.xlsx"
+    TABLES_PATH.mkdir(exist_ok=True, parents=True)
     df.to_excel(table_path)
-
-    pass
 
 
 if __name__ == "__main__":
