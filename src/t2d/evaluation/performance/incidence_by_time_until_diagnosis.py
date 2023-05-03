@@ -1,4 +1,4 @@
-from psycop_model_evaluation.binary.time.timedelta_plots import (
+from psycop.model_evaluation.binary.time.timedelta_plots import (
     plot_time_from_first_positive_to_event,
 )
 from t2d.evaluation.config import FIGURES_PATH, best_run

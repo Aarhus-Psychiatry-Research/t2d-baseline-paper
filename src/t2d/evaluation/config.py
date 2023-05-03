@@ -9,6 +9,8 @@ from t2d.evaluation.data_loaders.best_runs import Run, RunGroup
 RUN_GROUP = "mistouching-unwontedness"
 BEST_RUN_NAME = "airnwhiteback"
 
+# TODO: Update RUN_GROUP with latest training
+
 date_str = datetime.now().strftime("%Y-%m-%d")
 EVALUATION_ROOT = Path(__file__).parent
 
