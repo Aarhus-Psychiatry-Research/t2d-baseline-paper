@@ -24,14 +24,6 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Cache tox
-        uses: actions/cache@v3.2.6
-        id: cache_tox
-        with:
-          path: |
-            .tox
-          key: ${{ runner.os }}-${{ matrix.python-version }}-static-type-checks
-
       - name: Set up Python
         uses: actions/setup-python@v4
         id: setup_python
