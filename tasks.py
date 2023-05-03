@@ -253,6 +253,39 @@ def pre_commit(c: Context, auto_fix: bool):
 
 
 @task
+def create_pr_from_staged_changes(c: Context):
+    start_branch_name = c.run(
+        "git rev-parse --abbrev-ref HEAD",
+        hide=True,
+    ).stdout.strip()
+
+    pr_title = input("Enter PR title: ")
+    branch_title = re.sub(r"[\-\s\:\,]", "_", pr_title).lower()
+    c.run(f"git checkout -b {branch_title}")
+    c.run(f"git commit -m '{pr_title}'")
+    update_branch(c)
+    update_pr(c)
+
+    checkout_previous_branch = input("Checkout previous branch? [y/n]: ")
+    if checkout_previous_branch.lower() == "y":
+        c.run(f"git checkout {start_branch_name}")
+
+
+@task
+def test_for_venv(c: Context):
+    """Test if the user is in a virtual environment."""
+    if NOT_WINDOWS:
+        python_path = c.run("which python", pty=NOT_WINDOWS, hide=True).stdout
+
+        if python_path is None or "venv" not in python_path:
+            print(f"\n{msg_type.FAIL} Not in a virtual environment.\n")
+            print("Activate your virtual environment and try again. \n")
+            exit(1)
+    else:
+        print("Running on Windows, not checking for virtual environment.")
+
+
+@task
 def static_type_checks(c: Context):
     echo_header(f"{msg_type.CLEAN} Running static type checks")
     c.run("tox -e type", pty=NOT_WINDOWS)
@@ -394,6 +427,7 @@ def test_for_rej():
 @task
 def lint(c: Context, auto_fix: bool = False):
     """Lint the project."""
+    test_for_venv(c)
     test_for_rej()
     pre_commit(c=c, auto_fix=auto_fix)
     static_type_checks(c)
