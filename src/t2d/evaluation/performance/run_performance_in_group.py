@@ -31,13 +31,14 @@ if __name__ == "__main__":
 
     now = datetime.datetime.now()
 
-    best_in_last_hour = (
-        all_models[all_models["timestamp"] > now - datetime.timedelta(hours=1)]
-        .sort_values("roc_auc", ascending=False)
-        .head(1)
-        .reset_index(drop=True)["roc_auc"][0]
-    )
     try:
+        best_in_last_hour = (
+            all_models[all_models["timestamp"] > now - datetime.timedelta(hours=1)]
+            .sort_values("roc_auc", ascending=False)
+            .head(1)
+            .reset_index(drop=True)["roc_auc"][0]
+        )
+
         best_before_last_hour = (
             all_models[all_models["timestamp"] < now - datetime.timedelta(hours=1)]
             .sort_values("roc_auc", ascending=False)
@@ -45,9 +46,10 @@ if __name__ == "__main__":
             .reset_index(drop=True)["roc_auc"][0]
         )
     except KeyError:
+        best_in_last_hour = None
         best_before_last_hour = None
 
-    if best_before_last_hour is not None:
+    if best_before_last_hour is not None and best_in_last_hour is not None:
         improvement_over_last_hour = best_in_last_hour - best_before_last_hour
         auroc_improvement_threshold = 0.001
         if improvement_over_last_hour < auroc_improvement_threshold:
