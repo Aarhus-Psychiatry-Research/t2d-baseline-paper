@@ -57,7 +57,7 @@ tests = [
   "tox"
 ]
 src = [
-  "psycop @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-common.git@v0.61.0"
+  "psycop @ git+https://github.com/Aarhus-Psychiatry-Research/psycop-common.git"
 ]
 
 [project.urls]
@@ -194,20 +194,13 @@ legacy_tox_ini = """
 [tox]
 envlist = py{39,310}
 
-[testenv]
-description: run unit tests
-extras = tests, src
-use_develop = true
-commands =
-  pytest src/t2d -n auto {posargs:test}
-
-[testenv:type]
-description: run type checks
+[testenv:{test,type}]
 extras = test, dev, src, type
-basepython = py39 # Setting these explicitly avoid recreating env if your shell is set to a different version
 use_develop = true
 commands =
-  pyright .
+  test: pytest src/t2d -n auto {posargs:test}
+  type: pyright .
+  
 
 [testenv:docs]
 description: build docs
