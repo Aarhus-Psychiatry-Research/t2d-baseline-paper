@@ -59,7 +59,7 @@ class Run:
         return pl.scan_parquet(self._get_flattened_split_path(split=split))
 
     @property
-    def cfg(self) -> FullConfigSchema:  # noqa
+    def cfg(self) -> FullConfigSchema:
         return load_file_from_pkl(self.eval_dir / "cfg.pkl")
 
     @property
