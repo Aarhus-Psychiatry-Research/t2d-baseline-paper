@@ -7,7 +7,7 @@ from t2d.evaluation.data_loaders.best_runs import Run, RunGroup
 # UPDATE THESE FOR ALTERNATIVE OUTPUTS #
 ########################################
 RUN_GROUP = "mistouching-unwontedness"
-BEST_RUN_NAME = "airnwhiteback"
+BEST_RUN_NAME = "townwardspluralistic"
 
 # TODO: Update RUN_GROUP with latest training
 
