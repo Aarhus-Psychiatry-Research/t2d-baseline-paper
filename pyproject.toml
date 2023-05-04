@@ -27,7 +27,8 @@ dependencies = [
   "pydantic",
   "seaborn",
   "polars",
-  "tableone"
+  "tableone",
+  "deepchecks==0.13.1",
 ]
 
 [project.license]
