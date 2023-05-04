@@ -12,7 +12,6 @@ from psycop.model_training.config_schemas.conf_utils import (
 )
 from psycop.model_training.training_output.dataclasses import EvalDataset
 from sklearn.pipeline import Pipeline
-from t2d.evaluation.data_loaders.get_eval_dataset import df_to_eval_dataset
 
 
 @dataclass
@@ -95,3 +94,24 @@ class Run:
 def load_file_from_pkl(file_path: Path) -> Any:
     with file_path.open("rb") as f:
         return pickle.load(f)
+
+
+def df_to_eval_dataset(
+    df: pd.DataFrame,
+    custom_columns: Optional[Sequence[str]],
+) -> EvalDataset:
+    """Convert dataframe to EvalDataset."""
+    return EvalDataset(
+        ids=df["ids"],
+        y=df["y"],
+        y_hat_probs=df["y_hat_probs"],
+        pred_timestamps=df["pred_timestamps"],
+        outcome_timestamps=df["outcome_timestamps"],
+        age=df["age"],
+        is_female=df["is_female"],
+        exclusion_timestamps=df["exclusion_timestamps"],
+        pred_time_uuids=df["pred_time_uuids"],
+        custom_columns={col: df[col] for col in custom_columns}
+        if custom_columns
+        else None,
+    )
