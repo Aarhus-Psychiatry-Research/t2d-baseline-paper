@@ -7,7 +7,7 @@ from psycop.model_evaluation.base_charts import (
 )
 from psycop.model_evaluation.binary.subgroups.base import create_roc_auc_by_input
 from psycop.model_training.training_output.model_evaluator import EvalDataset
-from t2d.evaluation.config import ROBUSTNESS_PATH, best_run
+from t2d.paper_outputs.config import ROBUSTNESS_PATH, best_run
 
 
 def plot_performance_by_n_hba1c(

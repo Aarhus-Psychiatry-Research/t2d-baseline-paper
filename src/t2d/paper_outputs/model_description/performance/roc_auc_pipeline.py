@@ -1,5 +1,5 @@
 from psycop.model_evaluation.binary.global_performance.roc_auc import plot_auc_roc
-from t2d.evaluation.config import FIGURES_PATH, best_run
+from t2d.paper_outputs.config import FIGURES_PATH, best_run
 
 
 def roc_auc_pipeline():

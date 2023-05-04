@@ -2,7 +2,7 @@
 from pathlib import Path
 
 import pandas as pd
-from t2d.evaluation.config import TABLES_PATH
+from t2d.paper_outputs.config import TABLES_PATH
 
 # %%
 feature_description_path = Path(

@@ -1,7 +1,7 @@
 from datetime import datetime
 from pathlib import Path
 
-from t2d.evaluation.data_loaders.best_runs import Run, RunGroup
+from t2d.utils.best_runs import Run, RunGroup
 
 ########################################
 # UPDATE THESE FOR ALTERNATIVE OUTPUTS #

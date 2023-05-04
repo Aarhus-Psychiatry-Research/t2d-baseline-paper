@@ -2,7 +2,7 @@ import pandas as pd
 from psycop.model_evaluation.binary.performance_by_ppr.performance_by_ppr import (
     generate_performance_by_ppr_table,
 )
-from t2d.evaluation.config import TABLES_PATH, best_run
+from t2d.paper_outputs.config import TABLES_PATH, best_run
 
 
 def output_performance_by_ppr():

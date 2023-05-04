@@ -1,7 +1,7 @@
 import datetime
 
 import pandas as pd
-from t2d.evaluation.config import current_group
+from t2d.paper_outputs.config import current_group
 
 
 def get_all_runs_df() -> pd.DataFrame:

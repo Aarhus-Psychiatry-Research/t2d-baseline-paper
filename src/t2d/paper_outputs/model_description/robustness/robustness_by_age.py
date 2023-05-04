@@ -1,7 +1,7 @@
 from psycop.model_evaluation.binary.subgroups.age import (
     plot_roc_auc_by_age,
 )
-from t2d.evaluation.config import ROBUSTNESS_PATH, best_run
+from t2d.paper_outputs.config import ROBUSTNESS_PATH, best_run
 
 
 def roc_auc_by_age():

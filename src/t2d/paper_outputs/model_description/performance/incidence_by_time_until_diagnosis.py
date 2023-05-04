@@ -1,7 +1,7 @@
 from psycop.model_evaluation.binary.time.timedelta_plots import (
     plot_time_from_first_positive_to_event,
 )
-from t2d.evaluation.config import FIGURES_PATH, best_run
+from t2d.paper_outputs.config import FIGURES_PATH, best_run
 
 
 def incidence_by_time_until_outcome_pipeline():

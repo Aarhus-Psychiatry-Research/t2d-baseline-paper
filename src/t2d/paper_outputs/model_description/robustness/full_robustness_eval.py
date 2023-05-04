@@ -1,13 +1,19 @@
-from t2d.evaluation.robustness.robustness_by_age import roc_auc_by_age
-from t2d.evaluation.robustness.robustness_by_calendar_time import (
+from t2d.paper_outputs.model_description.robustness.robustness_by_age import (
+    roc_auc_by_age,
+)
+from t2d.paper_outputs.model_description.robustness.robustness_by_calendar_time import (
     roc_auc_by_calendar_time,
 )
-from t2d.evaluation.robustness.robustness_by_cyclic_time import (
+from t2d.paper_outputs.model_description.robustness.robustness_by_cyclic_time import (
     roc_auc_by_cyclic_time,
 )
-from t2d.evaluation.robustness.robustness_by_n_hba1c import roc_auc_by_n_hba1c
-from t2d.evaluation.robustness.robustness_by_sex import roc_auc_by_sex
-from t2d.evaluation.robustness.robustness_by_time_from_first_visit import (
+from t2d.paper_outputs.model_description.robustness.robustness_by_n_hba1c import (
+    roc_auc_by_n_hba1c,
+)
+from t2d.paper_outputs.model_description.robustness.robustness_by_sex import (
+    roc_auc_by_sex,
+)
+from t2d.paper_outputs.model_description.robustness.robustness_by_time_from_first_visit import (
     roc_auc_by_time_from_first_visit,
 )
 

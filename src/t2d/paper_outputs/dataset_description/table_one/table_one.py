@@ -3,10 +3,10 @@
 # Load the data #
 #################
 import polars as pl
-from t2d.evaluation.config import TABLES_PATH, best_run
 from t2d.feature_generation.eligible_prediction_times.loader import (
     get_eligible_prediction_times_as_polars,
 )
+from t2d.paper_outputs.config import TABLES_PATH, best_run
 
 model_train_df = pl.concat(
     [
@@ -48,7 +48,7 @@ eligible_prediction_times = flattened_combined.join(
 ####################
 import pandas as pd
 from psycop.model_evaluation.utils import bin_continuous_data
-from t2d.evaluation.dataset_description.table_one.table_one_lib import (
+from t2d.paper_outputs.dataset_description.table_one.table_one_lib import (
     RowSpecification,
     get_psychiatric_diagnosis_row_specs,
 )
@@ -121,7 +121,7 @@ visit_flattened_df["age_grouped"] = pd.Series(
 ).astype(str)
 
 # %%
-from t2d.evaluation.dataset_description.table_one.table_one_lib import (
+from t2d.paper_outputs.dataset_description.table_one.table_one_lib import (
     create_table,
 )
 

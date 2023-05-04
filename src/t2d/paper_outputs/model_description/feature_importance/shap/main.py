@@ -8,11 +8,13 @@ from psycop.model_training.utils.col_name_inference import (
     infer_outcome_col_name,
     infer_predictor_col_name,
 )
-from t2d.evaluation.config import best_run
-from t2d.evaluation.feature_importance.shap.generate_shap_values import (
+from t2d.paper_outputs.config import best_run
+from t2d.paper_outputs.model_description.feature_importance.shap.generate_shap_values import (
     generate_shap_values,
 )
-from t2d.evaluation.feature_importance.shap.shap_plot import plot_shap_scatter
+from t2d.paper_outputs.model_description.feature_importance.shap.shap_plot import (
+    plot_shap_scatter,
+)
 
 if __name__ == "__main__":
     cfg: FullConfigSchema = best_run.cfg
