@@ -32,6 +32,21 @@ shap_aggregated_df = (
 shap_aggregated_df
 
 # %%
+from t2d.utils.feature_name_to_readable import feature_name_to_readable
+
+shap_output_df = shap_aggregated_df.with_columns(
+    pl.col("variable").apply(feature_name_to_readable).keep_name(),
+    pl.col("value").round(2),
+)
+shap_output_df
+
+# %%
+from t2d.paper_outputs.config import OUTPUT_MAPPING, TABLES_PATH
+
+TABLES_PATH.mkdir(parents=True, exist_ok=True)
+shap_output_df.to_pandas().to_excel(
+    TABLES_PATH / f"{OUTPUT_MAPPING.shap_table} - shap_table.xlsx"
+)
 
 # plot_shap_scatter(shap_values=shap_values, n_to_sample=10_000)
 

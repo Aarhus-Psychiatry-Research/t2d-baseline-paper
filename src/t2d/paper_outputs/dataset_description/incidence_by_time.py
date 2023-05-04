@@ -24,13 +24,13 @@ p = (
 )
 
 # %%
-from t2d.paper_outputs.config import FIGURES_MAPPING, FIGURES_PATH
+from t2d.paper_outputs.config import FIGURES_PATH, OUTPUT_MAPPING
 
 FIGURES_PATH.mkdir(parents=True, exist_ok=True)
 
 save_path = (
     FIGURES_PATH
-    / f"{FIGURES_MAPPING.diabetes_incidence_by_time} - incidence_by_time.png"
+    / f"{OUTPUT_MAPPING.diabetes_incidence_by_time} - incidence_by_time.png"
 )
 
 p.save(save_path, dpi=600)
