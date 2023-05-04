@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
@@ -29,3 +30,11 @@ FIGURES_PATH = GENERAL_ARTIFACT_PATH / "figures"
 TABLES_PATH = GENERAL_ARTIFACT_PATH / "tables"
 ESTIMATES_PATH = GENERAL_ARTIFACT_PATH / "estimates"
 ROBUSTNESS_PATH = FIGURES_PATH / "robustness"
+
+
+@dataclass
+class OutputMapping:
+    diabetes_incidence_by_time: str = "eFigure 3"
+
+
+FIGURES_MAPPING = OutputMapping()
