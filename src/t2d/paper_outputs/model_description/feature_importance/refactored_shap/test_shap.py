@@ -1,13 +1,15 @@
+from pathlib import Path
+
 import pandas as pd
+import plotnine as pn
 import polars as pl
 import pytest
 from psycop.test_utils.str_to_df import str_to_df
-from sqlalchemy import desc
 
 
 @pytest.fixture()
-def shap_long_df() -> pd.DataFrame:
-    return str_to_df(
+def shap_long_df() -> pl.DataFrame:
+    pd_df = str_to_df(
         """feature_name,feature_value,pred_time_index,shap_value
 feature_1,1,0,0.1
 feature_1,2,1,0.2
@@ -21,10 +23,13 @@ feature_3,3,2,0.9
 """
     )
 
+    return pl.from_pandas(pd_df)
 
-def get_top_i_features_by_shap_variance(shap_long_df: pd.DataFrame, i: int):
-    pl_df = pl.from_pandas(shap_long_df)
-    feature_stds = pl_df.groupby("feature_name").agg(
+
+def get_top_i_features_by_shap_variance(
+    shap_long_df: pl.DataFrame, i: int
+) -> pl.DataFrame:
+    feature_stds = shap_long_df.groupby("feature_name").agg(
         shap_std=pl.col("shap_value").std()
     )
 
@@ -34,24 +39,74 @@ def get_top_i_features_by_shap_variance(shap_long_df: pd.DataFrame, i: int):
         .cast(pl.Int32)
     )
 
-    return feature_stds_with_ranks.filter(pl.col("shap_std_rank") <= i).to_pandas()
+    selected_features = feature_stds_with_ranks.filter(i >= pl.col("shap_std_rank"))
+
+    return selected_features.join(shap_long_df, on="feature_name", how="left").drop(
+        "shap_std"
+    )
 
 
-def test_get_top_i_shap(shap_long_df):
+def test_get_top_i_shap(shap_long_df: pl.DataFrame):
     df = get_top_i_features_by_shap_variance(i=2, shap_long_df=shap_long_df)
 
     # Feature 2 has the largest standard deviation
     assert set(df["feature_name"].unique()) == {"feature_2", "feature_3"}
-    assert {"feature_name", "feature_value", "pred_time_index", "shap_value"} == set(
-        df.columns
+    assert {
+        "feature_name",
+        "feature_value",
+        "pred_time_index",
+        "shap_value",
+        "shap_std_rank",
+    } == set(df.columns)
+
+
+def plot_shap_for_feature(df: pl.DataFrame, feature_name: str) -> pn.ggplot:
+    p = (
+        pn.ggplot(df, pn.aes(x="feature_value", y="shap_value"))
+        + pn.geom_smooth(method="lm", color="grey")
+        + pn.geom_point()
+        + pn.theme_minimal()
+        + pn.xlab(f"{feature_name}")
+        + pn.ylab("SHAP")
     )
 
+    return p
 
-def plot_top_i_shap(shap_long_df: pd.DataFrame, i: int):
+
+def plot_top_i_shap(shap_long_df: pl.DataFrame, i: int) -> list[pn.ggplot]:
     df = get_top_i_features_by_shap_variance(shap_long_df=shap_long_df, i=i)
 
-    pass
+    feature_names = df["feature_name"].unique()
+
+    plots = []
+
+    for feature_name in feature_names:
+        feature_df = df.filter(pl.col("feature_name") == feature_name)
+        p = plot_shap_for_feature(df=feature_df, feature_name=feature_name)
+
+        plots.append(p)
+
+    return plots
 
 
-def test_plot_top_i_shap(shap_long_df):
-    plot_top_i_shap(i=3, shap_long_df=shap_long_df)
+def test_plot_top_i_shap(shap_long_df: pl.DataFrame):
+    plots = plot_top_i_shap(i=3, shap_long_df=shap_long_df)
+
+
+def save_plots_for_top_i_shap_by_variance(
+    shap_long_df: pl.DataFrame, i: int, save_dir: Path
+) -> None:
+    plots = plot_top_i_shap(i=3, shap_long_df=shap_long_df)
+
+    for i, plot in enumerate(plots):
+        plot.save(save_dir / f"plot_{i}.png")
+
+    return save_dir
+
+
+def test_top_i_shap(shap_long_df: pl.DataFrame, tmp_path: Path):
+    save_plots_for_top_i_shap_by_variance(
+        shap_long_df=shap_long_df, i=3, save_dir=tmp_path
+    )
+
+    assert len(list(tmp_path.glob("*.png"))) == 3
