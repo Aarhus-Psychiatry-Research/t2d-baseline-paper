@@ -44,9 +44,7 @@ shap_output_df
 from t2d.paper_outputs.config import OUTPUT_MAPPING, TABLES_PATH
 
 TABLES_PATH.mkdir(parents=True, exist_ok=True)
-shap_output_df.to_pandas().to_excel(
-    TABLES_PATH / f"{OUTPUT_MAPPING.shap_table} - shap_table.xlsx"
-)
+shap_output_df.write_csv(TABLES_PATH / f"{OUTPUT_MAPPING.shap_table} - shap_table.csv")
 
 # plot_shap_scatter(shap_values=shap_values, n_to_sample=10_000)
 
