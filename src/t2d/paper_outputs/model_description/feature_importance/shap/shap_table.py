@@ -5,6 +5,7 @@ def get_top_i_shap_values_for_printing(
     shap_long_df: pl.DataFrame,
     i: int,
 ) -> pl.DataFrame:
+    # TODO: Refactor this to use get_top_i_features_by_mean_abs_shap
     aggregated = shap_long_df.groupby("feature_name").agg(
         pl.col("feature_name").first().alias("Feature"),
         pl.col("shap_value").abs().mean().alias("Mean absolute SHAP"),
