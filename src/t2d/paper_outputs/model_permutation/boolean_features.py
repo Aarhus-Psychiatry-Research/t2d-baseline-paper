@@ -17,7 +17,7 @@ if __name__ == "__main__":
     boolean_df = df
     for col in pred_cols_sans_sex:
         boolean_df = df.with_columns(
-            pl.when(pl.col(col).is_not_null()).then(1).otherwise(0).alias(col)
+            pl.when(pl.col(col).is_not_null()).then(1).otherwise(0).alias(col),
         )
 
     boolean_df = boolean_df.collect()

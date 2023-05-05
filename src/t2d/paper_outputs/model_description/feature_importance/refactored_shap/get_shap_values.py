@@ -36,11 +36,13 @@ def generate_shap_values_from_pipe(
 
 @mem.cache
 def get_shap_bundle_for_best_run(
-    run_name: str = best_run.name, n_rows: int = 10_000, cache_ver: float = 0.1
+    run_name: str = best_run.name,
+    n_rows: int = 10_000,
+    cache_ver: float = 0.1,
 ) -> ShapBundle:
     print(f"Generating shap values for {run_name}, with cache version {cache_ver}")
 
-    flattened_ds: pl.LazyFrame = (
+    flattened_ds: pl.DataFrame = (
         pl.concat(
             best_run.get_flattened_split_as_lazyframe(split=split) for split in ["train", "val"]  # type: ignore
         )
@@ -75,9 +77,32 @@ def get_shap_bundle_for_best_run(
 
 if __name__ == "__main__":
     shap_bundle = get_shap_bundle_for_best_run(
-        run_name=best_run.name, n_rows=1_000, cache_ver=0.1
+        run_name=best_run.name,
+        n_rows=1_000,
+        cache_ver=0.1,
     )
 
     long_shap_df = shap_bundle.get_long_shap_df()
 
     pass
+
+
+def get_top_i_features_by_shap_variance(
+    shap_long_df: pl.DataFrame,
+    i: int,
+) -> pl.DataFrame:
+    feature_stds = shap_long_df.groupby("feature_name").agg(
+        shap_std=pl.col("shap_value").std(),
+    )
+
+    feature_stds_with_ranks = feature_stds.with_columns(
+        shap_std_rank=pl.col("shap_std")
+        .rank(method="average", descending=True)
+        .cast(pl.Int32),
+    )
+
+    selected_features = feature_stds_with_ranks.filter(i >= pl.col("shap_std_rank"))
+
+    return selected_features.join(shap_long_df, on="feature_name", how="left").drop(
+        "shap_std",
+    )

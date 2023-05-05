@@ -1,5 +1,4 @@
 from dataclasses import dataclass
-from typing import Sequence
 
 import pandas as pd
 
@@ -21,7 +20,7 @@ class ShapBundle:
                 "feature_value": self.X[colname],
                 "pred_time_index": list(range(0, len(self.X))),
                 "shap_value": self.shap_values[:, colname_index],  # type: ignore
-            }
+            },
         )
 
         return df
@@ -42,7 +41,7 @@ class ShapBundle:
             dfs.append(
                 self.generate_shap_df_for_predictor_col(
                     colname=c,
-                )
+                ),
             )
 
         return pd.concat(dfs, axis=0)

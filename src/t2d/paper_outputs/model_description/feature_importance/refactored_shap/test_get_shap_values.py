@@ -1,0 +1,20 @@
+from pathlib import Path
+
+import polars as pl
+from t2d.paper_outputs.model_description.feature_importance.refactored_shap.get_shap_values import (
+    get_top_i_features_by_shap_variance,
+)
+
+
+def test_get_top_i_shap(shap_long_df: pl.DataFrame):
+    df = get_top_i_features_by_shap_variance(i=2, shap_long_df=shap_long_df)
+
+    # Feature 2 has the largest standard deviation
+    assert set(df["feature_name"].unique()) == {"feature_2", "feature_3"}
+    assert {
+        "feature_name",
+        "feature_value",
+        "pred_time_index",
+        "shap_value",
+        "shap_std_rank",
+    } == set(df.columns)

@@ -8,7 +8,7 @@ def test_polars_to_boolean():
         1,2020-01-01 00:00:00,0,NaN,0
         1,2020-01-01 00:00:00,400,0,0
         1,2020-01-03 00:00:00,NaN,0,1
-        """
+        """,
     )
 
     pl_df = pl.from_pandas(pd_df).lazy()
@@ -17,9 +17,9 @@ def test_polars_to_boolean():
 
     for col in pred_cols:
         pl_df = pl_df.with_columns(
-            pl.when(pl.col(col).is_not_null()).then(1).otherwise(0).alias(col)
+            pl.when(pl.col(col).is_not_null()).then(1).otherwise(0).alias(col),
         )
 
-    out_df = pl_df.collect()
+    pl_df.collect()
 
     pass
