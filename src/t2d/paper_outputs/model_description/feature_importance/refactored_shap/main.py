@@ -1,4 +1,4 @@
-from t2d.paper_outputs.model_description.feature_importance.refactored_shap.get_shap_values import get_long_shap_df, get_shap_explainer
+from t2d.paper_outputs.model_description.feature_importance.refactored_shap.get_shap_values import get_long_shap_df, get_shap_explainer_for_best_run
 
 
 def get_top_ith_feature_df_from_long_shap_df(
@@ -15,7 +15,7 @@ def get_top_ith_feature_by_shap_variance(i=1, shap_explainer):
 
 
 def main():
-    shap_explainer = get_shap_explainer()
+    shap_explainer = get_shap_explainer_for_best_run()
 
     top_feature_df = get_top_ith_feature_by_shap_variance(
         i=1, shap_explainer=shap_explainer
