@@ -2,9 +2,6 @@ import polars as pl
 import shap
 from sklearn.pipeline import Pipeline
 from t2d.paper_outputs.config import best_run
-from t2d.paper_outputs.model_description.feature_importance.refactored_shap.get_long_shap_df import (
-    get_long_shap_df,
-)
 from t2d.paper_outputs.model_description.feature_importance.shap.generate_shap_values import (
     ShapBundle,
 )
@@ -81,4 +78,6 @@ if __name__ == "__main__":
         run_name=best_run.name, n_rows=1_000, cache_ver=0.1
     )
 
-    long_shap_df = get_long_shap_df(shap_bundle)
+    long_shap_df = shap_bundle.get_long_shap_df()
+
+    pass
