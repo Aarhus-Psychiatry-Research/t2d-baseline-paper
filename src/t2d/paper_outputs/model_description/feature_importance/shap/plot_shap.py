@@ -3,7 +3,7 @@ from pathlib import Path
 import plotnine as pn
 import polars as pl
 from t2d.paper_outputs.model_description.feature_importance.shap.get_shap_values import (
-    get_top_i_features_by_shap_variance,
+    get_top_i_features_by_mean_abs_shap,
 )
 
 
@@ -20,7 +20,7 @@ def plot_shap_for_feature(df: pl.DataFrame, feature_name: str) -> pn.ggplot:
 
 
 def plot_top_i_shap(shap_long_df: pl.DataFrame, i: int) -> list[pn.ggplot]:
-    df = get_top_i_features_by_shap_variance(shap_long_df=shap_long_df, i=i)
+    df = get_top_i_features_by_mean_abs_shap(shap_long_df=shap_long_df, i=i)
 
     feature_names = df["feature_name"].unique()
 

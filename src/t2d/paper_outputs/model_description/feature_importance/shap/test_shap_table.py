@@ -1,16 +1,16 @@
 import pandas as pd
 import polars as pl
 from psycop.test_utils.str_to_df import str_to_df
-from t2d.paper_outputs.model_description.feature_importance.refactored_shap.shap_table import (
+from t2d.paper_outputs.model_description.feature_importance.shap.shap_table import (
     get_top_i_shap_values_for_printing,
 )
 
 
 def test_get_top_2_shap_values_for_output():
     expected = str_to_df(
-        """Rank,Feature,SHAP variance,
-    1,feature_3,0.35,
-    2,feature_2,0.14,
+        """Rank,Feature,Mean absolute SHAP,
+    1,feature_3,0.75,
+    2,feature_2,0.3,
     """,
     )
 
