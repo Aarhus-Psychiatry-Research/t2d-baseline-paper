@@ -2,6 +2,7 @@ import polars as pl
 from t2d.paper_outputs.model_description.feature_importance.shap.get_shap_values import (
     get_top_i_features_by_mean_abs_shap,
 )
+from t2d.utils.feature_name_to_readable import feature_name_to_readable
 
 
 def get_top_i_shap_values_for_printing(
@@ -26,4 +27,6 @@ def get_top_i_shap_values_for_printing(
         pl.col("Mean absolute SHAP").round(2).alias("Mean absolute SHAP"),
     )
 
-    return ranked
+    return ranked.with_columns(
+        pl.col("Feature").apply(lambda x: feature_name_to_readable(x)).alias("Feature")
+    )

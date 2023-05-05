@@ -36,13 +36,15 @@ def parse_temporal_feature(full_string: str) -> str:
         "crp": "CRP",
         "fasting_ldl": "fasting LDL",
         "albumine_creatinine_ratio": "albumine creatinine ratio",
+        "top_10_weight_gaining_antipsychotics": "top 10 weight gaining antipsychotics",
     }
 
     if feature_name in feature_name_mappings:
         feature_name = feature_name_mappings[feature_name]
     elif "_disorders" in feature_name:
         words = feature_name.split("_")
-        feature_name = " ".join(word.capitalize() for word in words)
+        words[0] = words[0].capitalize()
+        feature_name = " ".join(word for word in words)
 
     lookbehind = re.findall(r"within_(.*)?_days", full_string)[0]
 

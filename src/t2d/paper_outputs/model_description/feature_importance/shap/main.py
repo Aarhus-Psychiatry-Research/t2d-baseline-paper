@@ -1,6 +1,6 @@
 # %%
-# %load_ext autoreload
-# %autoreload 2
+#%load_ext autoreload
+#%autoreload 2
 
 # %%
 from t2d.paper_outputs.model_description.feature_importance.shap.get_shap_values import (
@@ -39,11 +39,9 @@ from t2d.paper_outputs.model_description.feature_importance.shap.plot_shap impor
     save_plots_for_top_i_shap_by_mean_abs,
 )
 
-plot_top_i_shap(shap_long_df=plotting_df, i=2)
-
 save_plots_for_top_i_shap_by_mean_abs(
     shap_long_df=plotting_df,
-    i=1,
+    i=10,
     save_dir=shap_figures_path,
 )
 
