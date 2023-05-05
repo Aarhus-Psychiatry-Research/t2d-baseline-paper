@@ -1,45 +1,29 @@
 # %%
 #%load_ext autoreload
-#%autoreload 2
+# %autoreload 2
 
 # %%
-
-# %%
-from t2d.paper_outputs.model_description.feature_importance.refactored_shap.get_shap_values import (
+from t2d.paper_outputs.model_description.feature_importance.shap.get_shap_values import (
     get_shap_bundle_for_best_run,
 )
 
-shap_values = get_shap_bundle_for_best_run(n_rows=10_000, cache_ver=0.01)
-
-# %%
-shap_pd_df = shap_values.get_long_shap_df()
+long_shap_df = get_shap_bundle_for_best_run(
+    n_rows=100_000, cache_ver=0.01
+).get_long_shap_df()
 
 # %%
 import polars as pl
+from t2d.paper_outputs.config import FIGURES_PATH, OUTPUT_MAPPING
 
-shap_df = pl.from_pandas(shap_pd_df)
-shap_aggregated_df = (
-    shap_df.with_columns(pl.all().abs().keep_name())
-    .std()
-    .melt(value_vars=shap_df.columns)
-    .sort("value", descending=True)
-    .head(100)
+shap_figures_path = FIGURES_PATH / OUTPUT_MAPPING.shap_plots
+shap_figures_path.mkdir(exist_ok=True, parents=True)
+
+from t2d.paper_outputs.model_description.feature_importance.shap.plot_shap import (
+    save_plots_for_top_i_shap_by_variance,
 )
-shap_aggregated_df
 
-# %%
-from t2d.utils.feature_name_to_readable import feature_name_to_readable
-
-shap_output_df = shap_aggregated_df.with_columns(
-    pl.col("variable").apply(feature_name_to_readable).keep_name(),
-    pl.col("value").round(2),
+save_plots_for_top_i_shap_by_variance(
+    shap_long_df=pl.from_pandas(long_shap_df), i=4, save_dir=shap_figures_path
 )
-shap_output_df
-
-# %%
-from t2d.paper_outputs.config import OUTPUT_MAPPING, TABLES_PATH
-
-TABLES_PATH.mkdir(parents=True, exist_ok=True)
-shap_output_df.write_csv(TABLES_PATH / f"{OUTPUT_MAPPING.shap_table} - shap_table.csv")
 
 # %%

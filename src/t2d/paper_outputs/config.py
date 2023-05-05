@@ -36,6 +36,7 @@ ROBUSTNESS_PATH = FIGURES_PATH / "robustness"
 class OutputMapping:
     diabetes_incidence_by_time: str = "eFigure 3"
     shap_table: str = "eTable 3"
+    shap_plots: str = "Figure 3"
 
 
 OUTPUT_MAPPING = OutputMapping()
