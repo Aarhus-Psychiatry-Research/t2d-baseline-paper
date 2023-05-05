@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 
 import pandas as pd
 import polars as pl
@@ -77,7 +78,7 @@ def generate_shap_values_from_pipe(
 @mem.cache
 def get_shap_bundle_for_best_run(
     run_name: str = best_run.name,
-    n_rows: int = 10_000,
+    n_rows: Optional[int] = 10_000,
     cache_ver: float = 0.1,
 ) -> ShapBundle:
     print(f"Generating shap values for {run_name}, with cache version {cache_ver}")
@@ -89,6 +90,9 @@ def get_shap_bundle_for_best_run(
         .collect()
         .sample(n=n_rows)
     )
+
+    if n_rows:
+        flattened_ds = flattened_ds.sample(n=n_rows)
 
     cfg = best_run.cfg
     predictor_cols = [
