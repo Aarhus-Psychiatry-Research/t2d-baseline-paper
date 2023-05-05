@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import plotnine as pn
 import polars as pl
 from t2d.paper_outputs.model_description.feature_importance.refactored_shap.plot_shap import (
     save_plots_for_top_i_shap_by_variance,

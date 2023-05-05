@@ -9,10 +9,10 @@ from t2d.paper_outputs.model_description.feature_importance.refactored_shap.get_
     get_shap_bundle_for_best_run,
 )
 
-self.shap_values = get_shap_bundle_for_best_run(n_rows=10_000, cache_ver=0.01)
+shap_values = get_shap_bundle_for_best_run(n_rows=10_000, cache_ver=0.01)
 
 # %%
-shap_pd_df = self.shap_values.get_df()
+shap_pd_df = shap_values.get_long_shap_df()
 
 # %%
 import polars as pl
