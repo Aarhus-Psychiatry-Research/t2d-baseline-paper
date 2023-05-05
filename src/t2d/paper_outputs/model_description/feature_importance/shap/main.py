@@ -5,15 +5,15 @@
 # %%
 
 # %%
-from t2d.paper_outputs.model_description.feature_importance.shap.generate_shap_values import (
-    generate_shap_values_for_best_run,
+from t2d.paper_outputs.model_description.feature_importance.refactored_shap.get_shap_values import (
+    get_shap_bundle_for_best_run,
 )
 from t2d.paper_outputs.model_description.feature_importance.shap.shap_plot import (
     plot_shap_scatter,
 )
 from t2d.utils.best_runs import Run
 
-shap_values = generate_shap_values_for_best_run(n_rows=10_000, cache_ver=0.01)
+shap_values = get_shap_bundle_for_best_run(n_rows=10_000, cache_ver=0.01)
 
 # %%
 shap_pd_df = shap_values.get_df()
