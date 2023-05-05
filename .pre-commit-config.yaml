@@ -1,11 +1,6 @@
 default_stages: [commit]
 
-repos:
-  - repo: https://github.com/psf/black
-    rev: 22.8.0
-    hooks:
-      - id: black
-        
+repos:      
   - repo: https://github.com/charliermarsh/ruff-pre-commit
     rev: v0.0.254
     hooks:
@@ -19,6 +14,11 @@ repos:
             "--fix",
             "--exit-non-zero-on-fix",
           ]
+
+  - repo: https://github.com/psf/black
+    rev: 22.8.0
+    hooks:
+      - id: black
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.3.0
