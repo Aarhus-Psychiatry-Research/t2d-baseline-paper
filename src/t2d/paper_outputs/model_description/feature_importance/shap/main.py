@@ -21,7 +21,8 @@ from t2d.paper_outputs.model_description.feature_importance.shap.shap_table impo
 )
 
 table_df = get_top_i_shap_values_for_printing(
-    shap_long_df=pl.from_pandas(long_shap_df), i=100
+    shap_long_df=pl.from_pandas(long_shap_df),
+    i=100,
 )
 table_df
 

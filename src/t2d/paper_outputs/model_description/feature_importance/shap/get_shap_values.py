@@ -127,21 +127,21 @@ def get_shap_bundle_for_best_run(
     )
 
 
-def get_top_i_features_by_shap_variance(
+def get_top_i_features_by_mean_abs_shap(
     shap_long_df: pl.DataFrame,
     i: int,
 ) -> pl.DataFrame:
-    feature_stds = shap_long_df.groupby("feature_name").agg(
-        shap_std=pl.col("shap_value").std(),
+    feature_shap_agg = shap_long_df.groupby("feature_name").agg(
+        shap_std=pl.col("shap_value").abs().mean(),
     )
 
-    feature_stds_with_ranks = feature_stds.with_columns(
+    feature_shap_agg_with_ranks = feature_shap_agg.with_columns(
         shap_std_rank=pl.col("shap_std")
         .rank(method="average", descending=True)
         .cast(pl.Int32),
     )
 
-    selected_features = feature_stds_with_ranks.filter(i >= pl.col("shap_std_rank"))
+    selected_features = feature_shap_agg_with_ranks.filter(i >= pl.col("shap_std_rank"))
 
     return selected_features.join(shap_long_df, on="feature_name", how="left").drop(
         "shap_std",

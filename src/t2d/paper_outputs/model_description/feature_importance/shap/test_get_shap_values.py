@@ -1,11 +1,11 @@
 import polars as pl
-from t2d.paper_outputs.model_description.feature_importance.refactored_shap.get_shap_values import (
-    get_top_i_features_by_shap_variance,
+from t2d.paper_outputs.model_description.feature_importance.shap.get_shap_values import (
+    get_top_i_features_by_mean_abs_shap,
 )
 
 
 def test_get_top_i_shap(shap_long_df: pl.DataFrame):
-    df = get_top_i_features_by_shap_variance(i=2, shap_long_df=shap_long_df)
+    df = get_top_i_features_by_mean_abs_shap(i=2, shap_long_df=shap_long_df)
 
     # Feature 2 has the largest standard deviation
     assert set(df["feature_name"].unique()) == {"feature_2", "feature_3"}
