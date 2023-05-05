@@ -9,8 +9,8 @@ from t2d.paper_outputs.model_description.feature_importance.shap.shap_table impo
 def test_get_top_2_shap_values_for_output():
     expected = str_to_df(
         """Rank,Feature,Mean absolute SHAP,
-    1,feature_3,0.75,
-    2,feature_2,0.3,
+    1,Feature_3,0.75,
+    2,Feature_2,0.3,
     """,
     )
 
