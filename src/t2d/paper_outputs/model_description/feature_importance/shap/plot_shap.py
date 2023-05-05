@@ -11,7 +11,7 @@ def plot_shap_for_feature(df: pl.DataFrame, feature_name: str) -> pn.ggplot:
     p = (
         pn.ggplot(df, pn.aes(x="feature_value", y="shap_value"))
         + pn.geom_point(alpha=0.2, shape="+")
-        + pn.stat_smooth(method="mavg", color="grey")
+        + pn.stat_smooth(method="mavg", color="orange", se=False)
         + pn.theme_minimal()
         + pn.xlab(f"{feature_name}")
         + pn.ylab("SHAP")
@@ -36,7 +36,7 @@ def plot_top_i_shap(shap_long_df: pl.DataFrame, i: int) -> list[pn.ggplot]:
     return plots
 
 
-def save_plots_for_top_i_shap_by_variance(
+def save_plots_for_top_i_shap_by_mean_abs(
     shap_long_df: pl.DataFrame,
     i: int,
     save_dir: Path,
