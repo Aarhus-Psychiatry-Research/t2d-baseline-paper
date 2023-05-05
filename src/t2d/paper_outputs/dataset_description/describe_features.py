@@ -1,51 +1,51 @@
+"""Main feature generation."""
 # %%
-from pathlib import Path
+import logging
 
-import pandas as pd
-from t2d.paper_outputs.config import TABLES_PATH
-
-# %%
-feature_description_path = Path(
-    "E:/shared_resources/t2d/feature_sets/psycop_t2d_adminmanber_features_2023_03_22_15_14/feature_set_descriptive_stats/train_feature_descriptive_stats.csv",
+from psycop.feature_generation.application_modules.project_setup import (
+    get_project_info,
 )
-df = pd.read_csv(feature_description_path)
+from timeseriesflattener.utils import load_dataset_from_file
 
+log = logging.getLogger()
 
 # %%
-# Sort by columns predictor_df, then resolve_multiple, then lookbehin_days, then fallback_strategy
-df_sorted = df.sort_values(
-    by=["Predictor df", "Resolve multiple", "Lookbehind days", "Fallback strategy"],
+project_info = get_project_info(
+    project_name="t2d",
 )
 
-df_renamed = df_sorted.rename(
-    columns={
-        "Predictor df": "Predictor",
-        "Resolve multiple": "Aggregation method",
-        "N unique": "N unique values",
-        "50.0-percentile": "Median",
-    },
-)
+from t2d.feature_generation.specify_features import FeatureSpecifier
 
-# Capitalise the first letter in aggregation method
-df_renamed["Aggregation method"] = df_renamed["Aggregation method"].str.capitalize()
+feature_specs = FeatureSpecifier(
+    project_info=project_info,
+    min_set_for_debug=False,  # Remember to set to False when generating full dataset
+).get_feature_specs()
 
-
-df_selected = df_renamed[
-    [
-        "Predictor",
-        "Aggregation method",
-        "Lookbehind days",
-        "Fallback strategy",
-        "N unique values",
-        "Mean",
-        "1.0-percentile",
-        "25.0-percentile",
-        "Median",
-        "75.0-percentile",
-        "99.0-percentile",
-    ]
+selected_specs = [
+    spec
+    for spec in feature_specs
+    if "pred" in spec.get_col_str() or "outc" in spec.get_col_str()
 ]
 
-# Save to excel
-TABLES_PATH.mkdir(parents=True, exist_ok=True)
-df_selected.to_excel(TABLES_PATH / "feature_descriptive_stats.xlsx", index=False)
+# %%
+# %reload_ext autoreload
+# %autoreload 2
+
+# %%
+from psycop.feature_generation.data_checks.flattened.feature_describer import (
+    save_feature_descriptive_stats_from_dir,
+)
+from t2d.paper_outputs.config import TABLES_PATH, best_run
+
+out_dir = TABLES_PATH / "feature_description"
+out_dir.mkdir(parents=True, exist_ok=True)
+
+save_feature_descriptive_stats_from_dir(
+    feature_set_dir=best_run._get_flattened_split_path(split="train").parent,
+    feature_specs=selected_specs,  # type: ignore
+    file_suffix="parquet",
+    splits=["train"],
+    out_dir=out_dir,
+)
+
+# %%
