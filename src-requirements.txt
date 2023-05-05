@@ -1,1 +1,1 @@
----src ./src -e git+https://github.com/Aarhus-Psychiatry-Research/psycop-common#egg=psycop
+--src ./src -e git+https://github.com/Aarhus-Psychiatry-Research/psycop-common#egg=psycop

@@ -30,7 +30,7 @@ class ShapBundle:
         """Returns a long dataframe with columns:
         * feature_name (e.g. "age")
         * feature_value (e.g. 31)
-        * pred_time_uuid (e.g. "010573-2020-01-01")
+        * pred_time_index (e.g. "010573-2020-01-01")
         * shap_value (e.g. 0.1)
         Each row represents an observation of a feature at a prediction time.
         """
