@@ -8,7 +8,7 @@ from t2d.utils.best_runs import Run, RunGroup
 # UPDATE THESE FOR ALTERNATIVE OUTPUTS #
 ########################################
 RUN_GROUP = "mistouching-unwontedness"
-BEST_RUN_NAME = "phototonicunelucidated"
+BEST_RUN_NAME = "townwardspluralistic"
 
 date_str = datetime.now().strftime("%Y-%m-%d")
 EVALUATION_ROOT = Path(__file__).parent

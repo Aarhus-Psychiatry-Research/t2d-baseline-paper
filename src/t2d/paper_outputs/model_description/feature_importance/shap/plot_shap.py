@@ -10,7 +10,8 @@ from t2d.paper_outputs.model_description.feature_importance.shap.get_shap_values
 def plot_shap_for_feature(df: pl.DataFrame, feature_name: str) -> pn.ggplot:
     p = (
         pn.ggplot(df, pn.aes(x="feature_value", y="shap_value"))
-        + pn.geom_point(alpha=0.2, color="blue", shape="+")
+        + pn.geom_point(alpha=0.2, shape="+")
+        + pn.stat_smooth(method="mavg", color="grey")
         + pn.theme_minimal()
         + pn.xlab(f"{feature_name}")
         + pn.ylab("SHAP")
@@ -43,7 +44,7 @@ def save_plots_for_top_i_shap_by_variance(
     plots = plot_top_i_shap(i=i, shap_long_df=shap_long_df)
 
     for i, plot in enumerate(plots):
-        print(f"Plotting SHAP panel {i}")
-        plot.save(save_dir / f"plot_{i}.jpg")
+        print(f"Plotting SHAP panel {i+1}")
+        plot.save(save_dir / f"plot_{i+1}.jpg")
 
     return save_dir

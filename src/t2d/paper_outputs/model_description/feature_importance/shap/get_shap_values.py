@@ -9,27 +9,46 @@ from t2d.paper_outputs.config import best_run
 from t2d.utils.cache import mem
 
 
+def generate_shap_df_for_predictor_col(
+    colname: str,
+    X: pd.DataFrame,
+    shap_values: list[float],
+) -> pd.DataFrame:
+    colname_index = X.columns.get_loc(colname)
+
+    df = pd.DataFrame(
+        {
+            "feature_name": colname,
+            "feature_value": X[colname],
+            "pred_time_index": list(range(0, len(X))),
+            "shap_value": shap_values[:, colname_index],  # type: ignore
+        },
+    )
+
+    return df
+
+
+@mem.cache
+def get_long_shap_df(X: pd.DataFrame, shap_values: list[float]) -> pd.DataFrame:
+    predictor_cols = X.columns
+    dfs = []
+
+    for c in predictor_cols:
+        dfs.append(
+            generate_shap_df_for_predictor_col(
+                colname=c,
+                X=X,
+                shap_values=shap_values,
+            ),
+        )
+
+    return pd.concat(dfs, axis=0)
+
+
 @dataclass
 class ShapBundle:
     shap_values: list[float]
     X: pd.DataFrame
-
-    def generate_shap_df_for_predictor_col(
-        self,
-        colname: str,
-    ) -> pd.DataFrame:
-        colname_index = self.X.columns.get_loc(colname)
-
-        df = pd.DataFrame(
-            {
-                "feature_name": colname,
-                "feature_value": self.X[colname],
-                "pred_time_index": list(range(0, len(self.X))),
-                "shap_value": self.shap_values[:, colname_index],  # type: ignore
-            },
-        )
-
-        return df
 
     def get_long_shap_df(self) -> pd.DataFrame:
         """Returns a long dataframe with columns:
@@ -39,18 +58,7 @@ class ShapBundle:
         * shap_value (e.g. 0.1)
         Each row represents an observation of a feature at a prediction time.
         """
-        predictor_cols = list(self.X.columns)
-
-        dfs = []
-
-        for c in predictor_cols:
-            dfs.append(
-                self.generate_shap_df_for_predictor_col(
-                    colname=c,
-                ),
-            )
-
-        return pd.concat(dfs, axis=0)
+        return get_long_shap_df(X=self.X, shap_values=self.shap_values)
 
 
 def generate_shap_values_from_pipe(
