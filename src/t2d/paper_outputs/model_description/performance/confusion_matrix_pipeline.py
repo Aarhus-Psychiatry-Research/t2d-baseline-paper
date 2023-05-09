@@ -53,21 +53,19 @@ def confusion_matrix_metrics(
     return df, metrics_df
 
 
-def incidence_by_time_until_outcome_pipeline():
+def confusion_matrix_pipeline():
     eval_ds = best_run.get_eval_dataset()
 
-    df = pd.DataFrame({"y": eval_ds.y, "y_hat_probs": eval_ds.y_hat_probs})
-
-    top_df = get_top_fraction(df=df, col_name="y_hat_probs", fraction=best_run.pos_rate)
-
-    # Set y_hat to 1 for rows in top_df, 0 for others
-    prediction_df = df.copy()
-    prediction_df["y_hat"] = 0
-    prediction_df.loc[top_df.index, "y_hat"] = 1
+    df = pd.DataFrame(
+        {
+            "y": eval_ds.y,
+            "y_hat": eval_ds.get_predictions_for_positive_rate(best_run.pos_rate)[0],
+        }
+    )
 
     conf_matrix, metrics_df = confusion_matrix_metrics(
-        y_true=prediction_df["y"],
-        y_pred=prediction_df["y_hat"],
+        y_true=df["y"],
+        y_pred=df["y_hat"],
     )
 
     TABLES_PATH.mkdir(parents=True, exist_ok=True)
@@ -78,4 +76,4 @@ def incidence_by_time_until_outcome_pipeline():
 
 
 if __name__ == "__main__":
-    incidence_by_time_until_outcome_pipeline()
+    confusion_matrix_pipeline()
