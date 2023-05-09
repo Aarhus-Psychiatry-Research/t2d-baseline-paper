@@ -2,6 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
+import plotnine as pn
 from t2d.utils.best_runs import Run, RunGroup
 
 ########################################
@@ -40,3 +41,5 @@ class OutputMapping:
 
 
 OUTPUT_MAPPING = OutputMapping()
+
+PN_THEME = pn.theme_bw() + pn.theme(panel_grid=pn.element_blank())
