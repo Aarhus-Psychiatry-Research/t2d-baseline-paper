@@ -37,7 +37,10 @@ def plot_performance_by_n_hba1c(
         input_name=col_name,
         bins=bins,
         bin_continuous_input=bin_continuous_input,
+        confidence_interval=0.95,
     )
+
+    ci = df["ci"].tolist()
 
     sort_order = sorted(df[f"{col_name}_binned"].unique())
 
@@ -51,11 +54,13 @@ def plot_performance_by_n_hba1c(
         plot_type=["scatter", "line"],
         bar_count_values=df["n_in_bin"],
         bar_count_y_axis_title="Number of visits",
+        confidence_interval=ci,
         save_path=save_path,
     )
 
 
 def roc_auc_by_n_hba1c():
+    print("Plotting AUC by n HbA1c")
     eval_ds = best_run.get_eval_dataset(
         custom_columns=["eval_hba1c_within_9999_days_count_fallback_nan"],
     )

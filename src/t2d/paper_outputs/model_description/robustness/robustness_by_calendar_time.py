@@ -5,6 +5,7 @@ from t2d.paper_outputs.config import ROBUSTNESS_PATH, best_run
 
 
 def roc_auc_by_calendar_time():
+    print("Plotting AUC by calendar time")
     eval_ds = best_run.get_eval_dataset()
 
     plot_metric_by_absolute_time(

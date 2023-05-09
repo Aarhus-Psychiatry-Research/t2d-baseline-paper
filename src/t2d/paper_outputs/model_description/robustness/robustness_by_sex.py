@@ -3,6 +3,7 @@ from t2d.paper_outputs.config import ROBUSTNESS_PATH, best_run
 
 
 def roc_auc_by_sex():
+    print("Plotting AUC by sex")
     eval_ds = best_run.get_eval_dataset(custom_columns=["is_female"])
 
     plot_roc_auc_by_sex(
@@ -11,5 +12,6 @@ def roc_auc_by_sex():
     )
 
 
+# %%
 if __name__ == "__main__":
     roc_auc_by_sex()
