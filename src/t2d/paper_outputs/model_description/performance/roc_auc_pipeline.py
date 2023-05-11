@@ -1,9 +1,9 @@
 from psycop.model_evaluation.binary.global_performance.roc_auc import plot_auc_roc
-from t2d.paper_outputs.config import FIGURES_PATH, best_run
+from t2d.paper_outputs.config import FIGURES_PATH, RUN_TO_EVAL
 
 
 def roc_auc_pipeline():
-    eval_ds = best_run.get_eval_dataset()
+    eval_ds = RUN_TO_EVAL.get_eval_dataset()
 
     plot_auc_roc(
         eval_dataset=eval_ds,

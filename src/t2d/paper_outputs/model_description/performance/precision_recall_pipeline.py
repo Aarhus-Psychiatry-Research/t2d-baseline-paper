@@ -1,11 +1,11 @@
 from psycop.model_evaluation.binary.global_performance.precision_recall import (
     plot_precision_recall,
 )
-from t2d.paper_outputs.config import FIGURES_PATH, best_run
+from t2d.paper_outputs.config import FIGURES_PATH, RUN_TO_EVAL
 
 
 def precision_recall_pipeline():
-    eval_ds = best_run.get_eval_dataset()
+    eval_ds = RUN_TO_EVAL.get_eval_dataset()
 
     plot_precision_recall(
         eval_dataset=eval_ds,

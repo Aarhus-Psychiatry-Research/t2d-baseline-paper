@@ -35,13 +35,13 @@ selected_specs = [
 from psycop.feature_generation.data_checks.flattened.feature_describer import (
     save_feature_descriptive_stats_from_dir,
 )
-from t2d.paper_outputs.config import TABLES_PATH, best_run
+from t2d.paper_outputs.config import RUN_TO_EVAL, TABLES_PATH
 
 out_dir = TABLES_PATH / "feature_description"
 out_dir.mkdir(parents=True, exist_ok=True)
 
 save_feature_descriptive_stats_from_dir(
-    feature_set_dir=best_run._get_flattened_split_path(split="train").parent,
+    feature_set_dir=RUN_TO_EVAL._get_flattened_split_path(split="train").parent,
     feature_specs=selected_specs,  # type: ignore
     file_suffix="parquet",
     splits=["train"],

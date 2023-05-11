@@ -7,7 +7,7 @@ from psycop.model_evaluation.base_charts import (
 )
 from psycop.model_evaluation.binary.subgroups.base import create_roc_auc_by_input
 from psycop.model_training.training_output.model_evaluator import EvalDataset
-from t2d.paper_outputs.config import ROBUSTNESS_PATH, best_run
+from t2d.paper_outputs.config import ROBUSTNESS_PATH, RUN_TO_EVAL
 
 
 def plot_performance_by_n_hba1c(
@@ -61,7 +61,7 @@ def plot_performance_by_n_hba1c(
 
 def roc_auc_by_n_hba1c():
     print("Plotting AUC by n HbA1c")
-    eval_ds = best_run.get_eval_dataset(
+    eval_ds = RUN_TO_EVAL.get_eval_dataset(
         custom_columns=["eval_hba1c_within_9999_days_count_fallback_nan"],
     )
 

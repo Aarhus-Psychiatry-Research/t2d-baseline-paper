@@ -34,6 +34,16 @@ class RunGroup:
 
         return Path(config_dict["data"]["dir"])
 
+    @property
+    def all_runs_performance_df(self) -> pd.DataFrame:
+        run_performance_files = self.group_dir.glob("*.parquet")
+
+        concatenated_performance_df = pd.concat(
+            pd.read_parquet(parquet_file) for parquet_file in run_performance_files
+        )
+
+        return concatenated_performance_df
+
 
 SplitNames = Literal["train", "test", "val"]
 

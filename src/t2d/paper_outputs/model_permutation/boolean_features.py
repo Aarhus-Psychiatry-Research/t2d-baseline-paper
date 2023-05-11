@@ -1,14 +1,14 @@
 import polars as pl
 from psycop.model_training.application_modules.train_model.main import train_model
 from psycop.model_training.config_schemas.full_config import FullConfigSchema
-from t2d.paper_outputs.config import ESTIMATES_PATH, best_run
+from t2d.paper_outputs.config import ESTIMATES_PATH, RUN_TO_EVAL
 
 if __name__ == "__main__":
-    cfg: FullConfigSchema = best_run.cfg
+    cfg: FullConfigSchema = RUN_TO_EVAL.cfg
 
     # Create the dataset with only HbA1c-predictors
     df: pl.LazyFrame = pl.concat(
-        best_run.get_flattened_split_as_lazyframe(split) for split in ["train", "val"]  # type: ignore
+        RUN_TO_EVAL.get_flattened_split_as_lazyframe(split) for split in ["train", "val"]  # type: ignore
     )
 
     pred_cols = [c for c in df.columns if c.startswith(cfg.data.pred_prefix)]
@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     path_prefix = "boolean"
 
-    boolean_pred_dir = best_run.eval_dir / f"{path_prefix}_preds"
+    boolean_pred_dir = RUN_TO_EVAL.eval_dir / f"{path_prefix}_preds"
     boolean_pred_dir.mkdir(parents=True, exist_ok=True)
     boolean_pred_path = boolean_pred_dir / f"{path_prefix}_preds.parquet"
     boolean_df.write_parquet(boolean_pred_path)

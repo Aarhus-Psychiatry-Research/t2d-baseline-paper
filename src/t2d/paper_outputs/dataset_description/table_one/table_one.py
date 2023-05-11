@@ -6,17 +6,17 @@ import polars as pl
 from t2d.feature_generation.eligible_prediction_times.loader import (
     get_eligible_prediction_times_as_polars,
 )
-from t2d.paper_outputs.config import TABLES_PATH, best_run
+from t2d.paper_outputs.config import RUN_TO_EVAL, TABLES_PATH
 
 model_train_df = pl.concat(
     [
-        best_run.get_flattened_split_as_lazyframe(split="train"),
-        best_run.get_flattened_split_as_lazyframe(split="val"),
+        RUN_TO_EVAL.get_flattened_split_as_lazyframe(split="train"),
+        RUN_TO_EVAL.get_flattened_split_as_lazyframe(split="val"),
     ],
     how="vertical",
 ).with_columns(dataset=pl.format("0. train"))
 
-test_dataset = best_run.get_flattened_split_as_lazyframe(split="test").with_columns(
+test_dataset = RUN_TO_EVAL.get_flattened_split_as_lazyframe(split="test").with_columns(
     dataset=pl.format("test"),
 )
 

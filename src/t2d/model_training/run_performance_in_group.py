@@ -1,24 +1,12 @@
 import datetime
 
 import pandas as pd
-from t2d.paper_outputs.config import current_group
+from t2d.paper_outputs.config import EVAL_GROUP
+from t2d.utils.best_runs import RunGroup
 
 
-def get_all_runs_df() -> pd.DataFrame:
-    run_performance_files = current_group.group_dir.glob("*.parquet")
-
-    all_models = pd.concat(
-        pd.read_parquet(parquet_file) for parquet_file in run_performance_files
-    )
-
-    return all_models
-
-
-if __name__ == "__main__":
-    print("\n\n")
-    all_models = get_all_runs_df()
-
-    all_models["roc_auc"] = all_models["roc_auc"].round(2)
+def get_best_models_by_lookahead(current_group: RunGroup) -> pd.DataFrame:
+    all_models = current_group.all_runs_performance_df
 
     best_models_by_architecture_lookahead = (
         all_models.sort_values("roc_auc", ascending=False)
@@ -27,20 +15,29 @@ if __name__ == "__main__":
         .sort_values(["model_name", "lookahead_days"])
     )[["model_name", "lookahead_days", "roc_auc", "run_name", "timestamp"]]
 
-    best_model_by_auc = all_models.sort_values("roc_auc", ascending=False).head(1)
+    return best_models_by_architecture_lookahead
+
+
+if __name__ == "__main__":
+    print("\n\n")
+    run_performance_df = get_best_models_by_lookahead(current_group=EVAL_GROUP)
 
     now = datetime.datetime.now()
 
     try:
         best_in_last_hour = (
-            all_models[all_models["timestamp"] > now - datetime.timedelta(hours=1)]
+            run_performance_df[
+                run_performance_df["timestamp"] > now - datetime.timedelta(hours=1)
+            ]
             .sort_values("roc_auc", ascending=False)
             .head(1)
             .reset_index(drop=True)["roc_auc"][0]
         )
 
         best_before_last_hour = (
-            all_models[all_models["timestamp"] < now - datetime.timedelta(hours=1)]
+            run_performance_df[
+                run_performance_df["timestamp"] < now - datetime.timedelta(hours=1)
+            ]
             .sort_values("roc_auc", ascending=False)
             .head(1)
             .reset_index(drop=True)["roc_auc"][0]
@@ -59,19 +56,19 @@ if __name__ == "__main__":
         else:
             print(f"AUROC improvement over last hour was {improvement_over_last_hour}")
 
-    first_model_timestamp = all_models.sort_values("timestamp", ascending=True).head(1)[
-        "timestamp"
-    ][0]
+    first_model_timestamp = run_performance_df.sort_values(
+        "timestamp", ascending=True
+    ).head(1)["timestamp"][0]
 
     training_minutes = round((now - first_model_timestamp).total_seconds() / 60)  # type: ignore
     print(f"Model training has been going on for {training_minutes} minutes")
 
-    models_trained_total = len(all_models)
+    models_trained_total = len(run_performance_df)
     print(f"In total, {models_trained_total} models have been trained")
     print("\n")
 
-    models_trained_by_architecure_and_lookahead = all_models.groupby(
+    models_trained_by_architecure_and_lookahead = run_performance_df.groupby(
         ["model_name", "lookahead_days"],
     ).count()["run_name"]
 
-    print(best_models_by_architecture_lookahead)
+    print(run_performance_df)

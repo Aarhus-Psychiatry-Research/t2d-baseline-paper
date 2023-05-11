@@ -1,10 +1,10 @@
 from psycop.model_evaluation.binary.subgroups.sex import plot_roc_auc_by_sex
-from t2d.paper_outputs.config import ROBUSTNESS_PATH, best_run
+from t2d.paper_outputs.config import ROBUSTNESS_PATH, RUN_TO_EVAL
 
 
 def roc_auc_by_sex():
     print("Plotting AUC by sex")
-    eval_ds = best_run.get_eval_dataset(custom_columns=["is_female"])
+    eval_ds = RUN_TO_EVAL.get_eval_dataset(custom_columns=["is_female"])
 
     plot_roc_auc_by_sex(
         eval_dataset=eval_ds,
