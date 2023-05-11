@@ -2,7 +2,7 @@ import polars as pl
 from psycop.model_evaluation.binary.performance_by_ppr.performance_by_ppr import (
     days_from_first_positive_to_diagnosis,
 )
-from t2d.paper_outputs.config import BEST_POS_RATE, DEVELOPMENT_GROUP, RUN_TO_EVAL
+from t2d.paper_outputs.config import BEST_POS_RATE, DEVELOPMENT_GROUP, EVAL_RUN
 from t2d.utils.best_runs import Run, RunGroup
 
 
@@ -68,9 +68,7 @@ def get_publication_ready_performance_for_group(run_group: RunGroup):
         (pl.all().exclude("model_name") / 365.25).round(1),
     )
 
-    df = pl.concat([auroc_df, warning_days_df]).sort(
-        ["model_name"], descending=True
-    )
+    df = pl.concat([auroc_df, warning_days_df]).sort(["model_name"], descending=True)
 
     return df
 

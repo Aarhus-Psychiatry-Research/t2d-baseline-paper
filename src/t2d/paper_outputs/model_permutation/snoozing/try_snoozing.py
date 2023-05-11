@@ -2,11 +2,11 @@ import datetime as dt
 
 import pandas as pd
 from sklearn.metrics import roc_auc_score
-from t2d.paper_outputs.config import RUN_TO_EVAL
+from t2d.paper_outputs.config import EVAL_RUN
 from t2d.paper_outputs.model_permutation.snoozing.snoozing import snooze_dataframe
 
 if __name__ == "__main__":
-    evaluation_dataset = RUN_TO_EVAL.get_eval_dataset()
+    evaluation_dataset = EVAL_RUN.get_eval_dataset()
 
     eval_df = pd.DataFrame(
         {

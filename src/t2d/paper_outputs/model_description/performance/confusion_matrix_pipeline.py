@@ -1,6 +1,6 @@
 import pandas as pd
 from sklearn.metrics import confusion_matrix
-from t2d.paper_outputs.config import RUN_TO_EVAL, TABLES_PATH
+from t2d.paper_outputs.config import EVAL_RUN, TABLES_PATH
 
 
 def get_top_fraction(df: pd.DataFrame, col_name: str, fraction: float) -> pd.DataFrame:
@@ -54,12 +54,12 @@ def confusion_matrix_metrics(
 
 
 def confusion_matrix_pipeline():
-    eval_ds = RUN_TO_EVAL.get_eval_dataset()
+    eval_ds = EVAL_RUN.get_eval_dataset()
 
     df = pd.DataFrame(
         {
             "y": eval_ds.y,
-            "y_hat": eval_ds.get_predictions_for_positive_rate(RUN_TO_EVAL.pos_rate)[0],
+            "y_hat": eval_ds.get_predictions_for_positive_rate(EVAL_RUN.pos_rate)[0],
         }
     )
 

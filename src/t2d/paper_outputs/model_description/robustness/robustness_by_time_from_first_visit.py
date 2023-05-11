@@ -1,12 +1,12 @@
 from psycop.model_evaluation.binary.time.timedelta_plots import (
     plot_roc_auc_by_time_from_first_visit,
 )
-from t2d.paper_outputs.config import ROBUSTNESS_PATH, RUN_TO_EVAL
+from t2d.paper_outputs.config import EVAL_RUN, ROBUSTNESS_PATH
 
 
 def roc_auc_by_time_from_first_visit():
     print("Plotting AUC by time from first visit")
-    eval_ds = RUN_TO_EVAL.get_eval_dataset()
+    eval_ds = EVAL_RUN.get_eval_dataset()
 
     plot_roc_auc_by_time_from_first_visit(
         eval_dataset=eval_ds,
