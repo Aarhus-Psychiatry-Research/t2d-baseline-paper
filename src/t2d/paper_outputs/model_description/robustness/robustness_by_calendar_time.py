@@ -1,12 +1,12 @@
 from psycop.model_evaluation.binary.time.absolute_plots import (
     plot_metric_by_absolute_time,
 )
-from t2d.paper_outputs.config import ROBUSTNESS_PATH, RUN_TO_EVAL
+from t2d.paper_outputs.config import EVAL_RUN, ROBUSTNESS_PATH
 
 
 def roc_auc_by_calendar_time():
     print("Plotting AUC by calendar time")
-    eval_ds = RUN_TO_EVAL.get_eval_dataset()
+    eval_ds = EVAL_RUN.get_eval_dataset()
 
     plot_metric_by_absolute_time(
         eval_dataset=eval_ds,

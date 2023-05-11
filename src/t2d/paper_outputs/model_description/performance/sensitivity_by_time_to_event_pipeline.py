@@ -1,11 +1,11 @@
 from psycop.model_evaluation.binary.time.timedelta_plots import (
     plot_sensitivity_by_time_to_event,
 )
-from t2d.paper_outputs.config import FIGURES_PATH, RUN_TO_EVAL
+from t2d.paper_outputs.config import EVAL_RUN, FIGURES_PATH
 
 
 def incidence_by_time_until_outcome_pipeline():
-    eval_ds = RUN_TO_EVAL.get_eval_dataset()
+    eval_ds = EVAL_RUN.get_eval_dataset()
 
     plot_sensitivity_by_time_to_event(
         eval_dataset=eval_ds,

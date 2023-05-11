@@ -5,7 +5,7 @@ import pandas as pd
 import polars as pl
 import shap
 from sklearn.pipeline import Pipeline
-from t2d.paper_outputs.config import RUN_TO_EVAL
+from t2d.paper_outputs.config import EVAL_RUN
 from t2d.utils.cache import mem
 
 
@@ -85,7 +85,7 @@ def generate_shap_values_from_pipe(
 
 @mem.cache
 def get_shap_bundle_for_best_run(
-    run_name: str = RUN_TO_EVAL.name,
+    run_name: str = EVAL_RUN.name,
     n_rows: Optional[int] = 10_000,
     cache_ver: float = 0.1,
 ) -> ShapBundle:
@@ -93,7 +93,7 @@ def get_shap_bundle_for_best_run(
 
     flattened_ds: pl.DataFrame = (
         pl.concat(
-            RUN_TO_EVAL.get_flattened_split_as_lazyframe(split=split) for split in ["train", "val"]  # type: ignore
+            EVAL_RUN.get_flattened_split_as_lazyframe(split=split) for split in ["train", "val"]  # type: ignore
         )
         .collect()
         .sample(n=n_rows)
@@ -102,7 +102,7 @@ def get_shap_bundle_for_best_run(
     if n_rows:
         flattened_ds = flattened_ds.sample(n=n_rows)
 
-    cfg = RUN_TO_EVAL.cfg
+    cfg = EVAL_RUN.cfg
     predictor_cols = [
         c for c in flattened_ds.columns if c.startswith(cfg.data.pred_prefix)
     ]
@@ -113,7 +113,7 @@ def get_shap_bundle_for_best_run(
         and str(cfg.preprocessing.pre_split.min_lookahead_days) in c
     ]
 
-    pipe = RUN_TO_EVAL.pipe
+    pipe = EVAL_RUN.pipe
 
     shap_values = generate_shap_values_from_pipe(
         features=flattened_ds.lazy().select(predictor_cols),
@@ -150,7 +150,7 @@ def get_top_i_features_by_mean_abs_shap(
 
 if __name__ == "__main__":
     shap_bundle = get_shap_bundle_for_best_run(
-        run_name=RUN_TO_EVAL.name,
+        run_name=EVAL_RUN.name,
         n_rows=1_000,
         cache_ver=0.1,
     )
