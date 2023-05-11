@@ -44,6 +44,15 @@ class RunGroup:
 
         return concatenated_performance_df
 
+    def get_best_runs_by_lookahead(self) -> pl.DataFrame:
+        df = pl.from_pandas(self.all_runs_performance_df)
+
+        return (
+            df.groupby(["lookahead_days", "model_name"])
+            .agg(pl.all().sort_by("roc_auc", descending=True).first())
+            .sort(["model_name", "lookahead_days"])
+        )
+
 
 SplitNames = Literal["train", "test", "val"]
 
@@ -95,6 +104,13 @@ class Run:
         eval_dataset = df_to_eval_dataset(df, custom_columns=custom_columns)
 
         return eval_dataset
+
+    def get_auroc(self) -> float:
+        df = self.group.all_runs_performance_df
+
+        self_run = df[df["run_name"] == self.name]
+
+        return self_run["roc_auc"].iloc[0]
 
     @property
     def pipe(self) -> Pipeline:
