@@ -18,10 +18,9 @@ from t2d.paper_outputs.model_description.robustness.robustness_by_time_from_firs
 )
 
 if __name__ == "__main__":
-    roc_auc_by_calendar_time()
     roc_auc_by_sex()
-    roc_auc_by_cyclic_time()
     roc_auc_by_age()
     roc_auc_by_n_hba1c()
-    roc_auc_by_calendar_time()
     roc_auc_by_time_from_first_visit()
+    roc_auc_by_cyclic_time()
+    # roc_auc_by_calendar_time()

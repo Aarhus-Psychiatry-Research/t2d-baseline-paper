@@ -67,7 +67,7 @@ def roc_auc_by_n_hba1c():
 
     plot_performance_by_n_hba1c(
         eval_dataset=eval_ds,
-        bins=[0, *range(1, 11, 1)],
+        bins=[0, 1, 3, 5],
         save_path=ROBUSTNESS_PATH / "auc_by_n_hba1c.png",
     )
 
